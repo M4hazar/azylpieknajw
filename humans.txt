@@ -1,0 +1,10 @@
+/* TEAM */
+Projekt i realizacja: Paweł Hejna
+GitHub: https://github.com/m4hazar
+
+/* SITE */
+Ostatnia aktualizacja: 2026-10-23
+Język: polski
+Standardy: HTML5, CSS3, JavaScript (ES2020), SVG
+Biblioteki: GSAP 3.15
+Kroje pisma: Cormorant Garamond, Tenor Sans, Source Sans 3 (hostowane lokalnie)
