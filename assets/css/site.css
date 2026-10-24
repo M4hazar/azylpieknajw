@@ -1,0 +1,793 @@
+/*!
+ * Azyl Piękna · strona w budowie
+ * site.css: style strony głównej i polityki prywatności
+ * Autor: Paweł Hejna, https://github.com/m4hazar
+ */
+
+/*
+ * 1. Zmienne
+ * 2. Podstawy
+ * 3. Logo i intro
+ * 4. Napisy pod logo
+ * 5. Treść strony głównej
+ * 6. Przyciski
+ * 7. Stopka
+ * 8. Informacja o cookies
+ * 9. Polityka prywatności
+ * 10. Przejścia między podstronami
+ * 11. Telefony i ograniczony ruch
+ */
+
+
+/* 1. Zmienne
+   ========================================================================== */
+
+:root {
+  --night: #1E130B;
+  --night-2: #2A1A0F;
+  --night-3: #3a2516;
+  --gold: #B28A4D;
+  --gold-mid: #D2AE6A;
+  --gold-light: #EAD5A8;
+  --gold-pale: #F5E5B8;
+  --ivory: #F6EEE2;
+  --on-dark: #E9DFD1;
+  --mute: #B5A48F;
+  --line: rgb(210 174 106 / 45%);
+
+  --f-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --f-body: "Source Sans 3", "Segoe UI", Roboto, Arial, sans-serif;
+  --f-label: "Tenor Sans", "Source Sans 3", "Segoe UI", sans-serif;
+
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+}
+
+
+/* 2. Podstawy
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Tło jest powtórzone w animowanym logo (gradient #bgp w logo-anim.svg, przeliczany w intro.js): przy zmianie
+   kolorów lub kształtu gradientu trzeba zmienić oba miejsca. */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  margin: 0;
+  overflow-x: hidden;
+  background: radial-gradient(120% 80% at 50% 28%, var(--night-3) 0%, var(--night-2) 38%, var(--night) 75%) fixed;
+  background-color: var(--night);
+  color: var(--on-dark);
+  font-family: var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* delikatne ziarno na całej stronie */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .07;
+  mix-blend-mode: overlay;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+a {
+  color: inherit;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--gold-mid);
+  outline-offset: 4px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* blokada przewijania w czasie lotu */
+.lock,
+.lock body {
+  overflow: hidden;
+}
+
+main {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(36px, 7vh, 80px) 20px clamp(28px, 5vh, 48px);
+  text-align: center;
+}
+
+
+/* 3. Logo i intro
+   ========================================================================== */
+
+/* złoty ślad za ptakiem */
+.sparks {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.mark {
+  position: relative;
+  width: clamp(160px, min(38vw, 30vh), 300px);
+  aspect-ratio: 884 / 878;
+  margin-bottom: clamp(20px, 4vh, 40px);
+  perspective: 900px;
+}
+
+.logo-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 10px 30px rgb(0 0 0 / 35%));
+}
+
+.logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* animowane logo (lot ptaka); po intro ukryte, zostaje oryginalne .logo */
+.logo-anim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* błysk przesuwający się po złocie logo */
+.logo-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  -webkit-mask: url("../img/sygnet-zloty.svg") center / 100% 100% no-repeat;
+  mask: url("../img/sygnet-zloty.svg") center / 100% 100% no-repeat;
+  background: linear-gradient(110deg, transparent 38%, rgb(255 246 222 / 80%) 50%, transparent 62%) 100% 0 / 300% 100% no-repeat;
+}
+
+.shine .logo-wrap::after {
+  animation: shine 1.7s cubic-bezier(.45, 0, .2, 1);
+}
+
+@keyframes shine {
+  from {
+    opacity: 1;
+    background-position: 100% 0;
+  }
+
+  to {
+    opacity: 1;
+    background-position: 0 0;
+  }
+}
+
+/* przed lądowaniem ptaka treść i logo są ukryte (klasy z boot.js i intro.js) */
+.intro .reveal {
+  opacity: 0;
+}
+
+.intro:not(.animated) .logo {
+  opacity: 0;
+}
+
+
+/* 4. Napisy pod logo
+   Imię i nazwisko (krój z logo, złoty gradient), pod nim nazwa salonu między liniami, niżej drobno salon i miasto.
+   Lewe wcięcie równe odstępowi liter wyrównuje środek (odstęp dodaje się też za ostatnią literą).
+   ========================================================================== */
+
+.name {
+  margin: 0;
+  padding-left: .16em;
+  color: var(--gold-mid);
+  font-family: var(--f-display);
+  font-size: clamp(1.85rem, 4.4vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+/* Gradient przycięty do liter maluje się tylko w obrębie pola elementu, a ogonek J (i akcent nad Ó) z niego
+   wystaje, więc pole jest powiększone w pionie, a ujemny margines oddaje to miejsce: układ się nie zmienia. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .name {
+    margin-block: -.25em;
+    padding-block: .25em;
+    background: linear-gradient(100deg, var(--gold) 0%, var(--gold-mid) 38%, var(--gold-pale) 55%, var(--gold-mid) 72%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin: 16px 0 0;
+  color: var(--gold-mid);
+  font-family: var(--f-label);
+  font-size: .84rem;
+  line-height: 1.2;
+  letter-spacing: .46em;
+  text-transform: uppercase;
+}
+
+.brand span {
+  padding-left: .46em;
+}
+
+.brand::before,
+.brand::after {
+  content: "";
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, rgb(178 138 77 / 0%), var(--gold));
+}
+
+.brand::after {
+  background: linear-gradient(90deg, var(--gold), rgb(178 138 77 / 0%));
+}
+
+.tagline {
+  margin: 14px 0 0;
+  padding-left: .3em;
+  color: var(--mute);
+  font-family: var(--f-label);
+  font-size: .69rem;
+  line-height: 1.9;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+}
+
+/* kropka oddzielająca (w napisie pod logo i w stopce) */
+.tagline i,
+.site-footer i {
+  margin: 0 .35em;
+  color: var(--gold);
+  font-style: normal;
+}
+
+
+/* 5. Treść strony głównej
+   ========================================================================== */
+
+.divider {
+  width: min(240px, 50vw);
+  height: 1px;
+  margin: clamp(22px, 4vh, 36px) auto;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+h1 {
+  margin: 0;
+  color: var(--ivory);
+  font-family: var(--f-display);
+  font-size: clamp(2.3rem, 5.6vw, 4.2rem);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+h1 em {
+  color: var(--gold-mid);
+  font-style: italic;
+}
+
+.lead {
+  max-width: 34rem;
+  margin: 18px auto 0;
+  font-size: clamp(1rem, 1.6vw, 1.12rem);
+  line-height: 1.7;
+}
+
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 30px;
+  margin: clamp(28px, 5vh, 48px) 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--mute);
+  font-size: .95rem;
+}
+
+.contact span {
+  margin-right: 10px;
+  font-family: var(--f-label);
+  font-size: .66rem;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+}
+
+.contact a {
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgb(210 174 106 / 35%);
+  color: var(--on-dark);
+  text-decoration: none;
+  transition: border-color .3s, color .3s;
+}
+
+.contact a:hover {
+  border-color: var(--gold-mid);
+  color: var(--gold-light);
+}
+
+
+/* 6. Przyciski
+   ========================================================================== */
+
+/* główny przycisk: złote tło, po najechaniu sam obrys */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: clamp(24px, 4vh, 36px);
+  padding: 17px 30px;
+  border: 1px solid var(--gold-light);
+  background: var(--gold-light);
+  color: var(--night);
+  font-family: var(--f-label);
+  font-size: .78rem;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color .35s, color .35s;
+}
+
+.btn:hover {
+  background: transparent;
+  color: var(--gold-light);
+}
+
+/* strzałka w przycisku */
+.btn-arrow {
+  position: relative;
+  width: 22px;
+  height: 1px;
+  background: currentcolor;
+  transition: transform .35s;
+}
+
+.btn-arrow::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: 0;
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid currentcolor;
+  border-right: 1px solid currentcolor;
+  transform: rotate(45deg);
+}
+
+.btn:hover .btn-arrow {
+  transform: translateX(5px);
+}
+
+/* przycisk z obrysem: po najechaniu lub naciśnięciu wypełnia się złotem */
+.btn-line {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  color: var(--gold-light);
+  text-decoration: none;
+  transition: background-color .35s, border-color .35s, color .35s;
+}
+
+.btn-line:hover,
+.btn-line:active {
+  border-color: var(--gold-light);
+  background-color: var(--gold-light);
+  color: var(--night);
+}
+
+.btn-line svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform .35s;
+}
+
+/* „Odtwórz lot ponownie”: widoczny tylko wtedy, gdy animacja działa (klasa .animated z intro.js) */
+.replay {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-top: clamp(22px, 4vh, 34px);
+  padding: 8px 4px;
+  border: 0;
+  border-bottom: 1px solid rgb(210 174 106 / 30%);
+  background: none;
+  color: var(--mute);
+  font-family: var(--f-label);
+  font-size: .66rem;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color .3s, color .3s;
+}
+
+.animated .replay {
+  display: inline-flex;
+}
+
+.replay:hover {
+  border-color: var(--gold-mid);
+  color: var(--gold-light);
+}
+
+.replay svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform .6s var(--ease-out);
+}
+
+.replay:hover svg {
+  transform: rotate(-200deg);
+}
+
+
+/* 7. Stopka
+   ========================================================================== */
+
+.site-footer {
+  position: relative;
+  z-index: 2;
+  padding: 18px 20px calc(18px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid rgb(178 138 77 / 18%);
+  color: var(--mute);
+  font-size: .8rem;
+  text-align: center;
+}
+
+.site-footer p {
+  margin: 0;
+  line-height: 1.8;
+}
+
+.site-footer a {
+  color: var(--on-dark);
+  text-decoration-color: rgb(210 174 106 / 50%);
+  text-underline-offset: 3px;
+}
+
+/* podpis twórcy strony: drobny, w kroju etykiet; nazwisko podkreśla się złotą linią po najechaniu */
+.site-footer .credit {
+  margin-top: 6px;
+  color: rgb(181 164 143 / 78%);
+  font-family: var(--f-label);
+  font-size: .64rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+
+.site-footer .credit a {
+  padding-bottom: 3px;
+  background: linear-gradient(currentcolor, currentcolor) 0 100% / 0 1px no-repeat;
+  color: var(--gold-mid);
+  text-decoration: none;
+  transition: background-size .45s ease, color .3s;
+}
+
+.site-footer .credit a:hover,
+.site-footer .credit a:focus-visible {
+  background-size: 100% 1px;
+  color: var(--gold-light);
+}
+
+
+/* 8. Informacja o cookies
+   ========================================================================== */
+
+.cookie-notice {
+  view-transition-name: cookie-notice;
+  position: fixed;
+  z-index: 10;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 16px 20px;
+  width: min(560px, calc(100% - 32px));
+  padding: 14px 16px 14px 20px;
+  border: 1px solid rgb(210 174 106 / 35%);
+  background: rgb(42 26 15 / 92%);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 40px rgb(0 0 0 / 35%);
+  font-size: .9rem;
+  line-height: 1.5;
+  transform: translateX(-50%);
+}
+
+.cookie-notice[hidden] {
+  display: none;
+}
+
+.cookie-notice.show {
+  animation: cookie-in .7s var(--ease-out) both;
+}
+
+.cookie-notice p {
+  flex: 1;
+  margin: 0;
+}
+
+.cookie-notice a {
+  color: var(--gold-light);
+}
+
+.cookie-notice button {
+  flex: none;
+  padding: 11px 18px;
+  border: 1px solid var(--gold-light);
+  background: var(--gold-light);
+  color: var(--night);
+  font: inherit;
+  font-family: var(--f-label);
+  font-size: .7rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.cookie-notice button:hover {
+  background: transparent;
+  color: var(--gold-light);
+}
+
+@keyframes cookie-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+}
+
+
+/* 9. Polityka prywatności
+   ========================================================================== */
+
+main.doc {
+  display: block;
+  flex: 1;
+  width: 100%;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: clamp(40px, 8vh, 90px) 20px 60px;
+  line-height: 1.75;
+  text-align: left;
+}
+
+/* powrót na stronę główną; strzałka przesuwa się w lewo po najechaniu */
+.back-link {
+  gap: 12px;
+  min-height: 44px;
+  padding: 12px 22px 12px 18px;
+  font-family: var(--f-label);
+  font-size: .72rem;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+.back-link:hover svg {
+  transform: translateX(-4px);
+}
+
+.doc h1 {
+  margin: 32px 0 8px;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+}
+
+.doc h2 {
+  margin: 40px 0 8px;
+  color: var(--gold-light);
+  font-family: var(--f-display);
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+.doc p,
+.doc li {
+  color: var(--on-dark);
+}
+
+.doc ul {
+  padding-left: 1.2em;
+}
+
+.doc .muted {
+  color: var(--mute);
+  font-size: .92rem;
+}
+
+/* strzałka „na górę”: pojawia się w rogu po przewinięciu w dół (klasa .show z site.js) */
+.to-top {
+  view-transition-name: to-top;
+  position: fixed;
+  z-index: 5;
+  right: max(18px, env(safe-area-inset-right, 0px));
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  background-color: rgb(30 19 11 / 55%);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity .35s, visibility .35s, transform .35s, background-color .35s, border-color .35s, color .35s;
+}
+
+.to-top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.to-top:hover svg {
+  transform: translateY(-3px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .legal {
+    scroll-behavior: smooth;
+  }
+}
+
+
+/* 10. Przejścia między podstronami
+   Przeglądarki z View Transitions: stara treść znika i lekko unosi się, nowa wyłania się od dołu; tło stoi w miejscu.
+   Pozostałe: to samo przez klasy .leaving (site.js) i .page-in (boot.js).
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+/* Osobne nazwy na każdej podstronie: treść nie przechodzi płynnie w inną, tylko jedna znika, a druga się pojawia.
+   Informacja o cookies i strzałka „na górę” mają swoje nazwy w sekcjach 8 i 9. */
+.home main { view-transition-name: home-main; }
+.home .site-footer { view-transition-name: home-footer; }
+.legal main { view-transition-name: legal-main; }
+.legal .site-footer { view-transition-name: legal-footer; }
+
+/* Gdy na stronie głównej startuje lot ptaka, jej treść nie jest osobnym obrazem przejścia: przechwytywanie dużego,
+   animowanego ptaka w każdej klatce zacinało animację. Stara strona i tak płynnie znika, a ptak pojawia się na tle. */
+.intro main,
+.intro .site-footer {
+  view-transition-name: none;
+}
+
+::view-transition-old(*) {
+  animation: page-out .25s ease-in both;
+}
+
+/* nowa treść startuje, gdy stara prawie zniknęła, żeby teksty na siebie nie nachodziły */
+::view-transition-new(*) {
+  animation: page-in .7s var(--ease-out) .22s both;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+/* tylko „backwards”: po animacji nic nie zostaje, więc .leaving może płynnie ukryć treść */
+.page-in main,
+.page-in .site-footer {
+  animation: page-in .7s var(--ease-out) backwards;
+}
+
+.leaving main,
+.leaving .site-footer {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity .25s ease-in, transform .25s ease-in;
+}
+
+.leaving .cookie-notice,
+.leaving .to-top {
+  opacity: 0;
+  transition: opacity .25s ease-in;
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+
+/* 11. Telefony i ograniczony ruch
+   ========================================================================== */
+
+@media (max-width: 560px) {
+  .btn {
+    padding: 16px 24px;
+    letter-spacing: .2em;
+  }
+
+  .contact {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .cookie-notice {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: left;
+  }
+
+  /* stopka w kilku wierszach: kropki oddzielające znikają */
+  .site-footer i {
+    display: block;
+    height: 0;
+    overflow: hidden;
+  }
+
+  /* stopka polityki nie chowa się pod strzałką „na górę” */
+  .legal .site-footer {
+    padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
