@@ -5,33 +5,33 @@
  */
 
 :root {
-  /* Kolory marki: noc i espresso z tła logo, kość słoniowa i piasek na jasne sekcje, oszczędne złoto. */
-  --night: #1e130b;
-  --night-2: #2a1a0f;
-  --night-3: #3a2516;
-  --espresso: #3d2616;
+  /* Kolory marki. Tło to czekoladowy brąz z identyfikacji (JW_Tlo, gradient „Czekoladowy brąz”), na nim kremowy
+     tekst. Złoto tylko w logo, cienkich liniach i głównym przycisku. */
+  --choc-1: #452d1c;
+  --choc-2: #3d2616;
+  --choc-3: #2f1e12;
+  --choc-4: #24170d;
   --ivory: #fbf8f2;
-  --sand: #f4ede2;
-  --linen: #ebe1d2;
-  --taupe: #a89684;
+  --cream: #e9dfd1;
+  --taupe: #b5a48f;
   --gold: #b28a4d;
   --gold-mid: #d2ae6a;
   --gold-light: #ead5a8;
   --gold-pale: #f5e5b8;
 
-  /* Tekst. Kontrast na kości słoniowej i piasku: --text 10:1, --mute i --gold-ink powyżej 5:1. */
-  --ink: #2a1a0f;
-  --text: #4a3a2d;
-  --mute: #6f5e4e;
-  --gold-ink: #7c5a28;
-  --on-dark: #e9dfd1;
-  --mute-dark: #b5a48f;
-  --line: rgb(124 90 40 / 20%);
-  --line-dark: rgb(210 174 106 / 22%);
+  /* Tekst na tle (kontrast przy najjaśniejszym miejscu tła, #452d1c): nagłówki 14:1, tekst 11:1, opisy 5,3:1 */
+  --heading: var(--ivory);
+  --text: var(--cream);
+  --mute: var(--taupe);
+  --line: rgb(210 174 106 / 20%);
+  --line-strong: rgb(210 174 106 / 45%);
 
-  /* Tło ciemnych sekcji. Ten sam gradient maluje obrysy piór w animowanym logo (#bgp w logo-anim.svg,
+  /* Panele nad treścią (menu, komunikaty) */
+  --panel: rgb(36 23 13 / 94%);
+
+  /* Tło strony przypięte do okna. Ten sam gradient maluje obrysy piór w animowanym logo (#bgp w logo-anim.svg,
      przeliczany w intro.js), więc przy zmianie trzeba poprawić oba miejsca. */
-  --backdrop: radial-gradient(120% 80% at 50% 28%, var(--night-3) 0%, var(--night-2) 38%, var(--night) 75%);
+  --backdrop: radial-gradient(120% 80% at 50% 28%, var(--choc-1) 0%, var(--choc-2) 50%, var(--choc-3) 100%);
   --gold-gradient: linear-gradient(
     100deg,
     var(--gold) 0%,
@@ -51,18 +51,16 @@
   --fs-small: 0.9375rem;
   --fs-body: 1.0625rem;
   --fs-lead: clamp(1.125rem, 1.03rem + 0.4vw, 1.3125rem);
-  --fs-h4: clamp(1.375rem, 1.2rem + 0.6vw, 1.625rem);
-  --fs-h3: clamp(1.75rem, 1.45rem + 1.1vw, 2.375rem);
-  --fs-h2: clamp(2.5rem, 1.75rem + 3vw, 4.375rem);
+  --fs-h3: clamp(1.625rem, 1.35rem + 1vw, 2.25rem);
+  --fs-h2: clamp(2.25rem, 1.6rem + 2.6vw, 3.75rem);
   --fs-h1: clamp(2.75rem, 1.8rem + 3.8vw, 5rem);
 
   /* Układ */
   --container: 82.5rem;
   --gutter: clamp(1.25rem, 5vw, 4rem);
-  --section: clamp(5.5rem, 4.5rem + 5vw, 11rem);
+  --section: clamp(5rem, 4rem + 5vw, 9.5rem);
   --header-h: 5.5rem;
   --header-h-small: 4.25rem;
-  --radius-arch: 999px 999px 0 0;
 
   /* Ruch: krótko i miękko */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);

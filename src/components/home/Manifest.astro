@@ -15,17 +15,17 @@ const values = [
 ];
 ---
 
-<section id="o-salonie" class="section section--ivory manifest" data-theme="light" aria-labelledby="manifest-title">
-  <div class="container">
-    <div class="manifest__grid">
-      <div>
-        <p class="eyebrow" data-reveal>
-          O salonie
-        </p>
-        <h2 id="manifest-title" class="h2" data-split>
-          Miejsce, w którym <em>możesz zwolnić</em>
-        </h2>
-      </div>
+<section id="o-salonie" class="section" aria-labelledby="manifest-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        O salonie
+      </p>
+    </div>
+    <div>
+      <h2 id="manifest-title" class="h2" data-split>
+        Miejsce, w którym możesz zwolnić
+      </h2>
       <div class="manifest__text prose" data-reveal>
         <p class="lead">
           Azyl Piękna to kameralny salon kosmetologiczny w Lubinie. Każdą wizytę zaczynam od rozmowy, a zabieg i
@@ -37,64 +37,52 @@ const values = [
           czym polega każdy zabieg.
         </p>
       </div>
-    </div>
 
-    <ol class="values" role="list">
-      {values.map((value, i) => (
-        <li class="values__item" data-reveal>
-          <span class="values__num" aria-hidden="true">
-            {['I', 'II', 'III'][i]}
-          </span>
-          <h3 class="h4">{value.title}</h3>
-          <p>{value.text}</p>
-        </li>
-      ))}
-    </ol>
+      <ul class="values" role="list">
+        {values.map((value) => (
+          <li data-reveal>
+            <h3 class="values__title">{value.title}</h3>
+            <p>{value.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </section>
 
 <style>
-  .manifest__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(2rem, 6vw, 7rem);
-    align-items: end;
-  }
-
   .manifest__text {
-    padding-bottom: 0.4rem;
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
   }
 
   .values {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: clamp(1.5rem, 3vw, 3rem);
-    margin-top: clamp(4rem, 8vw, 7rem);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem clamp(1.5rem, 3vw, 2.5rem);
+    margin-top: clamp(3rem, 6vw, 4.5rem);
   }
 
-  .values__item {
-    padding-top: 1.75rem;
-    border-top: 1px solid var(--rule);
+  .values li {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
   }
 
-  .values__num {
-    display: block;
-    margin-bottom: 1.25rem;
-    color: var(--gold-ink);
+  .values__title {
+    color: var(--heading);
     font-family: var(--f-display);
-    font-size: 1.15rem;
-    font-style: italic;
+    font-size: 1.45rem;
+    font-weight: 500;
+    line-height: 1.2;
   }
 
-  .values__item p {
+  .values p {
     margin-top: 0.6rem;
-    color: var(--soft);
+    color: var(--mute);
   }
 
-  @media (width < 60rem) {
-    .manifest__grid,
+  @media (width < 48rem) {
     .values {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

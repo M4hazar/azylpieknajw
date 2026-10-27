@@ -1,18 +1,16 @@
 ---
-import Icon from './Icon.astro';
 import { NEW_TAB } from '../../data/salon';
 
 interface Props {
   href: string;
-  variant?: 'gold' | 'gold-outline' | 'ink' | 'ink-outline';
+  variant?: 'primary' | 'ghost';
   size?: 'normal' | 'small';
-  arrow?: boolean;
   /** odnośnik do innej witryny: otwiera się w nowej karcie */
   external?: boolean;
   class?: string;
 }
 
-const { href, variant = 'gold', size = 'normal', arrow = false, external = false, class: className } = Astro.props;
+const { href, variant = 'primary', size = 'normal', external = false, class: className } = Astro.props;
 ---
 
 <a
@@ -22,6 +20,5 @@ const { href, variant = 'gold', size = 'normal', arrow = false, external = false
   rel={external ? 'noopener' : undefined}
 >
   <slot />
-  {arrow && <Icon name="arrow" class="btn__arrow" />}
-  {external && <span class="visually-hidden">{NEW_TAB}</span>}
+  {external && <span class="visually-hidden"> {NEW_TAB}</span>}
 </a>

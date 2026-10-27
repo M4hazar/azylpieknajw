@@ -7,23 +7,20 @@ import { salon } from '../data/salon';
 <Base
   title="Nie ma takiej strony · Azyl Piękna"
   description="Strona, której szukasz, nie istnieje albo zmieniła adres."
-  theme="dark"
   noindex
   footerCta={false}
 >
-  <section class="not-found" data-theme="dark" aria-labelledby="not-found-title">
+  <section class="not-found" aria-labelledby="not-found-title">
     <div class="container not-found__inner">
       <img src="/img/sygnet-zloty.svg" alt="" width="884" height="878" />
-      <p class="eyebrow eyebrow--center">Błąd 404</p>
+      <p class="label">Błąd 404</p>
       <h1 id="not-found-title" class="h1">
-        Nie ma <em>takiej strony</em>
+        Nie ma takiej strony
       </h1>
       <p class="lead">Ta strona nie istnieje albo zmieniła adres. Wszystko o salonie znajdziesz na stronie głównej.</p>
       <div class="btn-row">
-        <Button href="/" arrow>
-          Strona główna
-        </Button>
-        <Button href={salon.booksy} variant="gold-outline" external>
+        <Button href="/">Strona główna</Button>
+        <Button href={salon.booksy} variant="ghost" external>
           Umów wizytę
         </Button>
       </div>
@@ -49,6 +46,10 @@ import { salon } from '../data/salon';
   .not-found img {
     width: 6.5rem;
     margin-bottom: 2.5rem;
+  }
+
+  .not-found .h1 {
+    margin-top: 1rem;
   }
 
   .not-found .lead {

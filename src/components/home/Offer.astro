@@ -1,258 +1,31 @@
 ---
-// Oferta: lista czterech obszarów. Na komputerze obok listy stoi obraz, który zmienia się przy najechaniu
-// lub fokusie na pozycji; na telefonie każda pozycja ma własny obraz.
 import { categories } from '../../data/oferta';
-import Icon from '../ui/Icon.astro';
-import Visual from '../Visual.astro';
+import CategoryList from '../CategoryList.astro';
 ---
 
-<section id="oferta" class="section section--sand offer" data-theme="light" aria-labelledby="offer-title">
-  <div class="container">
-    <header class="offer__head">
-      <div>
-        <p class="eyebrow" data-reveal>
-          Oferta
-        </p>
-        <h2 id="offer-title" class="h2" data-split>
-          Zabiegi, które <em>dobieram do Ciebie</em>
-        </h2>
-      </div>
+<section id="oferta" class="section" aria-labelledby="offer-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        Oferta
+      </p>
+    </div>
+    <div>
+      <h2 id="offer-title" class="h2" data-split>
+        Zabiegi, które dobieram do Ciebie
+      </h2>
       <p class="offer__intro lead" data-reveal>
         Cztery obszary pielęgnacji, od skóry głowy po dłonie. Wybierz to, co Cię interesuje, a na podstronie
         przeczytasz, jak wygląda każdy zabieg i ile trwa.
       </p>
-    </header>
-
-    <div class="offer__grid" data-offer-index>
-      <div class="offer__media" aria-hidden="true">
-        {categories.map((category, i) => (
-          <div class:list={['offer__slide', { 'is-active': i === 0 }]} data-slide={i}>
-            <Visual
-              art={category.art}
-              photo={category.photo}
-              alt=""
-              shape="portrait"
-              width={520}
-              sizes="(min-width: 60rem) 34vw, 100vw"
-            />
-          </div>
-        ))}
-      </div>
-
-      <ol class="offer__list" role="list">
-        {categories.map((category, i) => (
-          <li class:list={['offer__item', { 'is-active': i === 0 }]} data-item={i} data-reveal>
-            <span class="offer__num" aria-hidden="true">
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <div class="offer__body">
-              <h3 class="offer__title">
-                <a class="offer__link" href={`/${category.slug}/`}>
-                  {category.name}
-                </a>
-              </h3>
-              <p class="offer__teaser">{category.teaser}</p>
-              <ul class="offer__tags" role="list">
-                {category.tags.map((tag) => (
-                  <li>{tag}</li>
-                ))}
-              </ul>
-            </div>
-            <Icon name="arrow" class="offer__arrow" />
-            <Visual
-              class="offer__thumb"
-              art={category.art}
-              photo={category.photo}
-              alt=""
-              shape="landscape"
-              width={640}
-              sizes="100vw"
-            />
-          </li>
-        ))}
-      </ol>
+      <CategoryList categories={categories} detail="teaser" />
     </div>
   </div>
 </section>
 
-<script>
-  // aktywna pozycja oferty: jej obraz pokazuje się obok listy
-  for (const index of document.querySelectorAll<HTMLElement>('[data-offer-index]')) {
-    const items = index.querySelectorAll<HTMLElement>('[data-item]');
-    const slides = index.querySelectorAll<HTMLElement>('[data-slide]');
-    const activate = (n: string) => {
-      items.forEach((item) => item.classList.toggle('is-active', item.dataset.item === n));
-      slides.forEach((slide) => slide.classList.toggle('is-active', slide.dataset.slide === n));
-    };
-    for (const item of items) {
-      item.addEventListener('pointerenter', () => activate(item.dataset.item!));
-      item.addEventListener('focusin', () => activate(item.dataset.item!));
-    }
-  }
-</script>
-
 <style>
-  .offer__head {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(2rem, 6vw, 7rem);
-    align-items: end;
-    margin-bottom: clamp(3rem, 6vw, 5.5rem);
-  }
-
-  .offer__grid {
-    display: grid;
-    grid-template-columns: 5fr 7fr;
-    gap: clamp(2.5rem, 6vw, 7rem);
-    align-items: start;
-  }
-
-  .offer__media {
-    position: sticky;
-    top: calc(var(--header-h-small) + 2rem);
-    display: grid;
-  }
-
-  .offer__slide {
-    grid-area: 1 / 1;
-    opacity: 0;
-    transition: opacity 0.7s var(--ease-out);
-  }
-
-  .offer__slide :global(img) {
-    transform: scale(1.06);
-    transition: transform 1.4s var(--ease-out);
-  }
-
-  .offer__slide.is-active {
-    opacity: 1;
-  }
-
-  .offer__slide.is-active :global(img) {
-    transform: none;
-  }
-
-  .offer__list {
-    border-top: 1px solid var(--rule);
-  }
-
-  .offer__item {
-    position: relative;
-    display: grid;
-    grid-template-columns: 3.5rem 1fr auto;
-    gap: 0 1.5rem;
-    padding-block: clamp(1.75rem, 3vw, 2.5rem);
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .offer__num {
-    padding-top: 0.55rem;
-    color: var(--gold-ink);
-    font-family: var(--f-display);
-    font-size: 1.2rem;
-    font-style: italic;
-  }
-
-  .offer__title {
-    color: var(--ink);
-    font-family: var(--f-display);
-    font-size: var(--fs-h3);
-    font-weight: 400;
-    line-height: 1.1;
-  }
-
-  .offer__link {
-    text-decoration: none;
-    transition: color var(--t-base);
-  }
-
-  /* cała pozycja jest klikalna, a czytnik ekranu czyta tylko nazwę */
-  .offer__link::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-  }
-
-  .offer__teaser {
-    max-width: 34rem;
-    margin-top: 0.75rem;
-    color: var(--text);
-  }
-
-  .offer__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1.1rem;
-  }
-
-  .offer__tags li {
-    padding: 0.3rem 0.75rem;
-    border: 1px solid var(--rule);
-    color: var(--mute);
-    font-size: 0.8rem;
-    line-height: 1.4;
-  }
-
-  .offer__item :global(.offer__arrow) {
-    width: 1.5rem;
-    margin-top: 0.9rem;
-    color: var(--gold-ink);
-    opacity: 0.45;
-    transition:
-      transform var(--t-base) var(--ease-out),
-      opacity var(--t-base);
-  }
-
-  .offer__item.is-active :global(.offer__arrow),
-  .offer__item:focus-within :global(.offer__arrow) {
-    opacity: 1;
-    transform: translateX(6px);
-  }
-
-  .offer__item.is-active .offer__link {
-    color: var(--gold-ink);
-  }
-
-  .offer__item :global(.offer__thumb) {
-    display: none;
-  }
-
-  @media (width < 60rem) {
-    .offer__head,
-    .offer__grid {
-      grid-template-columns: 1fr;
-    }
-
-    .offer__media {
-      display: none;
-    }
-
-    .offer__list {
-      display: grid;
-      gap: 2.75rem;
-      border: 0;
-    }
-
-    .offer__item {
-      grid-template-columns: 1fr auto;
-      padding: 0;
-      border: 0;
-    }
-
-    .offer__item :global(.offer__thumb) {
-      display: block;
-      grid-row: 1;
-      grid-column: 1 / -1;
-      margin-bottom: 1.4rem;
-    }
-
-    .offer__num {
-      display: none;
-    }
-
-    .offer__item.is-active .offer__link {
-      color: var(--ink);
-    }
+  .offer__intro {
+    max-width: 40rem;
+    margin-block: clamp(1.5rem, 3vw, 2.25rem) clamp(2.5rem, 5vw, 3.5rem);
   }
 </style>

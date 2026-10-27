@@ -3,90 +3,37 @@
 import { headSpaRitual } from '../../data/oferta';
 ---
 
-<section class="section ritual-section" data-theme="dark" aria-labelledby="ritual-title">
-  <div class="container">
-    <header class="ritual-section__head">
-      <div>
-        <p class="eyebrow" data-reveal>
-          Rytuał krok po kroku
-        </p>
-        <h2 id="ritual-title" class="h2" data-split>
-          Jak przebiega <em>Head Spa</em>
-        </h2>
-      </div>
-      <p class="lead" data-reveal>
+<section class="section" aria-labelledby="ritual-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        Rytuał krok po kroku
+      </p>
+    </div>
+    <div>
+      <h2 id="ritual-title" class="h2" data-split>
+        Jak przebiega Head Spa
+      </h2>
+      <p class="lead ritual__lead" data-reveal>
         Każdy rytuał zaczyna się od rozmowy i kończy badaniem kamerą trychologiczną. To, co dzieje się pomiędzy, zależy
         od wybranej wersji: Head and Face Spa dodaje masaż twarzy, ramion, dekoltu i karku, a wersja Premium jeszcze
         jeden rytuał do wyboru.
       </p>
-    </header>
-
-    <ol class="ritual-grid" role="list">
-      {headSpaRitual.map((step, i) => (
-        <li data-reveal>
-          <span class="ritual-grid__num" aria-hidden="true">
-            {String(i + 1).padStart(2, '0')}
-          </span>
-          <h3 class="h4">{step.name}</h3>
-          <p>{step.text}</p>
-        </li>
-      ))}
-    </ol>
+      <ol class="steps" role="list">
+        {headSpaRitual.map((step) => (
+          <li data-reveal>
+            <h3>{step.name}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
   </div>
 </section>
 
 <style>
-  .ritual-section {
-    background: radial-gradient(50% 60% at 85% 20%, rgb(210 174 106 / 8%), transparent 70%), var(--night-2);
-  }
-
-  .ritual-section__head {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(2rem, 6vw, 7rem);
-    align-items: end;
-  }
-
-  .ritual-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: clamp(2.5rem, 4vw, 3.5rem) clamp(1.5rem, 3vw, 3rem);
-    margin-top: clamp(3.5rem, 7vw, 6rem);
-  }
-
-  .ritual-grid li {
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--line-dark);
-  }
-
-  .ritual-grid__num {
-    display: block;
-    margin-bottom: 1rem;
-    color: var(--gold-mid);
-    font-family: var(--f-display);
-    font-size: 2.75rem;
-    font-weight: 300;
-    line-height: 1;
-  }
-
-  .ritual-grid p {
-    margin-top: 0.5rem;
-    color: var(--mute-dark);
-  }
-
-  @media (width < 60rem) {
-    .ritual-section__head {
-      grid-template-columns: 1fr;
-    }
-
-    .ritual-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  @media (width < 36rem) {
-    .ritual-grid {
-      grid-template-columns: 1fr;
-    }
+  .ritual__lead {
+    max-width: 40rem;
+    margin-block: clamp(1.5rem, 3vw, 2.25rem) clamp(2rem, 4vw, 3rem);
   }
 </style>

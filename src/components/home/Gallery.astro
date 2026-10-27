@@ -11,16 +11,16 @@ const items = await Promise.all(
 ---
 
 {items.length > 0 && (
-  <section id="galeria" class="section section--ivory gallery" data-theme="light" aria-labelledby="gallery-title">
+  <section id="galeria" class="section" aria-labelledby="gallery-title">
     <div class="container">
-      <header class="gallery__head">
-        <p class="eyebrow" data-reveal>
+      <div class="split gallery__head">
+        <p class="label" data-reveal>
           Galeria
         </p>
         <h2 id="gallery-title" class="h2" data-split>
-          Zajrzyj <em>do salonu</em>
+          Zajrzyj do salonu
         </h2>
-      </header>
+      </div>
       <ul class="gallery__grid" role="list" data-lightbox-group>
         {items.map((item, i) => (
           <li data-reveal>
@@ -83,7 +83,7 @@ const items = await Promise.all(
   .gallery__item {
     display: block;
     overflow: hidden;
-    background: var(--linen);
+    background: var(--choc-3);
     cursor: zoom-in;
   }
 
@@ -104,8 +104,8 @@ const items = await Promise.all(
     margin: 0;
     padding: 0;
     border: 0;
-    background: rgb(20 12 7 / 96%);
-    color: var(--on-dark);
+    background: rgb(36 23 13 / 97%);
+    color: var(--text);
   }
 
   .lightbox[open] {
@@ -132,7 +132,7 @@ const items = await Promise.all(
 
   .lightbox__caption,
   .lightbox__count {
-    color: var(--mute-dark);
+    color: var(--mute);
     font-size: var(--fs-small);
   }
 
@@ -150,8 +150,8 @@ const items = await Promise.all(
     place-items: center;
     width: 3rem;
     height: 3rem;
-    border: 1px solid rgb(210 174 106 / 45%);
-    background: rgb(30 19 11 / 60%);
+    border: 1px solid var(--line-strong);
+    background: rgb(47 30 18 / 70%);
     color: var(--gold-light);
     cursor: pointer;
     transition:
@@ -161,7 +161,7 @@ const items = await Promise.all(
 
   .lightbox__btn:hover {
     background: var(--gold-light);
-    color: var(--night);
+    color: var(--choc-4);
   }
 
   .lightbox__close {

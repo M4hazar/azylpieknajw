@@ -3,45 +3,42 @@
 // i zaproszenie na Instagram.
 import { salon } from '../../data/salon';
 import Button from '../ui/Button.astro';
-import Icon from '../ui/Icon.astro';
-
-const stars = Array.from({ length: 5 });
 ---
 
-<section id="opinie" class="section section--ivory reviews" data-theme="light" aria-labelledby="reviews-title">
-  <div class="container reviews__grid">
-    <div class="reviews__rating" data-reveal>
-      <p class="eyebrow">Opinie z Booksy</p>
-      <h2 id="reviews-title" class="visually-hidden">
-        Opinie w Booksy
-      </h2>
-      <p class="rating">
-        <span class="rating__value">{salon.reviews.average}</span>
-        <span class="rating__scale">/ 5</span>
+<section id="opinie" class="section" aria-labelledby="reviews-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        Opinie
       </p>
-      <p class="rating__stars" aria-hidden="true">
-        {stars.map(() => (
-          <span>★</span>
-        ))}
-      </p>
-      <p class="reviews__text">
-        Średnia ocen z {salon.reviews.count} opinii wystawionych w Booksy po wizytach w salonie.
-      </p>
-      <p class="small">Stan na {salon.reviews.asOf}.</p>
-      <Button href={salon.booksy} variant="ink-outline" external arrow>
-        Przeczytaj opinie na Booksy
-      </Button>
     </div>
+    <div>
+      <h2 id="reviews-title" class="h2" data-split>
+        Opinie po wizytach w salonie
+      </h2>
 
-    <div class="reviews__instagram" data-reveal>
-      <Icon name="instagram" class="reviews__icon" />
-      <p class="h3">
-        Zajrzyj do salonu <em>na Instagramie</em>
-      </p>
-      <p class="reviews__text">Zdjęcia z salonu i z codziennej pracy publikuję na profilu {salon.instagram.label}.</p>
-      <Button href={salon.instagram.href} variant="ink-outline" external arrow>
-        Zobacz Instagram
-      </Button>
+      <div class="reviews__grid">
+        <div class="reviews__item" data-reveal>
+          <p class="rating">
+            {salon.reviews.average}
+            <span class="rating__scale">/ 5</span>
+          </p>
+          <p class="reviews__text">
+            {`Średnia ocen z ${salon.reviews.count} opinii wystawionych w Booksy. Stan na ${salon.reviews.asOf}.`}
+          </p>
+          <Button href={salon.booksy} variant="ghost" external>
+            Przeczytaj opinie w Booksy
+          </Button>
+        </div>
+
+        <div class="reviews__item" data-reveal>
+          <p class="reviews__handle">{salon.instagram.label}</p>
+          <p class="reviews__text">Zdjęcia z salonu i z codziennej pracy publikuję na Instagramie.</p>
+          <Button href={salon.instagram.href} variant="ghost" external>
+            Zobacz Instagram
+          </Button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -49,88 +46,56 @@ const stars = Array.from({ length: 5 });
 <style>
   .reviews__grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(1.5rem, 3vw, 2.5rem);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem clamp(1.5rem, 4vw, 3.5rem);
+    margin-top: clamp(2rem, 4vw, 3rem);
   }
 
-  .reviews__rating,
-  .reviews__instagram {
+  .reviews__item {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: clamp(2rem, 4vw, 3.5rem);
-    border: 1px solid var(--rule);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
   }
 
-  .reviews__rating {
-    background: var(--sand);
+  .rating,
+  .reviews__handle {
+    color: var(--heading);
+    font-family: var(--f-display);
+    font-weight: 300;
+    line-height: 1;
   }
 
   .rating {
-    display: flex;
-    gap: 0.75rem;
-    align-items: baseline;
-    color: var(--ink);
-    font-family: var(--f-display);
-    line-height: 0.9;
-  }
-
-  .rating__value {
-    font-size: clamp(4.5rem, 3rem + 6vw, 7.5rem);
-    font-weight: 300;
+    font-size: clamp(4rem, 3rem + 4vw, 6rem);
   }
 
   .rating__scale {
+    margin-left: 0.2em;
     color: var(--mute);
-    font-size: 1.75rem;
+    font-size: 0.3em;
+    font-weight: 400;
   }
 
-  .rating__stars {
-    display: flex;
-    gap: 0.3rem;
-    margin-top: 0.75rem;
-    color: var(--gold);
-    font-size: 1.1rem;
-    letter-spacing: 0.1em;
+  .reviews__handle {
+    padding-block: clamp(1.4rem, 1rem + 1.5vw, 2.3rem) 0.4rem;
+    font-size: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
   }
 
   .reviews__text {
-    max-width: 26rem;
-    margin-top: 1.25rem;
-    color: var(--text);
+    max-width: 24rem;
+    margin-block: 1rem 2rem;
+    color: var(--mute);
   }
 
-  .reviews__rating .small {
-    margin-top: 0.35rem;
-  }
-
-  .reviews__rating :global(.btn),
-  .reviews__instagram :global(.btn) {
+  .reviews__item :global(.btn) {
     margin-top: auto;
   }
 
-  .reviews__rating .small + :global(.btn) {
-    margin-top: 2rem;
-  }
-
-  .reviews__instagram {
-    justify-content: flex-start;
-  }
-
-  .reviews__instagram .reviews__text {
-    margin-bottom: 2rem;
-  }
-
-  .reviews :global(.reviews__icon) {
-    width: 2rem;
-    height: 2rem;
-    margin-bottom: 1.75rem;
-    color: var(--gold-ink);
-  }
-
-  @media (width < 60rem) {
+  @media (width < 48rem) {
     .reviews__grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

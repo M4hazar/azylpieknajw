@@ -19,116 +19,46 @@ const steps = [
 ];
 ---
 
-<section class="section section--sand visit" data-theme="light" aria-labelledby="visit-title">
-  <div class="container">
-    <header class="visit__head">
-      <p class="eyebrow eyebrow--center" data-reveal>
+<section class="section" aria-labelledby="visit-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
         Pierwsza wizyta
       </p>
+    </div>
+    <div>
       <h2 id="visit-title" class="h2" data-split>
-        Jak wygląda <em>pierwsza wizyta</em>
+        Jak wygląda pierwsza wizyta
       </h2>
       <p class="lead visit__lead" data-reveal>
         Nie musisz wiedzieć, jaki zabieg wybrać. Od tego jest rozmowa na początku wizyty.
       </p>
-    </header>
 
-    <ol class="steps" role="list">
-      {steps.map((step, i) => (
-        <li class="steps__item" data-reveal>
-          <span class="steps__num" aria-hidden="true">
-            {String(i + 1).padStart(2, '0')}
-          </span>
-          <h3 class="h4">{step.name}</h3>
-          <p>{step.text}</p>
-        </li>
-      ))}
-    </ol>
+      <ol class="steps" role="list">
+        {steps.map((step) => (
+          <li data-reveal>
+            <h3>{step.name}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
 
-    <p class="visit__note small" data-reveal>
-      Przebieg zależy od zabiegu: przed manicure rozmowa zajmuje chwilę, a podczas konsultacji trychologicznej jest jej
-      najważniejszą częścią.
-    </p>
+      <p class="visit__note small" data-reveal>
+        Przebieg zależy od zabiegu: przed manicure rozmowa zajmuje chwilę, a podczas konsultacji trychologicznej jest
+        jej najważniejszą częścią.
+      </p>
+    </div>
   </div>
 </section>
 
 <style>
-  .visit__head {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 46rem;
-    margin-inline: auto;
-    text-align: center;
-  }
-
   .visit__lead {
-    margin-top: 1.5rem;
-  }
-
-  .steps {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem clamp(1.5rem, 3vw, 3rem);
-    margin-top: clamp(3.5rem, 7vw, 6rem);
-  }
-
-  /* linia łącząca kroki */
-  .steps::before {
-    content: '';
-    position: absolute;
-    top: 1.6rem;
-    right: 0;
-    left: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold) 12%, var(--gold) 88%, transparent);
-    opacity: 0.45;
-  }
-
-  .steps__item {
-    position: relative;
-  }
-
-  .steps__num {
-    display: grid;
-    place-items: center;
-    width: 3.2rem;
-    height: 3.2rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid rgb(178 138 77 / 55%);
-    border-radius: 50%;
-    background: var(--sand);
-    color: var(--gold-ink);
-    font-family: var(--f-display);
-    font-size: 1.1rem;
-    font-style: italic;
-  }
-
-  .steps__item p {
-    margin-top: 0.6rem;
-    color: var(--soft);
+    max-width: 40rem;
+    margin-block: clamp(1.5rem, 3vw, 2.25rem) clamp(2rem, 4vw, 3rem);
   }
 
   .visit__note {
     max-width: 40rem;
-    margin: clamp(3rem, 5vw, 4rem) auto 0;
-    text-align: center;
-  }
-
-  @media (width < 60rem) {
-    .steps {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .steps::before {
-      display: none;
-    }
-  }
-
-  @media (width < 36rem) {
-    .steps {
-      grid-template-columns: 1fr;
-    }
+    margin-top: 1.75rem;
   }
 </style>

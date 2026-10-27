@@ -1,5 +1,4 @@
 // Nagłówek strony (src/components/Header.astro):
-//   - motyw (jasny lub ciemny) według sekcji, która jest akurat pod nagłówkiem,
 //   - mniejszy pasek z tłem po przewinięciu, chowanie przy przewijaniu w dół,
 //   - logo na stronie głównej dopiero wtedy, gdy duży sygnet zniknie z ekranu,
 //   - rozwijana oferta na komputerze i menu na telefonie (<dialog>).
@@ -8,39 +7,10 @@ export function initHeader() {
   const header = document.querySelector<HTMLElement>('[data-header]');
   if (!header) return;
 
-  watchTheme(header);
   watchScroll(header);
   watchBrand(header);
   initOfferMenu(header);
   initMobileMenu();
-}
-
-/* Motyw: obserwowana jest linia na wysokości środka nagłówka; sekcja, która ją przecina, ustala motyw. */
-function watchTheme(header: HTMLElement) {
-  const sections = document.querySelectorAll<HTMLElement>('main > [data-theme], .site-footer');
-  let observer: IntersectionObserver | undefined;
-
-  const observe = () => {
-    observer?.disconnect();
-    const line = Math.round(header.offsetHeight / 2);
-    observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          const theme = (entry.target as HTMLElement).dataset.theme;
-          if (entry.isIntersecting && theme) header.dataset.theme = theme;
-        }
-      },
-      { rootMargin: `-${line}px 0px -${Math.max(0, innerHeight - line - 1)}px 0px` },
-    );
-    sections.forEach((section) => observer!.observe(section));
-  };
-
-  observe();
-  let resizeTimer = 0;
-  addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = window.setTimeout(observe, 200);
-  });
 }
 
 function watchScroll(header: HTMLElement) {

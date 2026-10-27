@@ -1,21 +1,17 @@
 ---
-// Obraz w ramce o stałych proporcjach. Pokazuje zdjęcie z src/assets/zdjecia, jeśli istnieje, a w przeciwnym razie
-// dekoracyjną grafikę marki (pusty alt). Obraz jest przycinany już przy budowaniu, więc telefon nie pobiera
+// Zdjęcie z salonu w ramce w proporcjach portretu (4:5). Jeśli pliku nie ma w src/assets/zdjecia, nic się nie wyświetla:
+// strona nie pokazuje zdjęć zastępczych. Obraz jest przycinany już przy budowaniu, więc telefon nie pobiera
 // szerokiego pliku, z którego widać tylko wąski pas.
 import { Picture } from 'astro:assets';
-import { artImage, photo as findPhoto } from '../data/obrazy';
+import { photo as findPhoto } from '../data/obrazy';
 
-const RATIOS = { portrait: 4 / 5, tall: 3 / 4, landscape: 3 / 2, square: 1, wide: 16 / 9 } as const;
+const RATIO = 4 / 5;
 
 interface Props {
-  /** grafika zastępcza z src/assets/grafiki */
-  art: string;
-  /** zdjęcie z src/assets/zdjecia, jeśli jest */
-  photo?: string;
-  /** opis zdjęcia; wymagany, gdy zdjęcie istnieje (pusty, gdy obok jest podpis, np. w karcie z nazwą) */
-  alt?: string;
-  shape?: keyof typeof RATIOS;
-  arch?: boolean;
+  /** nazwa pliku w src/assets/zdjecia, bez rozszerzenia */
+  photo: string;
+  /** opis zdjęcia */
+  alt: string;
   /** największa szerokość obrazu na ekranie (px CSS) */
   width: number;
   sizes: string;
@@ -28,46 +24,26 @@ interface Props {
   class?: string;
 }
 
-const {
-  art,
-  photo,
-  alt,
-  shape = 'portrait',
-  arch = false,
-  width,
-  sizes,
-  priority = false,
-  position,
-  parallax = false,
-  class: className,
-} = Astro.props;
+const { photo, alt, width, sizes, priority = false, position, parallax = false, class: className } = Astro.props;
 
-const real = photo ? findPhoto(photo) : undefined;
-if (real && alt === undefined) throw new Error(`Zdjęcie „${photo}” potrzebuje opisu (alt)`);
-// grafika zastępcza jest tylko dekoracją
-const altText = real ? (alt ?? '') : '';
-
-const src = real ?? artImage(art);
-const ratio = RATIOS[shape];
+const src = findPhoto(photo);
 // dwukrotność szerokości dla ekranów o dużej gęstości, ale nie więcej, niż pozwala plik źródłowy
-const w = Math.round(Math.min(width * 2, src.width, src.height * ratio));
-const h = Math.round(w / ratio);
+const w = src && Math.round(Math.min(width * 2, src.width, src.height * RATIO));
 ---
 
-<div
-  class:list={['frame', `frame--${shape}`, { 'frame--arch': arch }, className]}
-  data-parallax={parallax || undefined}
->
-  <Picture
-    src={src}
-    alt={altText}
-    width={w}
-    height={h}
-    fit="cover"
-    position={position}
-    formats={['avif', 'webp']}
-    sizes={sizes}
-    loading={priority ? 'eager' : 'lazy'}
-    fetchpriority={priority ? 'high' : 'auto'}
-  />
-</div>
+{src && w && (
+  <div class:list={['frame', className]} data-parallax={parallax || undefined}>
+    <Picture
+      src={src}
+      alt={alt}
+      width={w}
+      height={Math.round(w / RATIO)}
+      fit="cover"
+      position={position}
+      formats={['avif', 'webp']}
+      sizes={sizes}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+    />
+  </div>
+)}

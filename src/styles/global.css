@@ -1,7 +1,7 @@
 /*
  * Azyl Piękna · style wspólne
- * Podstawy, typografia, siatka, przyciski, odnośniki, stany animacji i przejścia między podstronami.
- * Style pojedynczych sekcji są w ich komponentach (\3c style> w plikach .astro).
+ * Podstawy, tło z fakturą, typografia, układ sekcji, listy, przyciski, odnośniki, stany animacji i przejścia
+ * między podstronami. Style pojedynczych sekcji są w ich komponentach (\3c style> w plikach .astro).
  * Autor: Paweł Hejna, https://github.com/m4hazar
  */
 
@@ -15,8 +15,8 @@
 }
 
 html {
-  /* noc pod całą stroną: widać ją przy przeciąganiu poza krawędź i pod przezroczystymi sekcjami */
-  background: var(--night);
+  /* brąz pod całą stroną: widać go przy przeciąganiu poza krawędź */
+  background: var(--choc-3);
   color: var(--text);
   font-family: var(--f-body);
   font-size: 100%;
@@ -34,12 +34,30 @@ body {
   font-size: var(--fs-body);
 }
 
-/* tło ciemnych sekcji przypięte do okna (patrz --backdrop w tokens.css) */
+/* Tło całej strony jest jedno i stoi w miejscu: czekoladowy gradient pod treścią (.backdrop), a nad nim faktura
+   papieru z identyfikacji marki. Faktura leży nad treścią, bo przykrywa też animowane logo: obrysy piór są malowane
+   samym gradientem i pod fakturą nie odróżniają się od tła (src/scripts/intro/intro.js). Okna otwierane nad
+   stroną (menu na telefonie) dostają fakturę klasą .grain. */
 .backdrop {
   position: fixed;
   inset: 0;
   z-index: -1;
   background: var(--backdrop);
+}
+
+body::after,
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: url('../assets/marka/faktura.webp') 0 0 / 280px 280px;
+  background-image: image-set(
+    url('../assets/marka/faktura.avif') type('image/avif'),
+    url('../assets/marka/faktura.webp') type('image/webp')
+  );
+  opacity: 0.85;
 }
 
 img,
@@ -88,35 +106,11 @@ button {
 
 ::selection {
   background: var(--gold-light);
-  color: var(--ink);
-}
-
-/* Sekcje deklarują swój motyw: od niego zależą kolory tekstu, obramowań i fokusu, a także wygląd nagłówka strony
-   nad sekcją (src/scripts/header.ts). */
-[data-theme='light'] {
-  --focus: var(--gold-ink);
-  --accent: var(--gold-ink);
-  --heading: var(--ink);
-  --body: var(--text);
-  --soft: var(--mute);
-  --rule: var(--line);
-
-  color: var(--body);
-}
-
-[data-theme='dark'] {
-  --focus: var(--gold-mid);
-  --accent: var(--gold-mid);
-  --heading: var(--ivory);
-  --body: var(--on-dark);
-  --soft: var(--mute-dark);
-  --rule: var(--line-dark);
-
-  color: var(--body);
+  color: var(--choc-4);
 }
 
 :focus-visible {
-  outline: 2px solid var(--focus, var(--gold-mid));
+  outline: 2px solid var(--gold-mid);
   outline-offset: 3px;
 }
 
@@ -136,7 +130,7 @@ button {
   left: 0.75rem;
   padding: 0.85rem 1.25rem;
   background: var(--gold-light);
-  color: var(--night);
+  color: var(--choc-4);
   font-family: var(--f-label);
   font-size: var(--fs-label);
   letter-spacing: 0.2em;
@@ -150,8 +144,10 @@ button {
   transform: none;
 }
 
-/* 2. Siatka i sekcje
-   ========================================================================== */
+/* 2. Układ
+   ==========================================================================
+   Każda sekcja ma ten sam układ: cienka linia u góry, pod nią po lewej etykieta sekcji (i zdjęcie, jeśli jest),
+   po prawej nagłówek i treść. Na komputerze lewa kolumna stoi w miejscu, kiedy przewijasz treść obok. */
 
 .container {
   width: 100%;
@@ -162,65 +158,53 @@ button {
 
 .section {
   position: relative;
-  padding-block: var(--section);
+  padding-top: var(--section);
 }
 
-.section--ivory {
-  background: var(--ivory);
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 1.75rem clamp(2rem, 6vw, 7rem);
+  padding-top: clamp(1.5rem, 2.5vw, 2.25rem);
+  border-top: 1px solid var(--line);
 }
 
-.section--sand {
-  background: var(--sand);
+.split__aside {
+  display: grid;
+  gap: 2rem;
+  align-content: start;
 }
 
-.section--night {
-  background: var(--night-2);
+@media (width >= 60rem) {
+  .split__aside {
+    position: sticky;
+    top: calc(var(--header-h-small) + 1.5rem);
+    align-self: start;
+  }
+}
+
+@media (width < 60rem) {
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 /* 3. Typografia
    ========================================================================== */
 
-/* etykieta nad nagłówkiem: drobne wersaliki z krótką złotą linią */
-.eyebrow {
-  display: flex;
-  gap: 0.9rem;
-  align-items: center;
-  margin-bottom: 1.4rem;
-  color: var(--accent);
+/* etykieta sekcji i drobne podpisy: wersaliki w kroju Tenor Sans */
+.label {
+  color: var(--mute);
   font-family: var(--f-label);
   font-size: var(--fs-label);
   line-height: 1.5;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  text-wrap: balance;
-}
-
-.eyebrow::before {
-  content: '';
-  flex: none;
-  width: 2.25rem;
-  height: 1px;
-  background: currentcolor;
-  opacity: 0.7;
-}
-
-.eyebrow--center {
-  justify-content: center;
-}
-
-.eyebrow--center::after {
-  content: '';
-  flex: none;
-  width: 2.25rem;
-  height: 1px;
-  background: currentcolor;
-  opacity: 0.7;
 }
 
 .h1,
 .h2,
-.h3,
-.h4 {
+.h3 {
   color: var(--heading);
   font-family: var(--f-display);
   font-weight: 400;
@@ -235,8 +219,8 @@ button {
 
 .h2 {
   font-size: var(--fs-h2);
-  line-height: 1.04;
-  letter-spacing: -0.01em;
+  line-height: 1.06;
+  letter-spacing: -0.005em;
 }
 
 .h3 {
@@ -244,28 +228,15 @@ button {
   line-height: 1.12;
 }
 
-.h4 {
-  font-size: var(--fs-h4);
-  font-weight: 500;
-  line-height: 1.2;
-}
-
-.h1 em,
-.h2 em,
-.h3 em {
-  color: var(--accent);
-  font-style: italic;
-}
-
 .lead {
-  color: var(--body);
+  color: var(--text);
   font-size: var(--fs-lead);
   line-height: 1.65;
   text-wrap: pretty;
 }
 
 .prose {
-  max-width: 38rem;
+  max-width: 40rem;
   text-wrap: pretty;
 }
 
@@ -274,14 +245,14 @@ button {
 }
 
 .small {
-  color: var(--soft);
+  color: var(--mute);
   font-size: var(--fs-small);
   line-height: 1.6;
 }
 
 /* czas trwania zabiegu */
 .duration {
-  color: var(--soft);
+  color: var(--mute);
   font-family: var(--f-label);
   font-size: 0.75rem;
   letter-spacing: 0.14em;
@@ -295,23 +266,110 @@ button {
   height: 1.25rem;
 }
 
-/* 4. Przyciski i odnośniki
-   ==========================================================================
-   Pełny przycisk po najechaniu zostaje sam obrys, przycisk z obrysem wypełnia się kolorem.
-   Złote warianty są na ciemne tło, ciemne na jasne. */
+/* 4. Listy
+   ========================================================================== */
+
+/* wiersze rozdzielone cienką linią */
+.rows {
+  border-top: 1px solid var(--line);
+}
+
+.rows > * {
+  padding-block: 1.1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+/* nazwa po lewej, czas trwania lub wartość po prawej */
+.rows--pairs > * {
+  display: flex;
+  gap: 0.5rem 1.5rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-block: 0.85rem;
+}
+
+/* wiersze z numerem: kolejne punkty listy */
+.rows--numbered {
+  counter-reset: row;
+}
+
+.rows--numbered > * {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: 0 1.5rem;
+  counter-increment: row;
+}
+
+.rows--numbered > *::before,
+.steps > li::before {
+  color: var(--mute);
+  font-family: var(--f-label);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+.rows--numbered > *::before {
+  content: counter(row);
+  padding-top: 0.2rem;
+}
+
+/* kolejne kroki: numer, nazwa, opis */
+.steps {
+  border-top: 1px solid var(--line);
+  counter-reset: step;
+}
+
+.steps > li {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 2fr) minmax(0, 3fr);
+  gap: 0.35rem 1.5rem;
+  padding-block: 1.4rem;
+  border-bottom: 1px solid var(--line);
+  counter-increment: step;
+}
+
+.steps > li::before {
+  content: counter(step);
+  padding-top: 0.45rem;
+}
+
+.steps h3 {
+  color: var(--heading);
+  font-family: var(--f-display);
+  font-size: 1.45rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.steps p {
+  padding-top: 0.2rem;
+  color: var(--mute);
+}
+
+@media (width < 48rem) {
+  .steps > li {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+  }
+
+  .steps p {
+    grid-column: 2;
+  }
+}
+
+/* 5. Przyciski i odnośniki
+   ========================================================================== */
 
 .btn {
   display: inline-flex;
-  gap: 0.9rem;
   align-items: center;
   justify-content: center;
-  min-height: 3.375rem;
-  padding: 0.9rem 1.75rem;
+  min-height: 3.25rem;
+  padding: 0.85rem 1.6rem;
   border: 1px solid var(--btn-border, var(--btn-bg));
   background: var(--btn-bg);
   color: var(--btn-fg);
   font-family: var(--f-label);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   line-height: 1.3;
   letter-spacing: 0.2em;
   text-align: center;
@@ -324,79 +382,43 @@ button {
     color var(--t-base) var(--ease-out);
 }
 
-.btn--gold {
+/* główny: złoty, jeden na sekcję */
+.btn--primary {
   --btn-bg: var(--gold-light);
-  --btn-fg: var(--night);
+  --btn-fg: var(--choc-4);
 }
 
-.btn--gold-outline {
+/* drugorzędny: sam obrys */
+.btn--ghost {
   --btn-bg: transparent;
-  --btn-fg: var(--gold-light);
-  --btn-border: rgb(210 174 106 / 50%);
-}
-
-.btn--ink {
-  --btn-bg: var(--ink);
-  --btn-fg: var(--ivory);
-}
-
-.btn--ink-outline {
-  --btn-bg: transparent;
-  --btn-fg: var(--ink);
-  --btn-border: rgb(42 26 15 / 35%);
+  --btn-fg: var(--heading);
+  --btn-border: var(--line-strong);
 }
 
 @media (hover: hover) {
-  .btn--gold:hover {
-    --btn-bg: transparent;
+  .btn--primary:hover {
+    --btn-bg: var(--gold-pale);
+  }
+
+  .btn--ghost:hover {
     --btn-fg: var(--gold-light);
     --btn-border: var(--gold-light);
   }
-
-  .btn--gold-outline:hover {
-    --btn-bg: var(--gold-light);
-    --btn-fg: var(--night);
-    --btn-border: var(--gold-light);
-  }
-
-  .btn--ink:hover {
-    --btn-bg: transparent;
-    --btn-fg: var(--ink);
-    --btn-border: var(--ink);
-  }
-
-  .btn--ink-outline:hover {
-    --btn-bg: var(--ink);
-    --btn-fg: var(--ivory);
-    --btn-border: var(--ink);
-  }
 }
 
-.btn--gold-outline:active {
-  --btn-bg: var(--gold-light);
-  --btn-fg: var(--night);
+.btn--primary:active {
+  --btn-bg: var(--gold-pale);
 }
 
-.btn--ink-outline:active {
-  --btn-bg: var(--ink);
-  --btn-fg: var(--ivory);
+.btn--ghost:active {
+  --btn-fg: var(--gold-light);
+  --btn-border: var(--gold-light);
 }
 
 .btn--small {
   min-height: 2.75rem;
   padding: 0.6rem 1.25rem;
   font-size: 0.7rem;
-}
-
-.btn__arrow {
-  flex: none;
-  width: 1.25rem;
-  height: 0.6rem;
-  transition: transform var(--t-base) var(--ease-out);
-}
-
-.btn:hover .btn__arrow {
-  transform: translateX(4px);
 }
 
 .btn-row {
@@ -409,68 +431,56 @@ button {
 /* odnośnik tekstowy: cienka linia, która po najechaniu rysuje się od nowa */
 .link {
   display: inline-flex;
-  gap: 0.65rem;
   align-items: center;
-  padding-block: 0.35rem;
-  background: linear-gradient(currentcolor, currentcolor) 0 100% / 100% 1px no-repeat;
+  min-height: 2.75rem;
+  background: linear-gradient(currentcolor, currentcolor) 0 calc(100% - 0.55rem) / 100% 1px no-repeat;
   color: var(--heading);
   font-family: var(--f-label);
   font-size: 0.75rem;
   letter-spacing: 0.2em;
   text-decoration: none;
   text-transform: uppercase;
-  transition: background-size var(--t-base) var(--ease-out);
+  transition: color var(--t-base);
 }
 
 @media (hover: hover) {
   .link:hover {
+    color: var(--gold-light);
     animation: link-redraw 0.7s var(--ease-out);
   }
 }
 
-.link .btn__arrow {
-  width: 1rem;
-}
-
 @keyframes link-redraw {
   0% {
-    background-position: 100% 100%;
+    background-position: 100% calc(100% - 0.55rem);
     background-size: 100% 1px;
   }
 
   45% {
-    background-position: 100% 100%;
+    background-position: 100% calc(100% - 0.55rem);
     background-size: 0 1px;
   }
 
   46% {
-    background-position: 0 100%;
+    background-position: 0 calc(100% - 0.55rem);
     background-size: 0 1px;
   }
 
   100% {
-    background-position: 0 100%;
+    background-position: 0 calc(100% - 0.55rem);
     background-size: 100% 1px;
   }
 }
 
-/* 5. Obrazy
+/* 6. Zdjęcia
    ========================================================================== */
 
-/* ramka obrazu: proporcje z --ratio, obraz wypełnia ją w całości */
+/* ramka zdjęcia w proporcjach portretu (4:5), zdjęcie wypełnia ją w całości */
 .frame {
   position: relative;
   overflow: hidden;
-  aspect-ratio: var(--ratio, 4 / 5);
-  background: var(--linen);
-}
-
-.frame > picture,
-.frame > img,
-.frame picture img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  aspect-ratio: 4 / 5;
+  background: var(--choc-3);
 }
 
 .frame > picture {
@@ -478,31 +488,13 @@ button {
   inset: 0;
 }
 
-.frame--portrait {
-  --ratio: 4 / 5;
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.frame--tall {
-  --ratio: 3 / 4;
-}
-
-.frame--landscape {
-  --ratio: 3 / 2;
-}
-
-.frame--square {
-  --ratio: 1;
-}
-
-.frame--wide {
-  --ratio: 16 / 9;
-}
-
-.frame--arch {
-  border-radius: var(--radius-arch);
-}
-
-/* 6. Animacje przy przewijaniu
+/* 7. Animacje przy przewijaniu
    ==========================================================================
    Klasa .motion (src/scripts/boot.js) oznacza, że ruch jest dozwolony, a skrypty działają. Elementy [data-reveal]
    są wtedy ukryte do chwili, w której GSAP je odsłoni (src/scripts/motion.ts). Bez JavaScriptu albo przy
@@ -545,7 +537,7 @@ button {
   }
 }
 
-/* 7. Przejścia między podstronami
+/* 8. Przejścia między podstronami
    ==========================================================================
    View Transitions: stara treść znika i lekko się unosi, nowa wyłania się od dołu; nagłówek i tło stoją w miejscu.
    Przeglądarki bez tej funkcji dostają to samo przez klasy .leaving (src/scripts/ui.ts) i .page-in (boot.js). */
@@ -624,7 +616,7 @@ main {
   }
 }
 
-/* 8. Ograniczony ruch
+/* 9. Ograniczony ruch
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {

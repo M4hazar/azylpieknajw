@@ -9,89 +9,47 @@ const steps = [
 ];
 ---
 
-<section class="section section--sand how" data-theme="light" aria-labelledby="how-title">
-  <div class="container how__grid">
-    <div>
-      <p class="eyebrow" data-reveal>
+<section class="section" aria-labelledby="how-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
         Rezerwacja
       </p>
+    </div>
+    <div>
       <h2 id="how-title" class="h2" data-split>
-        Jak się <em>umówić</em>
+        Jak się umówić
       </h2>
       <p class="lead how__lead" data-reveal>
         Wszystkie wizyty rezerwujesz online w Booksy. Jeśli wolisz porozmawiać przed rezerwacją, zadzwoń.
       </p>
+      <ol class="steps" role="list">
+        {steps.map((step) => (
+          <li data-reveal>
+            <h3>{step.name}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
       <div class="btn-row how__actions" data-reveal>
-        <Button href={salon.booksy} variant="ink" external arrow>
+        <Button href={salon.booksy} external>
           Umów wizytę
         </Button>
-        <Button href={salon.phone.href} variant="ink-outline">
+        <Button href={salon.phone.href} variant="ghost">
           {salon.phone.label}
         </Button>
       </div>
     </div>
-
-    <ol class="how__steps" role="list">
-      {steps.map((step, i) => (
-        <li data-reveal>
-          <span class="how__num" aria-hidden="true">
-            {i + 1}
-          </span>
-          <div>
-            <h3 class="h4">{step.name}</h3>
-            <p>{step.text}</p>
-          </div>
-        </li>
-      ))}
-    </ol>
   </div>
 </section>
 
 <style>
-  .how__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(2.5rem, 7vw, 8rem);
-    align-items: center;
-  }
-
   .how__lead {
-    max-width: 30rem;
-    margin-top: 1.5rem;
+    max-width: 40rem;
+    margin-block: clamp(1.5rem, 3vw, 2.25rem) clamp(2rem, 4vw, 3rem);
   }
 
   .how__actions {
-    margin-top: 2.25rem;
-  }
-
-  .how__steps {
-    border-top: 1px solid var(--rule);
-  }
-
-  .how__steps li {
-    display: grid;
-    grid-template-columns: 3.5rem 1fr;
-    gap: 1rem;
-    padding-block: 1.6rem;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .how__num {
-    color: var(--gold-ink);
-    font-family: var(--f-display);
-    font-size: 2.6rem;
-    font-weight: 300;
-    line-height: 1;
-  }
-
-  .how__steps p {
-    margin-top: 0.35rem;
-    color: var(--soft);
-  }
-
-  @media (width < 60rem) {
-    .how__grid {
-      grid-template-columns: 1fr;
-    }
+    margin-top: 2.5rem;
   }
 </style>

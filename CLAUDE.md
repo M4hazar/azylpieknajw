@@ -18,8 +18,8 @@ OVH (Apache, wgrywana przez FTP). Autor: Paweł Hejna (https://github.com/m4haza
   przycisk rezerwacji prowadzi do Booksy w nowej karcie (test w `tests/`).
 - Nie wymyślaj kwalifikacji, nagród, stażu, opinii, efektów zabiegów ani danych kontaktowych. Nie obiecuj
   wyleczenia problemów skóry ani włosów. Opinie: tylko zweryfikowane, inaczej odnośnik do opinii w Booksy.
-- Zdjęć stockowych ani generowanych nie przedstawiaj jako salonu lub Julii. Bez zdjęcia ramka pokazuje grafikę
-  marki (`src/components/Visual.astro`).
+- Zdjęć stockowych ani generowanych nie przedstawiaj jako salonu lub Julii. Bez prawdziwego zdjęcia nie ma ramki
+  ani grafiki zastępczej (`src/components/Visual.astro` nic wtedy nie wyświetla).
 - Z CEIDG publikujemy tylko: imię i nazwisko, NIP, REGON i adres działalności. Bez adresu do doręczeń.
 - Pliki z danymi klientek, wizyt i SMS nigdy nie trafiają do repozytorium ani na stronę.
 
@@ -28,7 +28,10 @@ OVH (Apache, wgrywana przez FTP). Autor: Paweł Hejna (https://github.com/m4haza
 - Dane w `src/data/` (salon, oferta, obrazy, galeria); komponenty nie powtarzają adresu, telefonu ani linków.
 - Style: tokeny z `src/styles/tokens.css`, wspólne klasy w `global.css`, reszta w `<style>` komponentu. Klasa
   przekazana do komponentu-dziecka nie dostaje zasięgu stylów rodzica: w rodzicu pisz `.rodzic :global(.klasa)`.
-- Sekcje mają `data-theme="light|dark"`; od niego zależą kolory tekstu i wygląd nagłówka nad sekcją.
+- Wygląd jest jeden na całej stronie: czekoladowe tło marki z fakturą papieru (stałe, w `global.css`), kremowy
+  tekst, złoto tylko w logo, cienkich liniach i głównym przycisku. Sekcja ma układ `.split` (linia, etykieta po
+  lewej, treść po prawej); listy to `.rows` i `.steps`. Bez ozdobników: ikon, gwiazdek, numerów w kółkach, kursyw
+  w nagłówkach.
 - Animacje: GSAP (`[data-reveal]`, `[data-split]`, `[data-parallax]` w `src/scripts/motion.ts`), a pierwszy ekran
   podstron samym CSS (`[data-rise]`). Zawsze z obsługą `prefers-reduced-motion`; bez JavaScriptu treść widoczna.
 - Content-Security-Policy generuje Astro (`security.csp`): żadnych atrybutów `style=""` ani skryptów inline poza

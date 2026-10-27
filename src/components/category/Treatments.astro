@@ -1,6 +1,6 @@
 ---
-// Lista zabiegów kategorii: obok spis grup (na komputerze przyklejony do ekranu), a w grupach opis i warianty
-// z czasem trwania. Ceny są tylko w Booksy.
+// Lista zabiegów kategorii: obok spis grup (na komputerze stoi w miejscu przy przewijaniu), a w grupach opis
+// i warianty z czasem trwania. Ceny są tylko w Booksy.
 import type { Category } from '../../data/oferta';
 
 interface Props {
@@ -11,15 +11,12 @@ const { category } = Astro.props;
 const groupId = (i: number) => `zabieg-${i + 1}`;
 ---
 
-<section id="zabiegi" class="section section--sand treatments" data-theme="light" aria-labelledby="treatments-title">
-  <div class="container treatments__grid">
-    <div class="treatments__aside">
-      <p class="eyebrow" data-reveal>
+<section id="zabiegi" class="section" aria-labelledby="treatments-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
         Zabiegi
       </p>
-      <h2 id="treatments-title" class="h2 treatments__title" data-split>
-        Co mogę <em>dla Ciebie zrobić</em>
-      </h2>
       <nav class="toc" aria-label="Zabiegi na tej stronie" data-reveal>
         <ol role="list">
           {category.groups.map((group, i) => (
@@ -31,27 +28,30 @@ const groupId = (i: number) => `zabieg-${i + 1}`;
           ))}
         </ol>
       </nav>
+    </div>
+
+    <div>
+      <h2 id="treatments-title" class="h2" data-split>
+        Co mogę dla Ciebie zrobić
+      </h2>
       <p class="small treatments__hint" data-reveal>
         Ceny i wolne terminy sprawdzisz w Booksy.
       </p>
-    </div>
 
-    <div class="treatments__list">
       {category.groups.map((group, i) => (
         <article id={groupId(i)} class="group" aria-labelledby={`${groupId(i)}-title`} data-reveal>
           <h3 id={`${groupId(i)}-title`} class="h3">
             {group.name}
           </h3>
-          <div class="group__text">
+          <div class="group__text prose">
             {group.text.map((paragraph) => (
               <p>{paragraph}</p>
             ))}
           </div>
-          <ul class="variants" role="list">
+          <ul class="rows rows--pairs group__variants" role="list">
             {group.variants.map((variant) => (
               <li>
-                <span class="variants__name">{variant.name}</span>
-                <span class="variants__dots" aria-hidden="true" />
+                <span>{variant.name}</span>
                 <span class="duration">{variant.duration}</span>
               </li>
             ))}
@@ -84,31 +84,14 @@ const groupId = (i: number) => `zabieg-${i + 1}`;
 </script>
 
 <style>
-  .treatments__grid {
-    display: grid;
-    grid-template-columns: 4fr 7fr;
-    gap: clamp(2.5rem, 7vw, 8rem);
-    align-items: start;
-  }
-
-  .treatments__aside {
-    position: sticky;
-    top: calc(var(--header-h-small) + 2rem);
-  }
-
-  .treatments__title {
-    font-size: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem);
-  }
-
   .toc ol {
-    margin-top: 2.25rem;
-    border-left: 1px solid var(--rule);
+    border-left: 1px solid var(--line);
   }
 
   .toc a {
     position: relative;
     display: block;
-    padding: 0.45rem 0 0.45rem 1.25rem;
+    padding: 0.4rem 0 0.4rem 1.25rem;
     color: var(--mute);
     text-decoration: none;
     transition: color var(--t-fast);
@@ -121,14 +104,14 @@ const groupId = (i: number) => `zabieg-${i + 1}`;
     bottom: 0;
     left: -1px;
     width: 1px;
-    background: var(--gold-ink);
+    background: var(--gold-mid);
     transform: scaleY(0);
     transition: transform var(--t-base) var(--ease-out);
   }
 
   .toc a:hover,
   .toc a[data-active] {
-    color: var(--ink);
+    color: var(--heading);
   }
 
   .toc a[data-active]::before {
@@ -136,64 +119,27 @@ const groupId = (i: number) => `zabieg-${i + 1}`;
   }
 
   .treatments__hint {
-    margin-top: 1.75rem;
-  }
-
-  .group {
-    padding-block: clamp(2rem, 4vw, 3rem);
-    border-top: 1px solid var(--rule);
-  }
-
-  .group:first-child {
-    padding-top: 0;
-    border-top: 0;
-  }
-
-  .group__text {
-    max-width: 40rem;
     margin-top: 1rem;
   }
 
-  .group__text p + p {
-    margin-top: 0.9rem;
+  .group {
+    margin-top: clamp(3rem, 6vw, 4.5rem);
   }
 
-  .variants {
+  .group__text {
+    margin-top: 1rem;
+  }
+
+  .group__variants {
+    max-width: 40rem;
     margin-top: 1.5rem;
-  }
-
-  .variants li {
-    display: flex;
-    gap: 0.75rem;
-    align-items: baseline;
-    padding-block: 0.5rem;
-  }
-
-  .variants__name {
-    color: var(--ink);
-  }
-
-  .variants__dots {
-    flex: 1;
-    min-width: 1.5rem;
-    border-bottom: 1px dotted rgb(124 90 40 / 35%);
-    translate: 0 -0.3em;
   }
 
   .group__note {
     margin-top: 1rem;
-    font-style: italic;
   }
 
   @media (width < 60rem) {
-    .treatments__grid {
-      grid-template-columns: 1fr;
-    }
-
-    .treatments__aside {
-      position: static;
-    }
-
     .toc {
       display: none;
     }

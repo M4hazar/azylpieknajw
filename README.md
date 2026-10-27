@@ -48,19 +48,19 @@ Wszystkie dane, które mogą się zmieniać, są w `src/data/`:
 - `oferta.ts`: cztery kategorie zabiegów z opisami, wariantami i czasem trwania (bez cen), teksty podstron.
 - `galeria.ts`: opisy zdjęć galerii.
 
-**Zdjęcia sekcji.** Dopóki nie ma prawdziwego zdjęcia, w ramce jest grafika marki (satyna w kolorach salonu,
-`src/assets/grafiki/`). Zdjęcie wystarczy wrzucić do `src/assets/zdjecia/` pod jedną z nazw (jpg, png lub webp):
+**Zdjęcia sekcji.** Strona nie pokazuje grafik zastępczych: miejsce na zdjęcie pojawia się dopiero wtedy, gdy
+w `src/assets/zdjecia/` jest plik pod jedną z nazw (jpg, png lub webp):
 
-| Plik       | Gdzie się pojawi                                               |
-| ---------- | -------------------------------------------------------------- |
-| `julia`    | sekcja „Poznaj Julię” (jest)                                   |
-| `head-spa` | sekcja Head Spa na stronie głównej, oferta, podstrona Head Spa |
-| `twarz`    | oferta, podstrona „Zabiegi na twarz”                           |
-| `dlonie`   | oferta, podstrona „Manicure i pedicure”                        |
-| `brwi`     | oferta, podstrona „Brwi i rzęsy”                               |
+| Plik       | Gdzie się pojawi                                       |
+| ---------- | ------------------------------------------------------ |
+| `julia`    | sekcja „Poznaj Julię” (jest)                           |
+| `head-spa` | sekcja Head Spa na stronie głównej, podstrona Head Spa |
+| `twarz`    | podstrona „Zabiegi na twarz”                           |
+| `dlonie`   | podstrona „Manicure i pedicure”                        |
+| `brwi`     | podstrona „Brwi i rzęsy”                               |
 
-Astro przytnie i zmniejszy zdjęcie przy budowaniu (AVIF i WebP). Najlepiej pionowe, co najmniej 1600 px w dłuższym
-boku. Tylko zdjęcia z salonu: grafik ze stocku ani generowanych nie pokazujemy jako salonu ani Julii.
+Astro przytnie zdjęcie do proporcji 4:5 i zmniejszy je przy budowaniu (AVIF i WebP). Najlepiej pionowe, co najmniej
+1600 px w dłuższym boku. Tylko zdjęcia z salonu: grafik ze stocku ani generowanych nie pokazujemy jako salonu ani Julii.
 
 **Galeria.** Zdjęcia do `src/assets/galeria/`, a w `src/data/galeria.ts` opis każdego pliku. Sekcja galerii
 i pozycja „Galeria” w menu pojawią się same przy pierwszym zdjęciu; zdjęcie bez opisu zatrzyma budowanie.
@@ -78,8 +78,11 @@ i pozycja „Galeria” w menu pojawią się same przy pierwszym zdjęciu; zdję
   przyciskiem „wstecz”; przycisk „Odtwórz lot ponownie” powtarza je na życzenie. Animacje przy przewijaniu
   (`motion.ts`) używają GSAP. Przy ograniczonym ruchu w systemie wszystko jest statyczne, a bez JavaScriptu
   treść jest widoczna od razu.
-- **Nagłówek** zmienia kolor zależnie od sekcji pod nim (atrybut `data-theme` sekcji), chowa się przy przewijaniu
-  w dół. Na telefonie menu jest w oknie dialogowym, a po przewinięciu pojawia się pasek „Umów wizytę”.
+- **Wygląd**: jedno tło na całej stronie, czekoladowy gradient z identyfikacji marki i nad nim faktura papieru
+  (`src/assets/marka/`, kafel 280 px w AVIF i WebP). Każda sekcja ma ten sam układ: cienka linia, etykieta po lewej,
+  nagłówek i treść po prawej.
+- **Nagłówek** po przewinięciu dostaje przyciemnione tło i chowa się przy przewijaniu w dół. Na telefonie menu jest
+  w oknie dialogowym, a po przewinięciu pojawia się pasek „Umów wizytę”.
 - **Serwer**: `public/.htaccess` dla Apache na OVH (strona 404, przekierowanie starej polityki prywatności,
   nagłówki bezpieczeństwa, kompresja, długa pamięć podręczna dla plików z `/_astro/`).
 
@@ -105,14 +108,14 @@ Bez zmiennej `DEPLOY_ENABLED` nic nie jest publikowane automatycznie.
 ```
 src/pages/              strony (index, cztery kategorie, polityka prywatności, 404)
 src/layouts/            Base.astro (meta, Open Graph, kroje, nagłówek, stopka), CategoryPage.astro
-src/components/         nagłówek, stopka, pasek rezerwacji, komunikat o cookies, Visual (obraz w ramce)
+src/components/         nagłówek, stopka, pasek rezerwacji, cookies, lista kategorii, Visual (zdjęcie w ramce)
 src/components/home/    sekcje strony głównej
 src/components/category/ sekcje podstron z zabiegami
 src/components/intro/   logo z animowanym ptakiem
 src/data/               dane salonu, oferta, obrazy, galeria
 src/scripts/            boot.js, intro, nagłówek, animacje, lightbox, elementy stałe
 src/styles/             tokens.css, global.css
-src/assets/             grafiki marki, zdjęcia, galeria (przetwarzane przy budowaniu)
+src/assets/             faktura marki, zdjęcia, galeria (przetwarzane przy budowaniu)
 public/                 pliki kopiowane bez zmian (.htaccess, sygnet, favicony, obraz Open Graph)
 tests/                  testy Playwright + axe
 ```

@@ -7,73 +7,76 @@ import { salon } from '../data/salon';
 <Base
   title="Polityka prywatności i cookies · Azyl Piękna"
   description="Jak strona salonu Azyl Piękna w Lubinie przetwarza dane: bez plików cookies i narzędzi śledzących, rezerwacje w Booksy, prawa osób, których dane dotyczą."
-  theme="light"
 >
-  <article class="section section--ivory legal" data-theme="light" aria-labelledby="legal-title">
-    <div class="container legal__inner">
-      <a class="back-link" href="/">
-        <Icon name="arrow-left" /> Strona główna
-      </a>
+  <article class="legal" aria-labelledby="legal-title">
+    <div class="container split">
+      <div class="split__aside">
+        <a class="back-link" href="/">
+          <Icon name="arrow-left" /> Strona główna
+        </a>
+        <p class="label">Obowiązuje od 27 października 2026 r.</p>
+      </div>
 
-      <h1 id="legal-title" class="h1 legal__title">
-        Polityka prywatności <em>i cookies</em>
-      </h1>
-      <p class="small">Obowiązuje od 27 października 2026 r.</p>
+      <div>
+        <h1 id="legal-title" class="h1 legal__title">
+          Polityka prywatności i cookies
+        </h1>
 
-      <div class="legal__body">
-        <h2>Administrator</h2>
-        <p>
-          {`Administratorem danych jest ${salon.owner}, prowadząca działalność gospodarczą pod firmą ${salon.owner} (salon ${salon.name}), ${salon.address.street}, ${salon.address.postalCode} ${salon.address.city}, NIP ${salon.nip}, REGON ${salon.regon}. W sprawach dotyczących danych możesz skontaktować się telefonicznie: `}
-          <a href={salon.phone.href}>{salon.phone.label}</a> lub listownie na adres salonu.
-        </p>
+        <div class="legal__body prose">
+          <h2>Administrator</h2>
+          <p>
+            {`Administratorem danych jest ${salon.owner}, prowadząca działalność gospodarczą pod firmą ${salon.owner} (salon ${salon.name}), ${salon.address.street}, ${salon.address.postalCode} ${salon.address.city}, NIP ${salon.nip}, REGON ${salon.regon}. W sprawach dotyczących danych możesz skontaktować się telefonicznie: `}
+            <a href={salon.phone.href}>{salon.phone.label}</a> lub listownie na adres salonu.
+          </p>
 
-        <h2>Pliki cookies</h2>
-        <p>
-          Ta strona nie zapisuje plików cookies i nie korzysta z narzędzi analitycznych, reklamowych ani śledzących.
-          Kroje pisma, obrazy i skrypty są ładowane z tego samego serwera, bez udziału zewnętrznych dostawców.
-        </p>
-        <p>
-          W pamięci Twojej przeglądarki (localStorage) zapisujemy tylko jedną informację: że zamknięto komunikat o
-          cookies, aby nie pokazywał się przy każdej wizycie. Nie zawiera ona danych osobowych i możesz ją usunąć w
-          ustawieniach przeglądarki.
-        </p>
+          <h2>Pliki cookies</h2>
+          <p>
+            Ta strona nie zapisuje plików cookies i nie korzysta z narzędzi analitycznych, reklamowych ani śledzących.
+            Kroje pisma, obrazy i skrypty są ładowane z tego samego serwera, bez udziału zewnętrznych dostawców.
+          </p>
+          <p>
+            W pamięci Twojej przeglądarki (localStorage) zapisujemy tylko jedną informację: że zamknięto komunikat o
+            cookies, aby nie pokazywał się przy każdej wizycie. Nie zawiera ona danych osobowych i możesz ją usunąć w
+            ustawieniach przeglądarki.
+          </p>
 
-        <h2>Dane przetwarzane podczas wizyty na stronie</h2>
-        <p>
-          Strona nie ma formularzy i nie zbiera danych osobowych. Serwer, na którym działa strona, może automatycznie
-          zapisywać standardowe dane techniczne (adres IP, datę i godzinę wizyty, typ przeglądarki) w dziennikach
-          serwera. Służą one wyłącznie zapewnieniu bezpieczeństwa i prawidłowego działania strony (art. 6 ust. 1 lit. f
-          RODO) i są przechowywane przez okres określony przez dostawcę hostingu.
-        </p>
+          <h2>Dane przetwarzane podczas wizyty na stronie</h2>
+          <p>
+            Strona nie ma formularzy i nie zbiera danych osobowych. Serwer, na którym działa strona, może automatycznie
+            zapisywać standardowe dane techniczne (adres IP, datę i godzinę wizyty, typ przeglądarki) w dziennikach
+            serwera. Służą one wyłącznie zapewnieniu bezpieczeństwa i prawidłowego działania strony (art. 6 ust. 1 lit.
+            f RODO) i są przechowywane przez okres określony przez dostawcę hostingu.
+          </p>
 
-        <h2>Rezerwacje i serwisy zewnętrzne</h2>
-        <p>
-          Wizyty rezerwujesz w serwisie Booksy. Dane podane przy rezerwacji są przetwarzane w celu umówienia i
-          przeprowadzenia wizyty (art. 6 ust. 1 lit. b RODO), a w zakresie działania samego serwisu zgodnie z polityką
-          prywatności Booksy.
-        </p>
-        <p>
-          Strona zawiera też odnośniki do profilu salonu na Instagramie i do Map Google (wyznaczanie trasy do salonu).
-          Po przejściu do Booksy, Instagrama lub Map Google obowiązują zasady tych serwisów, w tym ich pliki cookies.
-        </p>
-        <p>
-          Jeśli kontaktujesz się telefonicznie, dane przekazane w rozmowie wykorzystujemy tylko do odpowiedzi i
-          umówienia wizyty.
-        </p>
+          <h2>Rezerwacje i serwisy zewnętrzne</h2>
+          <p>
+            Wizyty rezerwujesz w serwisie Booksy. Dane podane przy rezerwacji są przetwarzane w celu umówienia i
+            przeprowadzenia wizyty (art. 6 ust. 1 lit. b RODO), a w zakresie działania samego serwisu zgodnie z polityką
+            prywatności Booksy.
+          </p>
+          <p>
+            Strona zawiera też odnośniki do profilu salonu na Instagramie i do Map Google (wyznaczanie trasy do salonu).
+            Po przejściu do Booksy, Instagrama lub Map Google obowiązują zasady tych serwisów, w tym ich pliki cookies.
+          </p>
+          <p>
+            Jeśli kontaktujesz się telefonicznie, dane przekazane w rozmowie wykorzystujemy tylko do odpowiedzi i
+            umówienia wizyty.
+          </p>
 
-        <h2>Twoje prawa</h2>
-        <p>Masz prawo do:</p>
-        <ul>
-          <li>dostępu do swoich danych oraz otrzymania ich kopii,</li>
-          <li>sprostowania, usunięcia lub ograniczenia przetwarzania danych,</li>
-          <li>wniesienia sprzeciwu wobec przetwarzania opartego na prawnie uzasadnionym interesie,</li>
-          <li>przeniesienia danych,</li>
-          <li>wniesienia skargi do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa).</li>
-        </ul>
-        <p>
-          Dane nie są przekazywane poza Europejski Obszar Gospodarczy przez administratora i nie podlegają
-          zautomatyzowanemu podejmowaniu decyzji.
-        </p>
+          <h2>Twoje prawa</h2>
+          <p>Masz prawo do:</p>
+          <ul>
+            <li>dostępu do swoich danych oraz otrzymania ich kopii,</li>
+            <li>sprostowania, usunięcia lub ograniczenia przetwarzania danych,</li>
+            <li>wniesienia sprzeciwu wobec przetwarzania opartego na prawnie uzasadnionym interesie,</li>
+            <li>przeniesienia danych,</li>
+            <li>wniesienia skargi do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa).</li>
+          </ul>
+          <p>
+            Dane nie są przekazywane poza Europejski Obszar Gospodarczy przez administratora i nie podlegają
+            zautomatyzowanemu podejmowaniu decyzji.
+          </p>
+        </div>
       </div>
     </div>
   </article>
@@ -81,37 +84,32 @@ import { salon } from '../data/salon';
 
 <style>
   .legal {
-    padding-top: calc(var(--header-h) + clamp(2rem, 5vw, 4rem));
-  }
-
-  .legal__inner {
-    max-width: calc(46rem + 2 * var(--gutter));
+    padding-top: calc(var(--header-h) + clamp(1.5rem, 4vw, 3rem));
   }
 
   .back-link {
     display: inline-flex;
     gap: 0.75rem;
     align-items: center;
+    justify-self: start;
     min-height: 2.75rem;
     padding: 0.6rem 1.25rem 0.6rem 1rem;
-    border: 1px solid rgb(42 26 15 / 30%);
-    color: var(--ink);
+    border: 1px solid var(--line-strong);
+    color: var(--heading);
     font-family: var(--f-label);
     font-size: 0.7rem;
     letter-spacing: 0.22em;
     text-decoration: none;
     text-transform: uppercase;
     transition:
-      background-color var(--t-base),
       color var(--t-base),
       border-color var(--t-base);
   }
 
   .back-link:hover,
   .back-link:active {
-    border-color: var(--ink);
-    background: var(--ink);
-    color: var(--ivory);
+    border-color: var(--gold-light);
+    color: var(--gold-light);
   }
 
   .back-link .icon {
@@ -124,37 +122,39 @@ import { salon } from '../data/salon';
   }
 
   .legal__title {
-    margin-block: 2.5rem 0.75rem;
     font-size: clamp(2.4rem, 1.8rem + 2.6vw, 3.75rem);
   }
 
   .legal__body {
-    margin-top: 2.5rem;
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
   }
 
   .legal__body h2 {
-    margin-block: 2.75rem 0.75rem;
-    color: var(--ink);
+    margin-top: 2.75rem;
+    color: var(--heading);
     font-family: var(--f-display);
     font-size: 1.75rem;
     font-weight: 400;
     line-height: 1.2;
   }
 
-  .legal__body p + p {
-    margin-top: 1em;
-  }
-
   .legal__body ul {
-    margin-block: 0.75rem 1rem;
     padding-left: 1.2em;
   }
 
+  .legal__body li + li {
+    margin-top: 0.3em;
+  }
+
   .legal__body li::marker {
-    color: var(--gold);
+    color: var(--mute);
   }
 
   .legal__body a {
-    color: var(--ink);
+    color: var(--heading);
+  }
+
+  .legal__body a:hover {
+    color: var(--gold-light);
   }
 </style>

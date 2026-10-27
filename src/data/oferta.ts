@@ -20,14 +20,11 @@ export interface Category {
   menuLine: string;
   /** opis na stronie głównej */
   teaser: string;
-  tags: string[];
-  /** grafika z src/assets/grafiki i miejsce na zdjęcie z src/assets/zdjecia (nazwy plików bez rozszerzenia) */
-  art: string;
+  /** nazwa zdjęcia w src/assets/zdjecia (bez rozszerzenia); bez pliku strona obywa się bez zdjęcia */
   photo: string;
   seo: { title: string; description: string };
-  eyebrow: string;
-  /** nagłówek podstrony: druga część jest wyróżniona kursywą */
-  title: [string, string];
+  /** etykieta nad nagłówkiem podstrony */
+  label: string;
   intro: string;
   groups: TreatmentGroup[];
   forWhom: string[];
@@ -41,16 +38,13 @@ export const categories: Category[] = [
     menuLine: 'Rytuały Head Spa i konsultacje z trichoskopią',
     teaser:
       'Rytuał pielęgnacji skóry głowy połączony z masażem i chwilą wyciszenia oraz konsultacja trychologiczna z badaniem skóry głowy kamerą.',
-    tags: ['Head Spa Classic', 'Head and Face Spa', 'Head Spa Kids', 'Konsultacja trychologiczna'],
-    art: 'satyna-mokka',
     photo: 'head-spa',
     seo: {
       title: 'Head Spa Lubin i trycholog w Lubinie · Azyl Piękna',
       description:
         'Head Spa w Lubinie: Head Spa Classic, Head and Face Spa i Head Spa Kids. Konsultacja trychologiczna z trichoskopią u Julii Wróbel, trychologa. Rezerwacja w Booksy.',
     },
-    eyebrow: 'Head Spa Lubin · Trycholog Lubin',
-    title: ['Head Spa', 'i trychologia'],
+    label: 'Head Spa Lubin · Trycholog Lubin',
     intro:
       'Skóra głowy potrzebuje uwagi tak samo jak skóra twarzy, a rzadko ją dostaje. Zajmuję się nią na dwa sposoby: podczas rytuału Head Spa, który łączy pielęgnację z głębokim odprężeniem, i podczas konsultacji trychologicznej, na której oglądam skórę głowy i włosy w dużym powiększeniu.',
     groups: [
@@ -112,16 +106,13 @@ export const categories: Category[] = [
     menuLine: 'PCA Skin, oczyszczanie wodorowe, peeling kawitacyjny',
     teaser:
       'Peelingi PCA Skin, oczyszczanie wodorowe, peeling kawitacyjny i zabiegi Hydro. Zabieg dobieram po obejrzeniu skóry i rozmowie o Twojej pielęgnacji.',
-    tags: ['Peelingi PCA Skin', 'Oczyszczanie wodorowe', 'Peeling kawitacyjny', 'Zabiegi Hydro'],
-    art: 'satyna-kosc-sloniowa',
     photo: 'twarz',
     seo: {
       title: 'Zabiegi na twarz Lubin: PCA Skin, oczyszczanie wodorowe · Azyl Piękna',
       description:
         'Salon kosmetologiczny w Lubinie: peelingi PCA Skin, oczyszczanie wodorowe, peeling kawitacyjny, HydroClean PRO, HydroGlow i HydroLift. Zabieg dobrany do skóry. Rezerwacja w Booksy.',
     },
-    eyebrow: 'Salon kosmetologiczny Lubin',
-    title: ['Zabiegi', 'na twarz'],
+    label: 'Salon kosmetologiczny Lubin',
     intro:
       'Nie ma jednego zabiegu, który pasuje do każdej skóry. Zanim cokolwiek zaproponuję, oglądam skórę i pytam o Twoją codzienną pielęgnację, leki i oczekiwania. Jeśli nie wiesz, od czego zacząć, wybierz zabieg dobrany do potrzeb skóry, a resztę ustalimy na miejscu.',
     groups: [
@@ -206,16 +197,13 @@ export const categories: Category[] = [
     menuLine: 'Hybryda, manicure japoński, pedicure SPA',
     teaser:
       'Manicure hybrydowy, japoński i klasyczny, przedłużanie żelem oraz pedicure SPA z pełną pielęgnacją stóp. Także w wersjach dla panów.',
-    tags: ['Manicure hybrydowy', 'Manicure japoński', 'Pedicure SPA', 'Przedłużanie żelem'],
-    art: 'satyna-pudrowa',
     photo: 'dlonie',
     seo: {
       title: 'Manicure i pedicure Lubin: hybryda, pedicure SPA · Azyl Piękna',
       description:
         'Manicure hybrydowy, japoński i klasyczny, przedłużanie żelem, pedicure hybrydowy, pedicure SPA i japoński w Lubinie. Także dla mężczyzn. Salon Azyl Piękna, ul. Odrodzenia 25A/1A.',
     },
-    eyebrow: 'Manicure i pedicure Lubin',
-    title: ['Manicure', 'i pedicure'],
+    label: 'Manicure i pedicure Lubin',
     intro:
       'Zadbane dłonie i stopy to drobiazg, który czuć na co dzień. Każda wizyta zaczyna się od starannego opracowania skórek i płytki, a przy pedicure SPA liczy się pielęgnacja stóp, nie tylko kolor.',
     groups: [
@@ -292,16 +280,13 @@ export const categories: Category[] = [
     menuLine: 'Architektura, laminacja brwi, lifting rzęs',
     teaser:
       'Architektura i koloryzacja brwi, laminacja, lifting i henna rzęs. Kształt brwi wyznaczam pomiarowo i dopasowuję do proporcji twarzy.',
-    tags: ['Architektura brwi', 'Laminacja brwi', 'Lifting rzęs', 'Henna'],
-    art: 'satyna-szampan',
     photo: 'brwi',
     seo: {
       title: 'Brwi i rzęsy Lubin: laminacja brwi, lifting rzęs · Azyl Piękna',
       description:
         'Stylizacja brwi i rzęs w Lubinie: henna i farbka brwi z architekturą, laminacja brwi, lifting rzęs, koreański lifting, henna rzęs. Salon Azyl Piękna. Rezerwacja w Booksy.',
     },
-    eyebrow: 'Stylizacja brwi i rzęs Lubin',
-    title: ['Brwi', 'i rzęsy'],
+    label: 'Stylizacja brwi i rzęs Lubin',
     intro:
       'Dobrze dobrany kształt brwi porządkuje rysy twarzy i zmienia wyraz spojrzenia. Zaczynam od pomiaru i rozrysowania kształtu, a brwi reguluję z wyczuciem, bez przesadnego przerzedzania.',
     groups: [

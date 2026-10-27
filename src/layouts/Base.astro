@@ -19,8 +19,6 @@ import CookieNotice from '../components/CookieNotice.astro';
 interface Props {
   title: string;
   description: string;
-  /** motyw sekcji na samej górze strony (od niego zależy wygląd nagłówka przed przewinięciem) */
-  theme: 'dark' | 'light';
   /** strona główna z lotem ptaka */
   home?: boolean;
   /** dane strukturalne schema.org */
@@ -31,7 +29,7 @@ interface Props {
   footerCta?: boolean;
 }
 
-const { title, description, theme, home = false, schema, noindex = false, footerCta = true } = Astro.props;
+const { title, description, home = false, schema, noindex = false, footerCta = true } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og-image.jpg', Astro.site);
 ---
@@ -44,7 +42,7 @@ const ogImage = new URL('/og-image.jpg', Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="Paweł Hejna" />
-    <meta name="theme-color" content="#1E130B" />
+    <meta name="theme-color" content="#3D2616" />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <link rel="author" href="/humans.txt" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -75,7 +73,7 @@ const ogImage = new URL('/og-image.jpg', Astro.site);
       Przejdź do treści
     </a>
     <div class="backdrop" aria-hidden="true"></div>
-    <Header theme={theme} home={home} />
+    <Header home={home} />
     <main id="tresc">
       <slot />
     </main>

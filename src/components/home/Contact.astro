@@ -1,17 +1,18 @@
 ---
 import { salon, NEW_TAB } from '../../data/salon';
 import Button from '../ui/Button.astro';
-import Icon from '../ui/Icon.astro';
 ---
 
-<section id="kontakt" class="section section--sand contact" data-theme="light" aria-labelledby="contact-title">
-  <div class="container contact__grid">
-    <div class="contact__intro">
-      <p class="eyebrow" data-reveal>
+<section id="kontakt" class="section" aria-labelledby="contact-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
         Kontakt i dojazd
       </p>
+    </div>
+    <div>
       <h2 id="contact-title" class="h2" data-split>
-        Zapraszam <em>do salonu</em>
+        Zapraszam do salonu
       </h2>
       <address class="contact__address" data-reveal>
         {salon.name}
@@ -20,77 +21,50 @@ import Icon from '../ui/Icon.astro';
         <br />
         {`${salon.address.postalCode} ${salon.address.city}`}
       </address>
-      <div class="btn-row" data-reveal>
-        <Button href={salon.directions} variant="ink" external arrow>
-          Wyznacz trasę
-        </Button>
-        <Button href={salon.booksy} variant="ink-outline" external>
+
+      <dl class="rows contact__list" data-reveal>
+        <div>
+          <dt class="label">Rezerwacje</dt>
+          <dd>
+            <a href={salon.booksy} target="_blank" rel="noopener">
+              azylpieknajw.booksy.com<span class="visually-hidden"> {NEW_TAB}</span>
+            </a>
+            <span class="contact__hint">Wolne terminy, ceny i godziny pracy salonu na bieżąco.</span>
+          </dd>
+        </div>
+        <div>
+          <dt class="label">Telefon</dt>
+          <dd>
+            <a href={salon.phone.href}>{salon.phone.label}</a>
+          </dd>
+        </div>
+        <div>
+          <dt class="label">Instagram</dt>
+          <dd>
+            <a href={salon.instagram.href} target="_blank" rel="noopener">
+              {salon.instagram.label}
+              <span class="visually-hidden"> {NEW_TAB}</span>
+            </a>
+          </dd>
+        </div>
+      </dl>
+
+      <div class="btn-row contact__actions" data-reveal>
+        <Button href={salon.booksy} external>
           Umów wizytę
+        </Button>
+        <Button href={salon.directions} variant="ghost" external>
+          Wyznacz trasę
         </Button>
       </div>
     </div>
-
-    <dl class="contact__list" data-reveal>
-      <div class="contact__row">
-        <dt>
-          <Icon name="calendar" />
-          Rezerwacje
-        </dt>
-        <dd>
-          <a href={salon.booksy} target="_blank" rel="noopener">
-            azylpieknajw.booksy.com<span class="visually-hidden"> {NEW_TAB}</span>
-          </a>
-          <span class="contact__hint">Wolne terminy, ceny i godziny pracy salonu na bieżąco.</span>
-        </dd>
-      </div>
-      <div class="contact__row">
-        <dt>
-          <Icon name="phone" />
-          Telefon
-        </dt>
-        <dd>
-          <a href={salon.phone.href}>{salon.phone.label}</a>
-        </dd>
-      </div>
-      <div class="contact__row">
-        <dt>
-          <Icon name="instagram" />
-          Instagram
-        </dt>
-        <dd>
-          <a href={salon.instagram.href} target="_blank" rel="noopener">
-            {salon.instagram.label}
-            <span class="visually-hidden"> {NEW_TAB}</span>
-          </a>
-        </dd>
-      </div>
-      <div class="contact__row">
-        <dt>
-          <Icon name="pin" />
-          Adres
-        </dt>
-        <dd>
-          <a href={salon.directions} target="_blank" rel="noopener">
-            {salon.address.street}, {salon.address.city}
-            <span class="visually-hidden">(wyznacz trasę w Mapach Google, {NEW_TAB})</span>
-          </a>
-        </dd>
-      </div>
-    </dl>
   </div>
 </section>
 
 <style>
-  .contact__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(2.5rem, 7vw, 8rem);
-    align-items: start;
-  }
-
   .contact__address {
-    margin-block: 2rem 2.5rem;
-    color: var(--ink);
+    margin-block: clamp(1.5rem, 3vw, 2.25rem) clamp(2rem, 4vw, 3rem);
+    color: var(--heading);
     font-family: var(--f-display);
     font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
     font-style: normal;
@@ -98,65 +72,47 @@ import Icon from '../ui/Icon.astro';
   }
 
   .contact__list {
-    border-top: 1px solid var(--rule);
+    max-width: 44rem;
   }
 
-  .contact__row {
+  .contact__list > div {
     display: grid;
-    grid-template-columns: 11rem 1fr;
-    gap: 0.5rem 1.5rem;
-    padding-block: 1.6rem;
-    border-bottom: 1px solid var(--rule);
+    grid-template-columns: 10rem minmax(0, 1fr);
+    gap: 0.35rem 1.5rem;
+    align-items: baseline;
   }
 
-  .contact__row dt {
-    display: flex;
-    gap: 0.75rem;
-    align-items: center;
-    align-self: start;
-    padding-top: 0.2rem;
-    color: var(--gold-ink);
-    font-family: var(--f-label);
-    font-size: 0.7rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-  }
-
-  .contact__row dt .icon {
-    width: 1.05rem;
-    height: 1.05rem;
-  }
-
-  .contact__row dd a {
-    color: var(--ink);
+  .contact__list a {
+    color: var(--heading);
     font-family: var(--f-display);
-    font-size: 1.45rem;
+    font-size: 1.4rem;
     line-height: 1.3;
     text-decoration: none;
     background: linear-gradient(currentcolor, currentcolor) 0 100% / 0 1px no-repeat;
-    transition: background-size var(--t-base) var(--ease-out);
+    transition:
+      background-size var(--t-base) var(--ease-out),
+      color var(--t-fast);
   }
 
-  .contact__row dd a:hover {
+  .contact__list a:hover {
     background-size: 100% 1px;
+    color: var(--gold-light);
   }
 
   .contact__hint {
     display: block;
-    margin-top: 0.35rem;
+    margin-top: 0.25rem;
     color: var(--mute);
     font-size: var(--fs-small);
   }
 
-  @media (width < 60rem) {
-    .contact__grid {
-      grid-template-columns: 1fr;
-    }
+  .contact__actions {
+    margin-top: 2.5rem;
   }
 
   @media (width < 36rem) {
-    .contact__row {
-      grid-template-columns: 1fr;
+    .contact__list > div {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

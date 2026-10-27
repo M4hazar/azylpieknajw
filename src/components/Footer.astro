@@ -16,18 +16,18 @@ const anchor = (id: string) => (home ? `#${id}` : `/#${id}`);
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer" data-theme="dark">
+<footer class="site-footer">
   <div class="container">
     {cta && (
-      <div class="footer-cta">
-        <p class="eyebrow eyebrow--center">Rezerwacja</p>
-        <p class="footer-cta__title h2">
-          Zarezerwuj chwilę <em>dla siebie</em>
-        </p>
-        <p class="footer-cta__text">Wolne terminy, ceny i opisy wszystkich zabiegów znajdziesz w Booksy.</p>
-        <Button href={salon.booksy} external arrow>
-          Umów wizytę
-        </Button>
+      <div class="split footer-cta">
+        <p class="label">Rezerwacja</p>
+        <div>
+          <p class="h2">Zarezerwuj chwilę dla siebie</p>
+          <p class="footer-cta__text lead">Wolne terminy, ceny i opisy wszystkich zabiegów znajdziesz w Booksy.</p>
+          <Button href={salon.booksy} external>
+            Umów wizytę
+          </Button>
+        </div>
       </div>
     )}
 
@@ -39,7 +39,7 @@ const year = new Date().getFullYear();
       </div>
 
       <nav class="footer-col" aria-labelledby="stopka-oferta">
-        <p class="footer-col__title" id="stopka-oferta">
+        <p class="footer-col__title label" id="stopka-oferta">
           Oferta
         </p>
         <ul role="list">
@@ -52,7 +52,7 @@ const year = new Date().getFullYear();
       </nav>
 
       <nav class="footer-col" aria-labelledby="stopka-salon">
-        <p class="footer-col__title" id="stopka-salon">
+        <p class="footer-col__title label" id="stopka-salon">
           Salon
         </p>
         <ul role="list">
@@ -74,7 +74,7 @@ const year = new Date().getFullYear();
       </nav>
 
       <div class="footer-col footer-col--contact">
-        <p class="footer-col__title">Kontakt</p>
+        <p class="footer-col__title label">Kontakt</p>
         <address>
           <ul role="list">
             <li>
@@ -123,30 +123,23 @@ const year = new Date().getFullYear();
   .site-footer {
     position: relative;
     padding-block: var(--section) calc(2rem + env(safe-area-inset-bottom));
-    overflow: clip;
   }
 
   .footer-cta {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     padding-bottom: var(--section);
-    text-align: center;
   }
 
   .footer-cta__text {
-    max-width: 30rem;
+    max-width: 32rem;
     margin-block: 1.25rem 2.25rem;
-    color: var(--on-dark);
-    font-size: var(--fs-lead);
   }
 
   .footer-grid {
     display: grid;
     grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
     gap: 2.5rem 2rem;
-    padding-block: 3.5rem;
-    border-top: 1px solid var(--line-dark);
+    padding-block: 3rem;
+    border-top: 1px solid var(--line);
   }
 
   .footer-brand img {
@@ -156,7 +149,7 @@ const year = new Date().getFullYear();
 
   .footer-brand__name {
     margin-top: 1rem;
-    color: var(--ivory);
+    color: var(--heading);
     font-family: var(--f-display);
     font-size: 1.75rem;
     line-height: 1.1;
@@ -165,17 +158,12 @@ const year = new Date().getFullYear();
   .footer-brand__text {
     max-width: 17rem;
     margin-top: 0.5rem;
-    color: var(--mute-dark);
+    color: var(--mute);
     font-size: var(--fs-small);
   }
 
   .footer-col__title {
-    margin-bottom: 1rem;
-    color: var(--gold-mid);
-    font-family: var(--f-label);
-    font-size: 0.7rem;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
+    margin-bottom: 0.9rem;
   }
 
   .footer-col address {
@@ -189,7 +177,7 @@ const year = new Date().getFullYear();
   .footer-col a {
     display: inline-block;
     padding-block: 0.3rem;
-    color: var(--on-dark);
+    color: var(--text);
     line-height: 1.5;
     text-decoration: none;
     transition: color var(--t-fast);
@@ -205,18 +193,17 @@ const year = new Date().getFullYear();
     gap: 0.75rem 2rem;
     justify-content: space-between;
     padding-top: 1.75rem;
-    border-top: 1px solid var(--line-dark);
-    color: var(--mute-dark);
+    border-top: 1px solid var(--line);
+    color: var(--mute);
     font-size: 0.82rem;
   }
 
   .footer-legal i {
     margin-inline: 0.35em;
-    color: var(--gold);
     font-style: normal;
   }
 
-  /* podpis twórcy strony: drobny, w kroju etykiet; nazwisko podkreśla się złotą linią po najechaniu */
+  /* podpis twórcy strony: drobny, w kroju etykiet; nazwisko podkreśla się po najechaniu */
   .credit {
     font-family: var(--f-label);
     font-size: 0.66rem;
@@ -250,8 +237,8 @@ const year = new Date().getFullYear();
     place-items: center;
     width: 2.875rem;
     height: 2.875rem;
-    border: 1px solid rgb(210 174 106 / 55%);
-    background: rgb(30 19 11 / 60%);
+    border: 1px solid var(--line-strong);
+    background: rgb(47 30 18 / 70%);
     backdrop-filter: blur(8px);
     color: var(--gold-light);
     opacity: 0;
@@ -276,7 +263,7 @@ const year = new Date().getFullYear();
   .to-top:active {
     border-color: var(--gold-light);
     background: var(--gold-light);
-    color: var(--night);
+    color: var(--choc-4);
   }
 
   .to-top .icon {
