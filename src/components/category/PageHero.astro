@@ -1,0 +1,156 @@
+---
+import type { Category } from '../../data/oferta';
+import { salon } from '../../data/salon';
+import Button from '../ui/Button.astro';
+import Visual from '../Visual.astro';
+
+interface Props {
+  category: Category;
+}
+
+const { category } = Astro.props;
+
+// najkrótszy i najdłuższy czas trwania w tej kategorii, np. „15–90 min”
+const minutes = category.groups.flatMap((group) =>
+  group.variants.flatMap((variant) => (variant.duration.match(/\d+/g) ?? []).map(Number)),
+);
+const facts = [
+  { name: 'Zabiegi', value: category.groups.reduce((sum, group) => sum + group.variants.length, 0) },
+  { name: 'Czas trwania', value: `${Math.min(...minutes)}–${Math.max(...minutes)} min` },
+  { name: 'Ceny i terminy', value: 'w Booksy' },
+];
+---
+
+<section class="page-hero" aria-labelledby="page-title">
+  <div class="container">
+    <nav class="crumbs" aria-label="Ścieżka nawigacji">
+      <ol role="list">
+        <li>
+          <a href="/">Strona główna</a>
+        </li>
+        <li>
+          <a href="/#oferta">Oferta</a>
+        </li>
+        <li aria-current="page">{category.name}</li>
+      </ol>
+    </nav>
+
+    <div class="page-hero__grid">
+      <div>
+        <p class="label" data-rise="1">
+          {category.label}
+        </p>
+        <h1 id="page-title" class="h1 page-hero__title" data-rise="2">
+          {category.name}
+        </h1>
+        <p class="lead page-hero__intro" data-rise="3">
+          {category.intro}
+        </p>
+        <div class="btn-row page-hero__actions" data-rise="4">
+          <Button href={salon.booksy} external>
+            Umów wizytę
+          </Button>
+          <Button href="#zabiegi" variant="ghost">
+            Zabiegi i czas trwania
+          </Button>
+        </div>
+      </div>
+
+      <div class="page-hero__aside" data-rise="5">
+        <Visual
+          photo={category.photo}
+          alt={`${category.name} w salonie Azyl Piękna`}
+          parallax
+          priority
+          width={440}
+          sizes="(min-width: 60rem) 28vw, 100vw"
+        />
+        <dl class="rows rows--pairs page-hero__facts">
+          {facts.map((fact) => (
+            <div>
+              <dt class="label">{fact.name}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    padding-top: calc(var(--header-h) + clamp(1.5rem, 4vw, 3rem));
+  }
+
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0;
+    margin-bottom: clamp(2.5rem, 6vw, 5rem);
+    color: var(--mute);
+    font-size: 0.85rem;
+  }
+
+  .crumbs li + li::before {
+    content: '/';
+    margin-inline: 0.6rem;
+    opacity: 0.6;
+  }
+
+  .crumbs a {
+    color: var(--mute);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--heading);
+    text-decoration: underline;
+  }
+
+  .crumbs [aria-current] {
+    color: var(--text);
+  }
+
+  .page-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    align-items: end;
+  }
+
+  .page-hero__title {
+    margin-top: 1.25rem;
+  }
+
+  .page-hero__intro {
+    max-width: 40rem;
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .page-hero__actions {
+    margin-top: 2.25rem;
+  }
+
+  .page-hero__aside {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .page-hero__facts dd {
+    color: var(--heading);
+    font-family: var(--f-display);
+    font-size: 1.35rem;
+    line-height: 1.3;
+  }
+
+  @media (width < 60rem) {
+    .page-hero__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .page-hero__aside {
+      max-width: 30rem;
+    }
+  }
+</style>

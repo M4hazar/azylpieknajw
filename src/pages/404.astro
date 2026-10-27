@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/ui/Button.astro';
+import { salon } from '../data/salon';
+---
+
+<Base
+  title="Nie ma takiej strony · Azyl Piękna"
+  description="Strona, której szukasz, nie istnieje albo zmieniła adres."
+  noindex
+  footerCta={false}
+>
+  <section class="not-found" aria-labelledby="not-found-title">
+    <div class="container not-found__inner">
+      <img src="/img/sygnet-zloty.svg" alt="" width="884" height="878" />
+      <p class="label">Błąd 404</p>
+      <h1 id="not-found-title" class="h1">
+        Nie ma takiej strony
+      </h1>
+      <p class="lead">Ta strona nie istnieje albo zmieniła adres. Wszystko o salonie znajdziesz na stronie głównej.</p>
+      <div class="btn-row">
+        <Button href="/">Strona główna</Button>
+        <Button href={salon.booksy} variant="ghost" external>
+          Umów wizytę
+        </Button>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .not-found {
+    display: grid;
+    align-items: center;
+    min-height: 100svh;
+    padding-block: calc(var(--header-h) + 2rem) 4rem;
+    text-align: center;
+  }
+
+  .not-found__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .not-found img {
+    width: 6.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .not-found .h1 {
+    margin-top: 1rem;
+  }
+
+  .not-found .lead {
+    max-width: 32rem;
+    margin-block: 1.5rem 2.25rem;
+  }
+
+  .not-found .btn-row {
+    justify-content: center;
+  }
+</style>

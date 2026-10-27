@@ -1,0 +1,147 @@
+---
+// Lista zabiegów kategorii: obok spis grup (na komputerze stoi w miejscu przy przewijaniu), a w grupach opis
+// i warianty z czasem trwania. Ceny są tylko w Booksy.
+import type { Category } from '../../data/oferta';
+
+interface Props {
+  category: Category;
+}
+
+const { category } = Astro.props;
+const groupId = (i: number) => `zabieg-${i + 1}`;
+---
+
+<section id="zabiegi" class="section" aria-labelledby="treatments-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        Zabiegi
+      </p>
+      <nav class="toc" aria-label="Zabiegi na tej stronie" data-reveal>
+        <ol role="list">
+          {category.groups.map((group, i) => (
+            <li>
+              <a href={`#${groupId(i)}`} data-toc={groupId(i)}>
+                {group.name}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </div>
+
+    <div>
+      <h2 id="treatments-title" class="h2" data-split>
+        Co mogę dla Ciebie zrobić
+      </h2>
+      <p class="small treatments__hint" data-reveal>
+        Ceny i wolne terminy sprawdzisz w Booksy.
+      </p>
+
+      {category.groups.map((group, i) => (
+        <article id={groupId(i)} class="group" aria-labelledby={`${groupId(i)}-title`} data-reveal>
+          <h3 id={`${groupId(i)}-title`} class="h3">
+            {group.name}
+          </h3>
+          <div class="group__text prose">
+            {group.text.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+          </div>
+          <ul class="rows rows--pairs group__variants" role="list">
+            {group.variants.map((variant) => (
+              <li>
+                <span>{variant.name}</span>
+                <span class="duration">{variant.duration}</span>
+              </li>
+            ))}
+          </ul>
+          {group.note && <p class="group__note small">{group.note}</p>}
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // spis grup: podświetla grupę, którą właśnie czytasz
+  const links = document.querySelectorAll<HTMLAnchorElement>('[data-toc]');
+  if (links.length) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          links.forEach((link) => link.toggleAttribute('data-active', link.dataset.toc === entry.target.id));
+        }
+      },
+      { rootMargin: '-35% 0px -60% 0px' },
+    );
+    links.forEach((link) => {
+      const group = document.getElementById(link.dataset.toc!);
+      if (group) observer.observe(group);
+    });
+  }
+</script>
+
+<style>
+  .toc ol {
+    border-left: 1px solid var(--line);
+  }
+
+  .toc a {
+    position: relative;
+    display: block;
+    padding: 0.4rem 0 0.4rem 1.25rem;
+    color: var(--mute);
+    text-decoration: none;
+    transition: color var(--t-fast);
+  }
+
+  .toc a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -1px;
+    width: 1px;
+    background: var(--gold-mid);
+    transform: scaleY(0);
+    transition: transform var(--t-base) var(--ease-out);
+  }
+
+  .toc a:hover,
+  .toc a[data-active] {
+    color: var(--heading);
+  }
+
+  .toc a[data-active]::before {
+    transform: none;
+  }
+
+  .treatments__hint {
+    margin-top: 1rem;
+  }
+
+  .group {
+    margin-top: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .group__text {
+    margin-top: 1rem;
+  }
+
+  .group__variants {
+    max-width: 40rem;
+    margin-top: 1.5rem;
+  }
+
+  .group__note {
+    margin-top: 1rem;
+  }
+
+  @media (width < 60rem) {
+    .toc {
+      display: none;
+    }
+  }
+</style>

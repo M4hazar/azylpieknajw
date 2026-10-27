@@ -1,0 +1,106 @@
+---
+import { salon } from '../../data/salon';
+import Button from '../ui/Button.astro';
+import Visual from '../Visual.astro';
+
+const facts = [
+  { name: 'Wykształcenie', value: 'Magister kosmetologii' },
+  { name: 'Specjalizacja', value: 'Trychologia' },
+  { name: 'Salon', value: `${salon.name}, Lubin` },
+];
+---
+
+<section id="julia" class="section" aria-labelledby="julia-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        Poznaj Julię
+      </p>
+      <figure class="julia__portrait" data-reveal>
+        <Visual
+          photo="julia"
+          alt="Julia Wróbel, właścicielka salonu Azyl Piękna, w białej marynarce"
+          position="top"
+          parallax
+          width={440}
+          sizes="(min-width: 60rem) 28vw, 100vw"
+        />
+        <figcaption class="julia__caption">{`${salon.owner} · ${salon.role.toLowerCase()}`}</figcaption>
+      </figure>
+    </div>
+
+    <div>
+      <h2 id="julia-title" class="h2" data-split>
+        Dzień dobry, jestem Julia
+      </h2>
+
+      <div class="julia__text prose" data-reveal>
+        <p class="lead">
+          Jestem magistrem kosmetologii i trychologiem, a Azyl Piękna to mój salon w Lubinie. Stworzyłam go jako
+          miejsce, w którym można na chwilę odłożyć codzienność i zająć się sobą.
+        </p>
+        <p>
+          Najważniejsza jest dla mnie rozmowa. Zanim zaproponuję zabieg, pytam o Twoją codzienną pielęgnację, o to, co
+          Ci przeszkadza, i czego oczekujesz. Dzięki temu pielęgnacja jest dobrana do Ciebie, a nie do schematu.
+        </p>
+        <p>
+          Jako trycholog zajmuję się też skórą głowy: prowadzę konsultacje z trichoskopią i rytuały Head Spa, w których
+          dbanie o włosy łączy się z odpoczynkiem.
+        </p>
+      </div>
+
+      <dl class="rows rows--pairs julia__facts" data-reveal>
+        {facts.map((fact) => (
+          <div>
+            <dt class="label">{fact.name}</dt>
+            <dd>{fact.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <div class="julia__actions" data-reveal>
+        <Button href={salon.booksy} external>
+          Umów wizytę
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .julia__caption {
+    margin-top: 1rem;
+    color: var(--mute);
+    font-family: var(--f-label);
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .julia__text {
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .julia__facts {
+    max-width: 40rem;
+    margin-top: clamp(2.5rem, 4vw, 3rem);
+  }
+
+  .julia__facts dd {
+    color: var(--heading);
+    font-family: var(--f-display);
+    font-size: 1.3rem;
+    line-height: 1.3;
+    text-align: right;
+  }
+
+  .julia__actions {
+    margin-top: 2.5rem;
+  }
+
+  @media (width < 60rem) {
+    .julia__portrait {
+      max-width: 30rem;
+    }
+  }
+</style>

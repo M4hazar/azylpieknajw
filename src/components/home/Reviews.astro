@@ -1,0 +1,101 @@
+---
+// Opinie: tylko średnia ocen z Booksy (bez cytatów, dopóki klientki nie zgodzą się na ich publikację)
+// i zaproszenie na Instagram.
+import { salon } from '../../data/salon';
+import Button from '../ui/Button.astro';
+---
+
+<section id="opinie" class="section" aria-labelledby="reviews-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        Opinie
+      </p>
+    </div>
+    <div>
+      <h2 id="reviews-title" class="h2" data-split>
+        Opinie po wizytach w salonie
+      </h2>
+
+      <div class="reviews__grid">
+        <div class="reviews__item" data-reveal>
+          <p class="rating">
+            {salon.reviews.average}
+            <span class="rating__scale">/ 5</span>
+          </p>
+          <p class="reviews__text">
+            {`Średnia ocen z ${salon.reviews.count} opinii wystawionych w Booksy. Stan na ${salon.reviews.asOf}.`}
+          </p>
+          <Button href={salon.booksy} variant="ghost" external>
+            Przeczytaj opinie w Booksy
+          </Button>
+        </div>
+
+        <div class="reviews__item" data-reveal>
+          <p class="reviews__handle">{salon.instagram.label}</p>
+          <p class="reviews__text">Zdjęcia z salonu i z codziennej pracy publikuję na Instagramie.</p>
+          <Button href={salon.instagram.href} variant="ghost" external>
+            Zobacz Instagram
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .reviews__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem clamp(1.5rem, 4vw, 3.5rem);
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .reviews__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .rating,
+  .reviews__handle {
+    color: var(--heading);
+    font-family: var(--f-display);
+    font-weight: 300;
+    line-height: 1;
+  }
+
+  .rating {
+    font-size: clamp(4rem, 3rem + 4vw, 6rem);
+  }
+
+  .rating__scale {
+    margin-left: 0.2em;
+    color: var(--mute);
+    font-size: 0.3em;
+    font-weight: 400;
+  }
+
+  .reviews__handle {
+    padding-block: clamp(1.4rem, 1rem + 1.5vw, 2.3rem) 0.4rem;
+    font-size: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
+  }
+
+  .reviews__text {
+    max-width: 24rem;
+    margin-block: 1rem 2rem;
+    color: var(--mute);
+  }
+
+  .reviews__item :global(.btn) {
+    margin-top: auto;
+  }
+
+  @media (width < 48rem) {
+    .reviews__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

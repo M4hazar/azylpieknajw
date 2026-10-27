@@ -1,0 +1,10 @@
+/* TEAM */
+Projekt i realizacja: Paweł Hejna
+GitHub: https://github.com/m4hazar
+
+/* SITE */
+Ostatnia aktualizacja: 2026-10-27
+Język: polski
+Technologia: Astro 7 (strona statyczna), TypeScript, GSAP 3.15
+Kroje pisma: Cormorant Garamond, Tenor Sans, Source Sans 3 (Fontsource, hostowane lokalnie)
+Standardy: HTML5, CSS, WCAG 2.2 AA

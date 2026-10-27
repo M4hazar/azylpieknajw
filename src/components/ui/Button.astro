@@ -1,0 +1,24 @@
+---
+import { NEW_TAB } from '../../data/salon';
+
+interface Props {
+  href: string;
+  variant?: 'primary' | 'ghost';
+  size?: 'normal' | 'small';
+  /** odnośnik do innej witryny: otwiera się w nowej karcie */
+  external?: boolean;
+  class?: string;
+}
+
+const { href, variant = 'primary', size = 'normal', external = false, class: className } = Astro.props;
+---
+
+<a
+  class:list={['btn', `btn--${variant}`, { 'btn--small': size === 'small' }, className]}
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener' : undefined}
+>
+  <slot />
+  {external && <span class="visually-hidden"> {NEW_TAB}</span>}
+</a>

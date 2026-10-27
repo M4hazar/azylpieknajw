@@ -1,0 +1,118 @@
+---
+import { salon, NEW_TAB } from '../../data/salon';
+import Button from '../ui/Button.astro';
+---
+
+<section id="kontakt" class="section" aria-labelledby="contact-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        Kontakt i dojazd
+      </p>
+    </div>
+    <div>
+      <h2 id="contact-title" class="h2" data-split>
+        Zapraszam do salonu
+      </h2>
+      <address class="contact__address" data-reveal>
+        {salon.name}
+        <br />
+        {salon.address.street}
+        <br />
+        {`${salon.address.postalCode} ${salon.address.city}`}
+      </address>
+
+      <dl class="rows contact__list" data-reveal>
+        <div>
+          <dt class="label">Rezerwacje</dt>
+          <dd>
+            <a href={salon.booksy} target="_blank" rel="noopener">
+              azylpieknajw.booksy.com<span class="visually-hidden"> {NEW_TAB}</span>
+            </a>
+            <span class="contact__hint">Wolne terminy, ceny i godziny pracy salonu na bieżąco.</span>
+          </dd>
+        </div>
+        <div>
+          <dt class="label">Telefon</dt>
+          <dd>
+            <a href={salon.phone.href}>{salon.phone.label}</a>
+          </dd>
+        </div>
+        <div>
+          <dt class="label">Instagram</dt>
+          <dd>
+            <a href={salon.instagram.href} target="_blank" rel="noopener">
+              {salon.instagram.label}
+              <span class="visually-hidden"> {NEW_TAB}</span>
+            </a>
+          </dd>
+        </div>
+      </dl>
+
+      <div class="btn-row contact__actions" data-reveal>
+        <Button href={salon.booksy} external>
+          Umów wizytę
+        </Button>
+        <Button href={salon.directions} variant="ghost" external>
+          Wyznacz trasę
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact__address {
+    margin-block: clamp(1.5rem, 3vw, 2.25rem) clamp(2rem, 4vw, 3rem);
+    color: var(--heading);
+    font-family: var(--f-display);
+    font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
+    font-style: normal;
+    line-height: 1.3;
+  }
+
+  .contact__list {
+    max-width: 44rem;
+  }
+
+  .contact__list > div {
+    display: grid;
+    grid-template-columns: 10rem minmax(0, 1fr);
+    gap: 0.35rem 1.5rem;
+    align-items: baseline;
+  }
+
+  .contact__list a {
+    color: var(--heading);
+    font-family: var(--f-display);
+    font-size: 1.4rem;
+    line-height: 1.3;
+    text-decoration: none;
+    background: linear-gradient(currentcolor, currentcolor) 0 100% / 0 1px no-repeat;
+    transition:
+      background-size var(--t-base) var(--ease-out),
+      color var(--t-fast);
+  }
+
+  .contact__list a:hover {
+    background-size: 100% 1px;
+    color: var(--gold-light);
+  }
+
+  .contact__hint {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--mute);
+    font-size: var(--fs-small);
+  }
+
+  .contact__actions {
+    margin-top: 2.5rem;
+  }
+
+  @media (width < 36rem) {
+    .contact__list > div {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

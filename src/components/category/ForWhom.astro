@@ -1,0 +1,59 @@
+---
+// Dla kogo jest zabieg i jak się do niego przygotować: dwie sekcje w tym samym układzie.
+import type { Category } from '../../data/oferta';
+
+interface Props {
+  category: Category;
+}
+
+const { category } = Astro.props;
+---
+
+<section class="section" aria-labelledby="for-whom-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        Dla kogo
+      </p>
+    </div>
+    <div>
+      <h2 id="for-whom-title" class="h2" data-split>
+        Kiedy warto przyjść
+      </h2>
+      <ul class="rows list" role="list">
+        {category.forWhom.map((item) => (
+          <li class="lead" data-reveal>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="prep-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        Przygotowanie
+      </p>
+    </div>
+    <div>
+      <h2 id="prep-title" class="h2" data-split>
+        {category.preparation.title}
+      </h2>
+      <ol class="rows rows--numbered list" role="list">
+        {category.preparation.items.map((item) => (
+          <li data-reveal>{item}</li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .list {
+    max-width: 44rem;
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+</style>

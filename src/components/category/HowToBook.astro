@@ -1,0 +1,55 @@
+---
+import { salon } from '../../data/salon';
+import Button from '../ui/Button.astro';
+
+const steps = [
+  { name: 'Otwórz Booksy', text: 'Profil salonu otworzy się w nowej karcie, bez zakładania konta na tej stronie.' },
+  { name: 'Wybierz zabieg i termin', text: 'Przy każdym zabiegu zobaczysz cenę, czas trwania i wolne terminy.' },
+  { name: 'Przyjdź do salonu', text: `Zapraszam na ${salon.address.street} w Lubinie.` },
+];
+---
+
+<section class="section" aria-labelledby="how-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        Rezerwacja
+      </p>
+    </div>
+    <div>
+      <h2 id="how-title" class="h2" data-split>
+        Jak się umówić
+      </h2>
+      <p class="lead how__lead" data-reveal>
+        Wszystkie wizyty rezerwujesz online w Booksy. Jeśli wolisz porozmawiać przed rezerwacją, zadzwoń.
+      </p>
+      <ol class="steps" role="list">
+        {steps.map((step) => (
+          <li data-reveal>
+            <h3>{step.name}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="btn-row how__actions" data-reveal>
+        <Button href={salon.booksy} external>
+          Umów wizytę
+        </Button>
+        <Button href={salon.phone.href} variant="ghost">
+          {salon.phone.label}
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .how__lead {
+    max-width: 40rem;
+    margin-block: clamp(1.5rem, 3vw, 2.25rem) clamp(2rem, 4vw, 3rem);
+  }
+
+  .how__actions {
+    margin-top: 2.5rem;
+  }
+</style>

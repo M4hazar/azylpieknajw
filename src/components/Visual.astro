@@ -1,0 +1,49 @@
+---
+// Zdjęcie z salonu w ramce w proporcjach portretu (4:5). Jeśli pliku nie ma w src/assets/zdjecia, nic się nie wyświetla:
+// strona nie pokazuje zdjęć zastępczych. Obraz jest przycinany już przy budowaniu, więc telefon nie pobiera
+// szerokiego pliku, z którego widać tylko wąski pas.
+import { Picture } from 'astro:assets';
+import { photo as findPhoto } from '../data/obrazy';
+
+const RATIO = 4 / 5;
+
+interface Props {
+  /** nazwa pliku w src/assets/zdjecia, bez rozszerzenia */
+  photo: string;
+  /** opis zdjęcia */
+  alt: string;
+  /** największa szerokość obrazu na ekranie (px CSS) */
+  width: number;
+  sizes: string;
+  /** obraz widoczny od razu po wejściu na stronę */
+  priority?: boolean;
+  /** ustawienie zdjęcia przy przycinaniu (wartości jak w sharp i object-position, np. "top") */
+  position?: string;
+  /** obraz przesuwa się wolniej niż strona (src/scripts/motion.ts) */
+  parallax?: boolean;
+  class?: string;
+}
+
+const { photo, alt, width, sizes, priority = false, position, parallax = false, class: className } = Astro.props;
+
+const src = findPhoto(photo);
+// dwukrotność szerokości dla ekranów o dużej gęstości, ale nie więcej, niż pozwala plik źródłowy
+const w = src && Math.round(Math.min(width * 2, src.width, src.height * RATIO));
+---
+
+{src && w && (
+  <div class:list={['frame', className]} data-parallax={parallax || undefined}>
+    <Picture
+      src={src}
+      alt={alt}
+      width={w}
+      height={Math.round(w / RATIO)}
+      fit="cover"
+      position={position}
+      formats={['avif', 'webp']}
+      sizes={sizes}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+    />
+  </div>
+)}

@@ -1,0 +1,88 @@
+---
+// Szkielet każdej podstrony: meta, Open Graph, dane strukturalne, kroje pisma, nagłówek, stopka
+// i elementy stałe (pasek rezerwacji na telefonie, informacja o cookies).
+import '@fontsource-variable/cormorant-garamond/wght.css';
+import '@fontsource-variable/cormorant-garamond/wght-italic.css';
+import '@fontsource-variable/source-sans-3/wght.css';
+import '@fontsource/tenor-sans/latin-400.css';
+import '@fontsource/tenor-sans/latin-ext-400.css';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import cormorantLatin from '@fontsource-variable/cormorant-garamond/files/cormorant-garamond-latin-wght-normal.woff2?url';
+import sourceSansLatin from '@fontsource-variable/source-sans-3/files/source-sans-3-latin-wght-normal.woff2?url';
+import boot from '../scripts/boot.js?raw';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BookingBar from '../components/BookingBar.astro';
+import CookieNotice from '../components/CookieNotice.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** strona główna z lotem ptaka */
+  home?: boolean;
+  /** dane strukturalne schema.org */
+  schema?: object | object[];
+  /** strona poza indeksem wyszukiwarek (404) */
+  noindex?: boolean;
+  /** wezwanie do rezerwacji nad stopką */
+  footerCta?: boolean;
+}
+
+const { title, description, home = false, schema, noindex = false, footerCta = true } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og-image.jpg', Astro.site);
+---
+
+<!doctype html>
+<html lang="pl" data-intro={home ? '' : undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Paweł Hejna" />
+    <meta name="theme-color" content="#3D2616" />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <link rel="author" href="/humans.txt" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pl_PL" />
+    <meta property="og:site_name" content="Azyl Piękna" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Logo salonu Azyl Piękna: złote litery JW w okręgu z kolibrem" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href={cormorantLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={sourceSansLatin} as="font" type="font/woff2" crossorigin />
+
+    <script is:inline set:html={boot} />
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#tresc">
+      Przejdź do treści
+    </a>
+    <div class="backdrop" aria-hidden="true"></div>
+    <Header home={home} />
+    <main id="tresc">
+      <slot />
+    </main>
+    <Footer home={home} cta={footerCta} />
+    <BookingBar />
+    <CookieNotice />
+  </body>
+</html>
+
+<script>
+  import '../scripts/site.ts';
+</script>

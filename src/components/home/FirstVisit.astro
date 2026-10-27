@@ -1,0 +1,64 @@
+---
+const steps = [
+  {
+    name: 'Rozmowa',
+    text: 'Pytam o Twoją codzienną pielęgnację, zdrowie, leki i to, czego oczekujesz. Przy zabiegach na twarz i skórę głowy oglądam też skórę.',
+  },
+  {
+    name: 'Dobór pielęgnacji',
+    text: 'Proponuję zabieg i kosmetyki dopasowane do stanu skóry. Mówię, co będę robić i dlaczego.',
+  },
+  {
+    name: 'Zabieg',
+    text: 'Pracuję spokojnie i bez pośpiechu. W każdej chwili możesz zapytać o kolejny etap.',
+  },
+  {
+    name: 'Zalecenia',
+    text: 'Na koniec podpowiadam, jak dbać o skórę w domu i kiedy warto przyjść ponownie.',
+  },
+];
+---
+
+<section class="section" aria-labelledby="visit-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        Pierwsza wizyta
+      </p>
+    </div>
+    <div>
+      <h2 id="visit-title" class="h2" data-split>
+        Jak wygląda pierwsza wizyta
+      </h2>
+      <p class="lead visit__lead" data-reveal>
+        Nie musisz wiedzieć, jaki zabieg wybrać. Od tego jest rozmowa na początku wizyty.
+      </p>
+
+      <ol class="steps" role="list">
+        {steps.map((step) => (
+          <li data-reveal>
+            <h3>{step.name}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+
+      <p class="visit__note small" data-reveal>
+        Przebieg zależy od zabiegu: przed manicure rozmowa zajmuje chwilę, a podczas konsultacji trychologicznej jest
+        jej najważniejszą częścią.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .visit__lead {
+    max-width: 40rem;
+    margin-block: clamp(1.5rem, 3vw, 2.25rem) clamp(2rem, 4vw, 3rem);
+  }
+
+  .visit__note {
+    max-width: 40rem;
+    margin-top: 1.75rem;
+  }
+</style>

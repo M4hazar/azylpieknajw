@@ -1,0 +1,46 @@
+---
+// Pasek rezerwacji na telefonie: pojawia się po przewinięciu początku strony i chowa przy stopce,
+// w której jest duży przycisk rezerwacji (src/scripts/ui.ts).
+import { salon, NEW_TAB } from '../data/salon';
+---
+
+<div class="booking-bar" data-booking-bar>
+  <a class="btn btn--primary booking-bar__link" href={salon.booksy} target="_blank" rel="noopener">
+    Umów wizytę w Booksy<span class="visually-hidden"> {NEW_TAB}</span>
+  </a>
+</div>
+
+<style>
+  .booking-bar {
+    position: fixed;
+    z-index: 45;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    padding: 0.625rem var(--gutter) calc(0.625rem + env(safe-area-inset-bottom));
+    pointer-events: none;
+    translate: 0 110%;
+    transition: translate 0.5s var(--ease-out);
+  }
+
+  .booking-bar[data-visible] {
+    translate: 0;
+  }
+
+  .booking-bar__link {
+    width: 100%;
+    box-shadow: 0 10px 30px -10px rgb(20 12 6 / 70%);
+    pointer-events: auto;
+  }
+
+  @media (width < 60rem) {
+    .booking-bar {
+      display: block;
+    }
+  }
+
+  :global(.intro) .booking-bar {
+    visibility: hidden;
+  }
+</style>

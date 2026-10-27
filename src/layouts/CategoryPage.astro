@@ -1,0 +1,56 @@
+---
+// Podstrona jednej kategorii zabiegów. Treść pochodzi z src/data/oferta.ts; w slocie można dodać sekcje
+// właściwe tylko dla tej kategorii (pojawiają się pod nagłówkiem strony).
+import Base from './Base.astro';
+import PageHero from '../components/category/PageHero.astro';
+import Treatments from '../components/category/Treatments.astro';
+import ForWhom from '../components/category/ForWhom.astro';
+import HowToBook from '../components/category/HowToBook.astro';
+import OtherCategories from '../components/category/OtherCategories.astro';
+import { categoryBySlug } from '../data/oferta';
+import { salon } from '../data/salon';
+
+interface Props {
+  slug: string;
+}
+
+const category = categoryBySlug(Astro.props.slug);
+const url = new URL(`/${category.slug}/`, salon.url).href;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Strona główna', item: salon.url },
+      { '@type': 'ListItem', position: 2, name: category.name, item: url },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: category.name,
+    description: category.seo.description,
+    url,
+    areaServed: { '@type': 'City', name: 'Lubin' },
+    provider: { '@type': 'BeautySalon', '@id': `${salon.url}#salon`, name: salon.name, url: salon.url },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: category.name,
+      itemListElement: category.groups.map((group) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: group.name },
+      })),
+    },
+  },
+];
+---
+
+<Base title={category.seo.title} description={category.seo.description} schema={schema}>
+  <PageHero category={category} />
+  <slot />
+  <Treatments category={category} />
+  <ForWhom category={category} />
+  <HowToBook />
+  <OtherCategories current={category} />
+</Base>

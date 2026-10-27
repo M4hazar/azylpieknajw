@@ -1,0 +1,306 @@
+---
+import { categories } from '../data/oferta';
+import { gallery } from '../data/galeria';
+import { salon, NEW_TAB } from '../data/salon';
+import Button from './ui/Button.astro';
+import Icon from './ui/Icon.astro';
+
+interface Props {
+  home?: boolean;
+  /** wezwanie do rezerwacji nad stopką (na 404 zbędne, bo strona ma własne przyciski) */
+  cta?: boolean;
+}
+
+const { home = false, cta = true } = Astro.props;
+const anchor = (id: string) => (home ? `#${id}` : `/#${id}`);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    {cta && (
+      <div class="split footer-cta">
+        <p class="label">Rezerwacja</p>
+        <div>
+          <p class="h2">Zarezerwuj chwilę dla siebie</p>
+          <p class="footer-cta__text lead">Wolne terminy, ceny i opisy wszystkich zabiegów znajdziesz w Booksy.</p>
+          <Button href={salon.booksy} external>
+            Umów wizytę
+          </Button>
+        </div>
+      </div>
+    )}
+
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="/img/sygnet-zloty.svg" alt="" width="884" height="878" />
+        <p class="footer-brand__name">{salon.name}</p>
+        <p class="footer-brand__text">Salon kosmetologiczny i trychologiczny Julii Wróbel w Lubinie.</p>
+      </div>
+
+      <nav class="footer-col" aria-labelledby="stopka-oferta">
+        <p class="footer-col__title label" id="stopka-oferta">
+          Oferta
+        </p>
+        <ul role="list">
+          {categories.map((category) => (
+            <li>
+              <a href={`/${category.slug}/`}>{category.name}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-labelledby="stopka-salon">
+        <p class="footer-col__title label" id="stopka-salon">
+          Salon
+        </p>
+        <ul role="list">
+          <li>
+            <a href={anchor('julia')}>Poznaj Julię</a>
+          </li>
+          {gallery.length > 0 && (
+            <li>
+              <a href={anchor('galeria')}>Galeria</a>
+            </li>
+          )}
+          <li>
+            <a href={anchor('kontakt')}>Kontakt i dojazd</a>
+          </li>
+          <li>
+            <a href="/polityka-prywatnosci/">Polityka prywatności</a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="footer-col footer-col--contact">
+        <p class="footer-col__title label">Kontakt</p>
+        <address>
+          <ul role="list">
+            <li>
+              <a href={salon.directions} target="_blank" rel="noopener">
+                {salon.address.street}
+                <br />
+                {`${salon.address.postalCode} ${salon.address.city}`}
+                <span class="visually-hidden">(wyznacz trasę w Mapach Google, {NEW_TAB})</span>
+              </a>
+            </li>
+            <li>
+              <a href={salon.phone.href}>{salon.phone.label}</a>
+            </li>
+            <li>
+              <a href={salon.instagram.href} target="_blank" rel="noopener">
+                Instagram {salon.instagram.label}
+                <span class="visually-hidden"> {NEW_TAB}</span>
+              </a>
+            </li>
+          </ul>
+        </address>
+      </div>
+    </div>
+
+    <div class="footer-legal">
+      <p>
+        {salon.owner} <i>·</i> NIP {salon.nip} <i>·</i> REGON {salon.regon} <i>·</i>
+        {`${salon.address.street}, ${salon.address.postalCode} ${salon.address.city}`}
+      </p>
+      <p class="credit">
+        © {year} {salon.name} <i>·</i> Projekt i realizacja:{' '}
+        <a href="https://github.com/m4hazar" target="_blank" rel="noopener author">
+          Paweł Hejna<span class="visually-hidden"> {NEW_TAB}</span>
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <a class="to-top" href="#top" data-to-top>
+    <Icon name="arrow-up" />
+    <span class="visually-hidden">Na górę strony</span>
+  </a>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    padding-block: var(--section) calc(2rem + env(safe-area-inset-bottom));
+  }
+
+  .footer-cta {
+    padding-bottom: var(--section);
+  }
+
+  .footer-cta__text {
+    max-width: 32rem;
+    margin-block: 1.25rem 2.25rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    gap: 2.5rem 2rem;
+    padding-block: 3rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .footer-brand img {
+    width: 3.25rem;
+    height: auto;
+  }
+
+  .footer-brand__name {
+    margin-top: 1rem;
+    color: var(--heading);
+    font-family: var(--f-display);
+    font-size: 1.75rem;
+    line-height: 1.1;
+  }
+
+  .footer-brand__text {
+    max-width: 17rem;
+    margin-top: 0.5rem;
+    color: var(--mute);
+    font-size: var(--fs-small);
+  }
+
+  .footer-col__title {
+    margin-bottom: 0.9rem;
+  }
+
+  .footer-col address {
+    font-style: normal;
+  }
+
+  .footer-col li + li {
+    margin-top: 0.35rem;
+  }
+
+  .footer-col a {
+    display: inline-block;
+    padding-block: 0.3rem;
+    color: var(--text);
+    line-height: 1.5;
+    text-decoration: none;
+    transition: color var(--t-fast);
+  }
+
+  .footer-col a:hover {
+    color: var(--gold-light);
+  }
+
+  .footer-legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    justify-content: space-between;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+    color: var(--mute);
+    font-size: 0.82rem;
+  }
+
+  .footer-legal i {
+    margin-inline: 0.35em;
+    font-style: normal;
+  }
+
+  /* podpis twórcy strony: drobny, w kroju etykiet; nazwisko podkreśla się po najechaniu */
+  .credit {
+    font-family: var(--f-label);
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .credit a {
+    padding-bottom: 3px;
+    background: linear-gradient(currentcolor, currentcolor) 0 100% / 0 1px no-repeat;
+    color: var(--gold-mid);
+    text-decoration: none;
+    transition:
+      background-size var(--t-base) ease,
+      color var(--t-fast);
+  }
+
+  .credit a:hover,
+  .credit a:focus-visible {
+    background-size: 100% 1px;
+    color: var(--gold-light);
+  }
+
+  /* strzałka „na górę”: kwadrat w rogu, pojawia się po przewinięciu, po najechaniu wypełnia się złotem */
+  .to-top {
+    position: fixed;
+    z-index: 40;
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+    display: grid;
+    place-items: center;
+    width: 2.875rem;
+    height: 2.875rem;
+    border: 1px solid var(--line-strong);
+    background: rgb(47 30 18 / 70%);
+    backdrop-filter: blur(8px);
+    color: var(--gold-light);
+    opacity: 0;
+    visibility: hidden;
+    translate: 0 0.6rem;
+    transition:
+      opacity 0.35s,
+      visibility 0.35s,
+      translate 0.35s var(--ease-out),
+      background-color 0.35s,
+      border-color 0.35s,
+      color 0.35s;
+  }
+
+  .to-top[data-visible] {
+    opacity: 1;
+    visibility: visible;
+    translate: 0;
+  }
+
+  .to-top:hover,
+  .to-top:active {
+    border-color: var(--gold-light);
+    background: var(--gold-light);
+    color: var(--choc-4);
+  }
+
+  .to-top .icon {
+    width: 1.1rem;
+    transition: translate 0.35s var(--ease-out);
+  }
+
+  .to-top:hover .icon {
+    translate: 0 -3px;
+  }
+
+  /* na telefonie i tablecie strzałka stoi nad paskiem rezerwacji, a stopka kończy się nad nim */
+  @media (width < 60rem) {
+    .site-footer {
+      padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+    }
+
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+
+    .to-top {
+      bottom: calc(5rem + env(safe-area-inset-bottom));
+    }
+  }
+
+  @media (width < 36rem) {
+    .footer-col--contact {
+      grid-column: 1 / -1;
+    }
+
+    .footer-legal {
+      flex-direction: column;
+    }
+  }
+</style>

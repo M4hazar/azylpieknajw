@@ -1,0 +1,83 @@
+---
+// Lista kategorii zabiegów: nazwa i krótki opis, cały wiersz prowadzi do podstrony. Na stronie głównej (oferta)
+// i na podstronach (pozostałe zabiegi).
+import type { Category } from '../data/oferta';
+
+interface Props {
+  categories: Category[];
+  /** dłuższy opis ze strony głównej albo krótka linijka z menu */
+  detail: 'teaser' | 'menuLine';
+}
+
+const { categories, detail } = Astro.props;
+---
+
+<ul class="categories" role="list">
+  {categories.map((category) => (
+    <li data-reveal>
+      <h3 class="categories__name">
+        <a href={`/${category.slug}/`}>{category.name}</a>
+      </h3>
+      <p class="categories__text">{category[detail]}</p>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .categories {
+    border-top: 1px solid var(--line);
+  }
+
+  .categories li {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 0.5rem 2rem;
+    align-items: baseline;
+    padding-block: clamp(1.4rem, 2.5vw, 2rem);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .categories__name {
+    color: var(--heading);
+    font-family: var(--f-display);
+    font-size: var(--fs-h3);
+    font-weight: 400;
+    line-height: 1.12;
+    transition:
+      color var(--t-base),
+      translate var(--t-base) var(--ease-out);
+  }
+
+  .categories__name a {
+    text-decoration: none;
+  }
+
+  /* cały wiersz jest klikalny, a czytnik ekranu czyta tylko nazwę */
+  .categories__name a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .categories__text {
+    color: var(--mute);
+  }
+
+  @media (hover: hover) {
+    .categories li:hover .categories__name {
+      color: var(--gold-light);
+      translate: 0.4rem 0;
+    }
+  }
+
+  .categories li:focus-within .categories__name {
+    color: var(--gold-light);
+  }
+
+  @media (width < 48rem) {
+    .categories li {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

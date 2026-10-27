@@ -1,0 +1,37 @@
+---
+// Ikony liniowe w jednym stylu (kreska 1,4 px, zaokrąglone końce). Dekoracyjne: zawsze z aria-hidden.
+const paths = {
+  arrow: 'M1 8h20M15 2l6 6-6 6',
+  'arrow-left': 'M23 8H3M9 2 3 8l6 6',
+  'arrow-up': 'M12 21V3M6 9l6-6 6 6',
+  chevron: 'm6 9 6 6 6-6',
+  close: 'M5 5l14 14M19 5 5 19',
+  replay: 'M3.5 12a8.5 8.5 0 1 0 2.6-6.1M3.5 3.5v4.6h4.6',
+} as const;
+
+const viewBoxes: Partial<Record<keyof typeof paths, string>> = {
+  arrow: '0 0 22 16',
+  'arrow-left': '0 0 24 16',
+};
+
+interface Props {
+  name: keyof typeof paths;
+  class?: string;
+}
+
+const { name, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['icon', className]}
+  viewBox={viewBoxes[name] ?? '0 0 24 24'}
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d={paths[name]}></path>
+</svg>

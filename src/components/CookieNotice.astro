@@ -1,0 +1,76 @@
+---
+// Informacja, że strona nie używa cookies. Pojawia się raz; zamknięcie zapamiętuje localStorage (src/scripts/ui.ts).
+---
+
+<section class="cookie-notice" aria-label="Informacja o plikach cookies" data-cookie-notice hidden>
+  <p>
+    Ta strona nie używa plików cookies ani narzędzi śledzących. <a href="/polityka-prywatnosci/">Więcej</a>
+  </p>
+  <button type="button" class="btn btn--primary btn--small">
+    Rozumiem
+  </button>
+</section>
+
+<style>
+  .cookie-notice {
+    position: fixed;
+    z-index: 60;
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+    left: max(1rem, env(safe-area-inset-left));
+    display: flex;
+    gap: 1rem 1.25rem;
+    align-items: center;
+    width: min(27rem, calc(100% - 2rem));
+    padding: 1rem 1rem 1rem 1.25rem;
+    border: 1px solid var(--line-strong);
+    background: var(--panel);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 18px 40px rgb(20 12 6 / 35%);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    animation: notice-in 0.7s var(--ease-out) both;
+  }
+
+  .cookie-notice[hidden] {
+    display: none;
+  }
+
+  .cookie-notice p {
+    flex: 1;
+  }
+
+  .cookie-notice a {
+    color: var(--gold-light);
+  }
+
+  .cookie-notice button {
+    flex: none;
+  }
+
+  @keyframes notice-in {
+    from {
+      opacity: 0;
+      translate: 0 1.25rem;
+    }
+  }
+
+  /* na telefonie komunikat ustępuje miejsca paskowi rezerwacji, kiedy ten się pojawi */
+  @media (width < 60rem) {
+    .cookie-notice {
+      transition: bottom 0.5s var(--ease-out);
+    }
+
+    :global(html:has([data-booking-bar][data-visible])) .cookie-notice {
+      bottom: calc(5rem + env(safe-area-inset-bottom));
+    }
+  }
+
+  @media (width < 36rem) {
+    .cookie-notice {
+      gap: 0.875rem;
+      padding: 0.75rem 0.75rem 0.75rem 1rem;
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+  }
+</style>

@@ -1,0 +1,606 @@
+---
+// Nagłówek strony: logo, menu z rozwijaną ofertą, przycisk rezerwacji i menu na telefonie (okno <dialog>).
+// Zachowanie (tło po przewinięciu, chowanie przy przewijaniu, menu) jest w src/scripts/header.ts.
+import { categories } from '../data/oferta';
+import { gallery } from '../data/galeria';
+import { salon, NEW_TAB } from '../data/salon';
+import Button from './ui/Button.astro';
+import Icon from './ui/Icon.astro';
+
+interface Props {
+  /** strona główna: logo w nagłówku pojawia się dopiero, gdy duży sygnet zniknie z ekranu */
+  home?: boolean;
+}
+
+const { home = false } = Astro.props;
+const anchor = (id: string) => (home ? `#${id}` : `/#${id}`);
+const links = [
+  { label: 'Julia', href: anchor('julia') },
+  ...(gallery.length ? [{ label: 'Galeria', href: anchor('galeria') }] : []),
+  { label: 'Kontakt', href: anchor('kontakt') },
+];
+const current = Astro.url.pathname;
+// na stronie głównej logo przewija do góry zamiast wczytywać ją od nowa
+const homeHref = home ? '#top' : '/';
+---
+
+<header class="site-header" data-header data-brand={home ? 'hidden' : undefined}>
+  <div class="site-header__bar container">
+    <a class="brand" href={homeHref} aria-current={current === '/' ? 'page' : undefined}>
+      <img class="brand__mark" src="/img/sygnet-zloty.svg" alt="" width="884" height="878" />
+      <span class="brand__text">
+        <span class="brand__name">{salon.name}</span>
+        <span class="brand__sub">Julia Wróbel · Lubin</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Menu główne">
+      <ul class="nav__list" role="list">
+        <li class="nav__offer" data-offer>
+          <button type="button" class="nav__link" aria-expanded="false" aria-controls="menu-oferta">
+            Oferta <Icon name="chevron" class="nav__chevron" />
+          </button>
+          <div class="dropdown" id="menu-oferta" hidden>
+            <ul class="dropdown__list" role="list">
+              {categories.map((category) => (
+                <li>
+                  <a href={`/${category.slug}/`} aria-current={current === `/${category.slug}/` ? 'page' : undefined}>
+                    <span class="dropdown__name">{category.name}</span>
+                    <span class="dropdown__line">{category.menuLine}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a class="link dropdown__all" href={anchor('oferta')}>
+              Cała oferta
+            </a>
+          </div>
+        </li>
+        {links.map((link) => (
+          <li>
+            <a class="nav__link" href={link.href}>
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="header-cta" href={salon.booksy} target="_blank" rel="noopener">
+        Umów wizytę<span class="visually-hidden"> {NEW_TAB}</span>
+      </a>
+      <button type="button" class="menu-toggle" aria-haspopup="dialog" aria-controls="menu-mobile" data-menu-open>
+        <span class="menu-toggle__lines" aria-hidden="true"></span>
+        <span class="visually-hidden">Otwórz menu</span>
+      </button>
+    </div>
+  </div>
+
+  <dialog id="menu-mobile" class="mobile-menu grain" aria-label="Menu">
+    <div class="mobile-menu__top container">
+      <a class="brand" href={homeHref}>
+        <img class="brand__mark" src="/img/sygnet-zloty.svg" alt="" width="884" height="878" />
+        <span class="brand__text">
+          <span class="brand__name">{salon.name}</span>
+          <span class="brand__sub">Julia Wróbel · Lubin</span>
+        </span>
+      </a>
+      <button type="button" class="menu-close" data-menu-close>
+        <Icon name="close" />
+        <span class="visually-hidden">Zamknij menu</span>
+      </button>
+    </div>
+
+    <nav class="mobile-menu__nav container" aria-label="Menu strony">
+      <p class="label">Oferta</p>
+      <ul class="mobile-menu__offer" role="list">
+        {categories.map((category) => (
+          <li>
+            <a href={`/${category.slug}/`} aria-current={current === `/${category.slug}/` ? 'page' : undefined}>
+              <span class="mobile-menu__name">{category.name}</span>
+              <span class="mobile-menu__line">{category.menuLine}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <ul class="mobile-menu__links" role="list">
+        {links.map((link) => (
+          <li>
+            <a href={link.href}>{link.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="mobile-menu__bottom container">
+      <Button href={salon.booksy} external>
+        Umów wizytę w Booksy
+      </Button>
+      <ul class="mobile-menu__contact" role="list">
+        <li>
+          <a href={salon.phone.href}>{salon.phone.label}</a>
+        </li>
+        <li>
+          <a href={salon.instagram.href} target="_blank" rel="noopener">
+            Instagram {salon.instagram.label}
+            <span class="visually-hidden"> {NEW_TAB}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </dialog>
+</header>
+
+<style>
+  .site-header {
+    --h: var(--header-h);
+
+    position: fixed;
+    z-index: 50;
+    inset: 0 0 auto;
+    color: var(--heading);
+    transition:
+      transform 0.5s var(--ease-out),
+      opacity 0.8s var(--ease-out);
+  }
+
+  .site-header__bar {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    height: var(--h);
+    transition: height var(--t-base) var(--ease-out);
+  }
+
+  /* tło paska: przezroczyste na górze strony, przyciemnione szkło po przewinięciu */
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-bottom: 1px solid transparent;
+    background: transparent;
+    backdrop-filter: blur(14px) saturate(1.2);
+    transition:
+      background-color var(--t-base),
+      border-color var(--t-base);
+  }
+
+  .site-header[data-scrolled] {
+    --h: var(--header-h-small);
+  }
+
+  .site-header[data-scrolled]::before,
+  .site-header.is-open::before {
+    border-color: var(--line);
+    background: rgb(47 30 18 / 88%);
+  }
+
+  /* chowa się przy przewijaniu w dół, wraca przy przewijaniu w górę */
+  .site-header[data-hidden]:not(.is-open, :focus-within) {
+    transform: translateY(-100%);
+  }
+
+  /* w czasie lotu ptaka nagłówka nie ma, pojawia się razem z treścią */
+  :global(.intro) .site-header {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* --- logo -------------------------------------------------------------------------------------------------- */
+
+  .brand {
+    display: inline-flex;
+    flex: none;
+    gap: 0.8rem;
+    align-items: center;
+    margin-right: auto;
+    color: var(--heading);
+    text-decoration: none;
+    transition:
+      opacity var(--t-base),
+      visibility var(--t-base);
+  }
+
+  .site-header[data-brand='hidden'] .site-header__bar .brand {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .brand__mark {
+    width: 2.6rem;
+    height: auto;
+  }
+
+  .brand__text {
+    display: grid;
+    line-height: 1.1;
+  }
+
+  .brand__name {
+    font-family: var(--f-display);
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+
+  .brand__sub {
+    margin-top: 0.15rem;
+    color: var(--mute);
+    font-family: var(--f-label);
+    font-size: 0.58rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+  }
+
+  /* --- menu na komputerze --------------------------------------------------------------------------------- */
+
+  .nav__list {
+    display: flex;
+    gap: clamp(1.25rem, 2.5vw, 2.5rem);
+    align-items: center;
+  }
+
+  .nav__link {
+    position: relative;
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--heading);
+    font-family: var(--f-label);
+    font-size: 0.74rem;
+    letter-spacing: 0.22em;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .nav__link::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0.55rem;
+    left: 0;
+    height: 1px;
+    background: var(--gold-mid);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--t-base) var(--ease-out);
+  }
+
+  .nav__link:hover::after,
+  .nav__link[aria-expanded='true']::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .nav :global(.nav__chevron) {
+    width: 0.9rem;
+    height: 0.9rem;
+    transition: rotate var(--t-base) var(--ease-out);
+  }
+
+  [aria-expanded='true'] > :global(.nav__chevron) {
+    rotate: 180deg;
+  }
+
+  /* rozwijana oferta: lista kategorii pod przyciskiem */
+  .nav__offer {
+    position: relative;
+  }
+
+  .dropdown {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    left: -1.75rem;
+    display: grid;
+    width: 25rem;
+    padding: 0.75rem 1.75rem 1.25rem;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    backdrop-filter: blur(14px);
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity 0.3s var(--ease-out),
+      translate 0.3s var(--ease-out),
+      display 0.3s allow-discrete;
+  }
+
+  /* pas nad panelem: kursor przechodzi z przycisku do panelu, nie wychodząc z menu */
+  .dropdown::before {
+    content: '';
+    position: absolute;
+    inset: -0.8rem 0 100%;
+  }
+
+  .dropdown[hidden] {
+    display: none;
+    opacity: 0;
+    translate: 0 -0.5rem;
+  }
+
+  @starting-style {
+    .dropdown:not([hidden]) {
+      opacity: 0;
+      translate: 0 -0.5rem;
+    }
+  }
+
+  .dropdown__list li + li {
+    border-top: 1px solid var(--line);
+  }
+
+  .dropdown__list a {
+    display: grid;
+    gap: 0.15rem;
+    padding-block: 0.9rem;
+    text-decoration: none;
+  }
+
+  .dropdown__name {
+    color: var(--heading);
+    font-family: var(--f-display);
+    font-size: 1.35rem;
+    line-height: 1.15;
+    transition: color var(--t-fast);
+  }
+
+  .dropdown__list a:hover .dropdown__name,
+  .dropdown__list [aria-current='page'] .dropdown__name {
+    color: var(--gold-light);
+  }
+
+  .dropdown__line {
+    color: var(--mute);
+    font-size: 0.85rem;
+    line-height: 1.45;
+  }
+
+  .dropdown__all {
+    justify-self: start;
+    margin-top: 0.5rem;
+  }
+
+  /* --- przycisk rezerwacji i menu na telefonie ---------------------------------------------------------- */
+
+  .site-header__actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .header-cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.55rem 1.2rem;
+    border: 1px solid var(--line-strong);
+    color: var(--heading);
+    font-family: var(--f-label);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition:
+      border-color var(--t-base),
+      color var(--t-base);
+  }
+
+  .header-cta:hover {
+    border-color: var(--gold-light);
+    color: var(--gold-light);
+  }
+
+  .menu-toggle,
+  .menu-close {
+    display: none;
+    place-items: center;
+    width: 2.875rem;
+    height: 2.875rem;
+    margin-right: -0.6rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--heading);
+    cursor: pointer;
+  }
+
+  .menu-toggle__lines,
+  .menu-toggle__lines::before {
+    display: block;
+    width: 1.6rem;
+    height: 1px;
+    background: currentcolor;
+  }
+
+  .menu-toggle__lines {
+    position: relative;
+    translate: 0 -4px;
+  }
+
+  .menu-toggle__lines::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 1.05rem;
+    translate: 0 8px;
+  }
+
+  @media (width < 60rem) {
+    .nav {
+      display: none;
+    }
+
+    .menu-toggle,
+    .menu-close {
+      display: grid;
+    }
+  }
+
+  @media (width < 36rem) {
+    .header-cta {
+      display: none;
+    }
+  }
+
+  /* --- menu na telefonie ------------------------------------------------------------------------------------ */
+
+  .mobile-menu {
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0 0 max(1.5rem, env(safe-area-inset-bottom));
+    overflow-y: auto;
+    border: 0;
+    background: var(--backdrop), var(--choc-3);
+    color: var(--text);
+    opacity: 1;
+    transition:
+      opacity 0.35s var(--ease-out),
+      display 0.35s allow-discrete,
+      overlay 0.35s allow-discrete;
+  }
+
+  .mobile-menu[open] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-menu:not([open]) {
+    opacity: 0;
+  }
+
+  @starting-style {
+    .mobile-menu[open] {
+      opacity: 0;
+    }
+  }
+
+  .mobile-menu::backdrop {
+    background: var(--choc-3);
+  }
+
+  .mobile-menu__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--header-h-small);
+  }
+
+  .mobile-menu__nav {
+    flex: 1;
+    padding-block: 2rem;
+  }
+
+  .mobile-menu__offer {
+    display: grid;
+    margin-top: 0.75rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .mobile-menu__offer li {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .mobile-menu__offer a {
+    display: grid;
+    padding-block: 0.8rem;
+    text-decoration: none;
+  }
+
+  .mobile-menu__name {
+    color: var(--heading);
+    font-family: var(--f-display);
+    font-size: clamp(1.75rem, 6.5vw, 2.25rem);
+    line-height: 1.1;
+  }
+
+  [aria-current='page'] > .mobile-menu__name {
+    color: var(--gold-light);
+  }
+
+  .mobile-menu__line {
+    color: var(--mute);
+    font-size: 0.9rem;
+  }
+
+  .mobile-menu__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .mobile-menu__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--heading);
+    font-family: var(--f-label);
+    font-size: 0.8rem;
+    letter-spacing: 0.22em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .mobile-menu__bottom {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .mobile-menu__contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.75rem;
+  }
+
+  .mobile-menu__contact a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  /* kolejne pozycje menu wysuwają się po kolei */
+  @media (prefers-reduced-motion: no-preference) {
+    .mobile-menu[open] .mobile-menu__nav li,
+    .mobile-menu[open] .mobile-menu__bottom {
+      animation: menu-item 0.6s var(--ease-out) backwards;
+    }
+
+    .mobile-menu[open] li:nth-child(2) {
+      animation-delay: 0.05s;
+    }
+
+    .mobile-menu[open] li:nth-child(3) {
+      animation-delay: 0.1s;
+    }
+
+    .mobile-menu[open] li:nth-child(4) {
+      animation-delay: 0.15s;
+    }
+
+    .mobile-menu[open] .mobile-menu__bottom {
+      animation-delay: 0.2s;
+    }
+  }
+
+  @keyframes menu-item {
+    from {
+      opacity: 0;
+      translate: 0 1rem;
+    }
+  }
+
+  :global(html:has(.mobile-menu[open])) {
+    overflow: hidden;
+  }
+</style>

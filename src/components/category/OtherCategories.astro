@@ -1,0 +1,32 @@
+---
+import { categories, type Category } from '../../data/oferta';
+import CategoryList from '../CategoryList.astro';
+
+interface Props {
+  current: Category;
+}
+
+const others = categories.filter((category) => category.slug !== Astro.props.current.slug);
+---
+
+<section class="section" aria-labelledby="others-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        Zobacz też
+      </p>
+    </div>
+    <div>
+      <h2 id="others-title" class="h2 others__title" data-split>
+        Pozostałe zabiegi
+      </h2>
+      <CategoryList categories={others} detail="menuLine" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .others__title {
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+</style>

@@ -1,0 +1,39 @@
+---
+// Head Spa krok po kroku (podstrona Head Spa i trychologia).
+import { headSpaRitual } from '../../data/oferta';
+---
+
+<section class="section" aria-labelledby="ritual-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        Rytuał krok po kroku
+      </p>
+    </div>
+    <div>
+      <h2 id="ritual-title" class="h2" data-split>
+        Jak przebiega Head Spa
+      </h2>
+      <p class="lead ritual__lead" data-reveal>
+        Każdy rytuał zaczyna się od rozmowy i kończy badaniem kamerą trychologiczną. To, co dzieje się pomiędzy, zależy
+        od wybranej wersji: Head and Face Spa dodaje masaż twarzy, ramion, dekoltu i karku, a wersja Premium jeszcze
+        jeden rytuał do wyboru.
+      </p>
+      <ol class="steps" role="list">
+        {headSpaRitual.map((step) => (
+          <li data-reveal>
+            <h3>{step.name}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ritual__lead {
+    max-width: 40rem;
+    margin-block: clamp(1.5rem, 3vw, 2.25rem) clamp(2rem, 4vw, 3rem);
+  }
+</style>

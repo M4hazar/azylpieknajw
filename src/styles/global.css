@@ -1,0 +1,637 @@
+/*
+ * Azyl Piękna · style wspólne
+ * Podstawy, tło z fakturą, typografia, układ sekcji, listy, przyciski, odnośniki, stany animacji i przejścia
+ * między podstronami. Style pojedynczych sekcji są w ich komponentach (\3c style> w plikach .astro).
+ * Autor: Paweł Hejna, https://github.com/m4hazar
+ */
+
+/* 1. Podstawy
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* brąz pod całą stroną: widać go przy przeciąganiu poza krawędź */
+  background: var(--choc-3);
+  color: var(--text);
+  font-family: var(--f-body);
+  font-size: 100%;
+  font-variant-numeric: lining-nums;
+  line-height: 1.7;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  scroll-padding-top: calc(var(--header-h-small) + 1rem);
+  scrollbar-gutter: stable;
+}
+
+body {
+  margin: 0;
+  overflow-x: clip;
+  font-size: var(--fs-body);
+}
+
+/* Tło całej strony jest jedno i stoi w miejscu: czekoladowy gradient pod treścią (.backdrop), a nad nim faktura
+   papieru z identyfikacji marki. Faktura leży nad treścią, bo przykrywa też animowane logo: obrysy piór są malowane
+   samym gradientem i pod fakturą nie odróżniają się od tła (src/scripts/intro/intro.js). Okna otwierane nad
+   stroną (menu na telefonie) dostają fakturę klasą .grain. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--backdrop);
+}
+
+body::after,
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: url('../assets/marka/faktura.webp') 0 0 / 280px 280px;
+  background-image: image-set(
+    url('../assets/marka/faktura.avif') type('image/avif'),
+    url('../assets/marka/faktura.webp') type('image/webp')
+  );
+  opacity: 0.85;
+}
+
+img,
+picture,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--gold-light);
+  color: var(--choc-4);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold-mid);
+  outline-offset: 3px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--gold-light);
+  color: var(--choc-4);
+  font-family: var(--f-label);
+  font-size: var(--fs-label);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform var(--t-fast);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* 2. Układ
+   ==========================================================================
+   Każda sekcja ma ten sam układ: cienka linia u góry, pod nią po lewej etykieta sekcji (i zdjęcie, jeśli jest),
+   po prawej nagłówek i treść. Na komputerze lewa kolumna stoi w miejscu, kiedy przewijasz treść obok. */
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  position: relative;
+  padding-top: var(--section);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 1.75rem clamp(2rem, 6vw, 7rem);
+  padding-top: clamp(1.5rem, 2.5vw, 2.25rem);
+  border-top: 1px solid var(--line);
+}
+
+.split__aside {
+  display: grid;
+  gap: 2rem;
+  align-content: start;
+}
+
+@media (width >= 60rem) {
+  .split__aside {
+    position: sticky;
+    top: calc(var(--header-h-small) + 1.5rem);
+    align-self: start;
+  }
+}
+
+@media (width < 60rem) {
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* 3. Typografia
+   ========================================================================== */
+
+/* etykieta sekcji i drobne podpisy: wersaliki w kroju Tenor Sans */
+.label {
+  color: var(--mute);
+  font-family: var(--f-label);
+  font-size: var(--fs-label);
+  line-height: 1.5;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.h1,
+.h2,
+.h3 {
+  color: var(--heading);
+  font-family: var(--f-display);
+  font-weight: 400;
+  text-wrap: balance;
+}
+
+.h1 {
+  font-size: var(--fs-h1);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+
+.h2 {
+  font-size: var(--fs-h2);
+  line-height: 1.06;
+  letter-spacing: -0.005em;
+}
+
+.h3 {
+  font-size: var(--fs-h3);
+  line-height: 1.12;
+}
+
+.lead {
+  color: var(--text);
+  font-size: var(--fs-lead);
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.prose {
+  max-width: 40rem;
+  text-wrap: pretty;
+}
+
+.prose > * + * {
+  margin-top: 1.1em;
+}
+
+.small {
+  color: var(--mute);
+  font-size: var(--fs-small);
+  line-height: 1.6;
+}
+
+/* czas trwania zabiegu */
+.duration {
+  color: var(--mute);
+  font-family: var(--f-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+}
+
+/* ikony liniowe (src/components/ui/Icon.astro) */
+.icon {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* 4. Listy
+   ========================================================================== */
+
+/* wiersze rozdzielone cienką linią */
+.rows {
+  border-top: 1px solid var(--line);
+}
+
+.rows > * {
+  padding-block: 1.1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+/* nazwa po lewej, czas trwania lub wartość po prawej */
+.rows--pairs > * {
+  display: flex;
+  gap: 0.5rem 1.5rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-block: 0.85rem;
+}
+
+/* wiersze z numerem: kolejne punkty listy */
+.rows--numbered {
+  counter-reset: row;
+}
+
+.rows--numbered > * {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: 0 1.5rem;
+  counter-increment: row;
+}
+
+.rows--numbered > *::before,
+.steps > li::before {
+  color: var(--mute);
+  font-family: var(--f-label);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+.rows--numbered > *::before {
+  content: counter(row);
+  padding-top: 0.2rem;
+}
+
+/* kolejne kroki: numer, nazwa, opis */
+.steps {
+  border-top: 1px solid var(--line);
+  counter-reset: step;
+}
+
+.steps > li {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 2fr) minmax(0, 3fr);
+  gap: 0.35rem 1.5rem;
+  padding-block: 1.4rem;
+  border-bottom: 1px solid var(--line);
+  counter-increment: step;
+}
+
+.steps > li::before {
+  content: counter(step);
+  padding-top: 0.45rem;
+}
+
+.steps h3 {
+  color: var(--heading);
+  font-family: var(--f-display);
+  font-size: 1.45rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.steps p {
+  padding-top: 0.2rem;
+  color: var(--mute);
+}
+
+@media (width < 48rem) {
+  .steps > li {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+  }
+
+  .steps p {
+    grid-column: 2;
+  }
+}
+
+/* 5. Przyciski i odnośniki
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.25rem;
+  padding: 0.85rem 1.6rem;
+  border: 1px solid var(--btn-border, var(--btn-bg));
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--f-label);
+  font-size: 0.75rem;
+  line-height: 1.3;
+  letter-spacing: 0.2em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color var(--t-base) var(--ease-out),
+    border-color var(--t-base) var(--ease-out),
+    color var(--t-base) var(--ease-out);
+}
+
+/* główny: złoty, jeden na sekcję */
+.btn--primary {
+  --btn-bg: var(--gold-light);
+  --btn-fg: var(--choc-4);
+}
+
+/* drugorzędny: sam obrys */
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--heading);
+  --btn-border: var(--line-strong);
+}
+
+@media (hover: hover) {
+  .btn--primary:hover {
+    --btn-bg: var(--gold-pale);
+  }
+
+  .btn--ghost:hover {
+    --btn-fg: var(--gold-light);
+    --btn-border: var(--gold-light);
+  }
+}
+
+.btn--primary:active {
+  --btn-bg: var(--gold-pale);
+}
+
+.btn--ghost:active {
+  --btn-fg: var(--gold-light);
+  --btn-border: var(--gold-light);
+}
+
+.btn--small {
+  min-height: 2.75rem;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.7rem;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+  align-items: center;
+}
+
+/* odnośnik tekstowy: cienka linia, która po najechaniu rysuje się od nowa */
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  background: linear-gradient(currentcolor, currentcolor) 0 calc(100% - 0.55rem) / 100% 1px no-repeat;
+  color: var(--heading);
+  font-family: var(--f-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color var(--t-base);
+}
+
+@media (hover: hover) {
+  .link:hover {
+    color: var(--gold-light);
+    animation: link-redraw 0.7s var(--ease-out);
+  }
+}
+
+@keyframes link-redraw {
+  0% {
+    background-position: 100% calc(100% - 0.55rem);
+    background-size: 100% 1px;
+  }
+
+  45% {
+    background-position: 100% calc(100% - 0.55rem);
+    background-size: 0 1px;
+  }
+
+  46% {
+    background-position: 0 calc(100% - 0.55rem);
+    background-size: 0 1px;
+  }
+
+  100% {
+    background-position: 0 calc(100% - 0.55rem);
+    background-size: 100% 1px;
+  }
+}
+
+/* 6. Zdjęcia
+   ========================================================================== */
+
+/* ramka zdjęcia w proporcjach portretu (4:5), zdjęcie wypełnia ją w całości */
+.frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: var(--choc-3);
+}
+
+.frame > picture {
+  position: absolute;
+  inset: 0;
+}
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 7. Animacje przy przewijaniu
+   ==========================================================================
+   Klasa .motion (src/scripts/boot.js) oznacza, że ruch jest dozwolony, a skrypty działają. Elementy [data-reveal]
+   są wtedy ukryte do chwili, w której GSAP je odsłoni (src/scripts/motion.ts). Bez JavaScriptu albo przy
+   ograniczonym ruchu treść jest widoczna od razu. */
+
+.motion [data-reveal] {
+  opacity: 0;
+}
+
+.motion [data-split] {
+  visibility: hidden;
+}
+
+/* Pierwszy ekran podstron wchodzi samym CSS, bez czekania na skrypty, więc treść jest widoczna od razu po wczytaniu
+   stylów. Wartość atrybutu to kolejność wejścia. */
+.motion [data-rise] {
+  animation: rise 1s var(--ease-out) both;
+}
+
+.motion [data-rise='2'] {
+  animation-delay: 0.07s;
+}
+
+.motion [data-rise='3'] {
+  animation-delay: 0.14s;
+}
+
+.motion [data-rise='4'] {
+  animation-delay: 0.21s;
+}
+
+.motion [data-rise='5'] {
+  animation-delay: 0.28s;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+
+/* 8. Przejścia między podstronami
+   ==========================================================================
+   View Transitions: stara treść znika i lekko się unosi, nowa wyłania się od dołu; nagłówek i tło stoją w miejscu.
+   Przeglądarki bez tej funkcji dostają to samo przez klasy .leaving (src/scripts/ui.ts) i .page-in (boot.js). */
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+main {
+  view-transition-name: main;
+}
+
+.site-footer {
+  view-transition-name: footer;
+}
+
+.site-header {
+  view-transition-name: header;
+}
+
+/* Gdy startuje lot ptaka, treść strony głównej nie jest osobnym obrazem przejścia: przechwytywanie dużego,
+   animowanego ptaka w każdej klatce zacinało animację. */
+.intro main,
+.intro .site-footer {
+  view-transition-name: none;
+}
+
+::view-transition-old(main),
+::view-transition-old(footer) {
+  animation: page-out 0.25s ease-in both;
+}
+
+/* nowa treść startuje, gdy stara prawie zniknęła, żeby teksty na siebie nie nachodziły */
+::view-transition-new(main),
+::view-transition-new(footer) {
+  animation: page-in 0.7s var(--ease-out) 0.2s both;
+}
+
+::view-transition-old(header),
+::view-transition-new(header) {
+  animation-duration: 0.35s;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+.page-in main,
+.page-in .site-footer {
+  animation: page-in 0.7s var(--ease-out) backwards;
+}
+
+.leaving main,
+.leaving .site-footer {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    opacity 0.25s ease-in,
+    transform 0.25s ease-in;
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+/* 9. Ograniczony ruch
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

@@ -1,0 +1,76 @@
+---
+import { categoryBySlug } from '../../data/oferta';
+import { salon } from '../../data/salon';
+import Button from '../ui/Button.astro';
+import Visual from '../Visual.astro';
+
+const headSpa = categoryBySlug('head-spa-i-trychologia');
+const variants = [
+  { name: 'Head Spa Classic', duration: '90 min' },
+  { name: 'Head and Face Spa · Pełen relaks', duration: '120 min' },
+  { name: 'Head and Face Spa · Premium', duration: '150 min' },
+  { name: 'Head Spa Kids · 5–13 lat', duration: '60 min' },
+];
+---
+
+<section id="head-spa" class="section" aria-labelledby="headspa-title">
+  <div class="container split">
+    <div class="split__aside">
+      <p class="label" data-reveal>
+        Head Spa
+      </p>
+      <Visual
+        photo={headSpa.photo}
+        alt="Rytuał Head Spa w salonie Azyl Piękna"
+        parallax
+        width={440}
+        sizes="(min-width: 60rem) 28vw, 100vw"
+        class="headspa__photo"
+      />
+    </div>
+    <div>
+      <h2 id="headspa-title" class="h2" data-split>
+        Head Spa, czyli chwila tylko dla Ciebie
+      </h2>
+      <p class="lead headspa__lead" data-reveal>
+        Pielęgnacja skóry głowy połączona z masażem, ciepłem sauny i zapachem ziół. Najpierw oglądam skórę głowy kamerą,
+        potem dbam o nią krok po kroku, a na koniec porównujemy obraz sprzed rytuału i po nim.
+      </p>
+
+      <ul class="rows rows--pairs" role="list" data-reveal>
+        {variants.map((variant) => (
+          <li>
+            <span>{variant.name}</span>
+            <span class="duration">{variant.duration}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div class="btn-row headspa__actions" data-reveal>
+        <Button href={salon.booksy} external>
+          Umów Head Spa
+        </Button>
+        <Button href={`/${headSpa.slug}/`} variant="ghost">
+          Rytuał krok po kroku
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .headspa__lead {
+    max-width: 40rem;
+    margin-block: clamp(1.5rem, 3vw, 2.25rem) clamp(2rem, 4vw, 3rem);
+  }
+
+  .headspa__actions {
+    margin-top: 2.5rem;
+  }
+
+  @media (width < 60rem) {
+    .split__aside :global(.headspa__photo) {
+      max-width: 30rem;
+    }
+  }
+</style>
