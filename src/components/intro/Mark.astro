@@ -1,0 +1,76 @@
+---
+// Sygnet salonu na stronie głównej: oryginalne logo i nad nim animowane logo do lotu ptaka (src/scripts/intro).
+import logoAnim from './logo-anim.svg?raw';
+---
+
+<div class="mark" aria-hidden="true">
+  <span class="logo-wrap">
+    <img class="logo" src="/img/sygnet-zloty.svg" alt="" width="884" height="878" />
+  </span>
+  <Fragment set:html={logoAnim} />
+</div>
+
+<style>
+  .mark {
+    position: relative;
+    width: clamp(6.5rem, min(28vw, 22svh), 13.75rem);
+    aspect-ratio: 884 / 878;
+    perspective: 900px;
+  }
+
+  .logo-wrap {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 10px 30px rgb(0 0 0 / 35%));
+  }
+
+  .logo {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* animowane logo (lot ptaka); po intro ukryte, zostaje oryginalne .logo */
+  .mark :global(.logo-anim) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  /* błysk przesuwający się po złocie logo */
+  .logo-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    mask: url('/img/sygnet-zloty.svg') center / 100% 100% no-repeat;
+    background: linear-gradient(110deg, transparent 38%, rgb(255 246 222 / 80%) 50%, transparent 62%) 100% 0 / 300% 100%
+      no-repeat;
+  }
+
+  :global(.shine) .logo-wrap::after {
+    animation: shine 1.7s cubic-bezier(0.45, 0, 0.2, 1);
+  }
+
+  @keyframes shine {
+    from {
+      opacity: 1;
+      background-position: 100% 0;
+    }
+
+    to {
+      opacity: 1;
+      background-position: 0 0;
+    }
+  }
+
+  :global(.intro:not(.animated)) .logo {
+    opacity: 0;
+  }
+</style>

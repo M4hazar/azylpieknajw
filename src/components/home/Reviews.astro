@@ -1,0 +1,136 @@
+---
+// Opinie: tylko średnia ocen z Booksy (bez cytatów, dopóki klientki nie zgodzą się na ich publikację)
+// i zaproszenie na Instagram.
+import { salon } from '../../data/salon';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+
+const stars = Array.from({ length: 5 });
+---
+
+<section id="opinie" class="section section--ivory reviews" data-theme="light" aria-labelledby="reviews-title">
+  <div class="container reviews__grid">
+    <div class="reviews__rating" data-reveal>
+      <p class="eyebrow">Opinie z Booksy</p>
+      <h2 id="reviews-title" class="visually-hidden">
+        Opinie w Booksy
+      </h2>
+      <p class="rating">
+        <span class="rating__value">{salon.reviews.average}</span>
+        <span class="rating__scale">/ 5</span>
+      </p>
+      <p class="rating__stars" aria-hidden="true">
+        {stars.map(() => (
+          <span>★</span>
+        ))}
+      </p>
+      <p class="reviews__text">
+        Średnia ocen z {salon.reviews.count} opinii wystawionych w Booksy po wizytach w salonie.
+      </p>
+      <p class="small">Stan na {salon.reviews.asOf}.</p>
+      <Button href={salon.booksy} variant="ink-outline" external arrow>
+        Przeczytaj opinie na Booksy
+      </Button>
+    </div>
+
+    <div class="reviews__instagram" data-reveal>
+      <Icon name="instagram" class="reviews__icon" />
+      <p class="h3">
+        Zajrzyj do salonu <em>na Instagramie</em>
+      </p>
+      <p class="reviews__text">Zdjęcia z salonu i z codziennej pracy publikuję na profilu {salon.instagram.label}.</p>
+      <Button href={salon.instagram.href} variant="ink-outline" external arrow>
+        Zobacz Instagram
+      </Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .reviews__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .reviews__rating,
+  .reviews__instagram {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: clamp(2rem, 4vw, 3.5rem);
+    border: 1px solid var(--rule);
+  }
+
+  .reviews__rating {
+    background: var(--sand);
+  }
+
+  .rating {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    color: var(--ink);
+    font-family: var(--f-display);
+    line-height: 0.9;
+  }
+
+  .rating__value {
+    font-size: clamp(4.5rem, 3rem + 6vw, 7.5rem);
+    font-weight: 300;
+  }
+
+  .rating__scale {
+    color: var(--mute);
+    font-size: 1.75rem;
+  }
+
+  .rating__stars {
+    display: flex;
+    gap: 0.3rem;
+    margin-top: 0.75rem;
+    color: var(--gold);
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+  }
+
+  .reviews__text {
+    max-width: 26rem;
+    margin-top: 1.25rem;
+    color: var(--text);
+  }
+
+  .reviews__rating .small {
+    margin-top: 0.35rem;
+  }
+
+  .reviews__rating :global(.btn),
+  .reviews__instagram :global(.btn) {
+    margin-top: auto;
+  }
+
+  .reviews__rating .small + :global(.btn) {
+    margin-top: 2rem;
+  }
+
+  .reviews__instagram {
+    justify-content: flex-start;
+  }
+
+  .reviews__instagram .reviews__text {
+    margin-bottom: 2rem;
+  }
+
+  .reviews :global(.reviews__icon) {
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 1.75rem;
+    color: var(--gold-ink);
+  }
+
+  @media (width < 60rem) {
+    .reviews__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,100 @@
+---
+const values = [
+  {
+    title: 'Rozmowa przed zabiegiem',
+    text: 'Pytam o Twoją pielęgnację, zdrowie i oczekiwania, zanim cokolwiek zaproponuję.',
+  },
+  {
+    title: 'Pielęgnacja dobrana do Ciebie',
+    text: 'Zabieg i kosmetyki dopasowuję do stanu skóry i włosów, a nie do schematu.',
+  },
+  {
+    title: 'Spokój i czas',
+    text: 'Kameralny salon i wizyty bez pośpiechu. To ma być Twoja chwila.',
+  },
+];
+---
+
+<section id="o-salonie" class="section section--ivory manifest" data-theme="light" aria-labelledby="manifest-title">
+  <div class="container">
+    <div class="manifest__grid">
+      <div>
+        <p class="eyebrow" data-reveal>
+          O salonie
+        </p>
+        <h2 id="manifest-title" class="h2" data-split>
+          Miejsce, w którym <em>możesz zwolnić</em>
+        </h2>
+      </div>
+      <div class="manifest__text prose" data-reveal>
+        <p class="lead">
+          Azyl Piękna to kameralny salon kosmetologiczny w Lubinie. Każdą wizytę zaczynam od rozmowy, a zabieg i
+          kosmetyki dobieram do Twojej skóry, włosów i potrzeb.
+        </p>
+        <p>
+          Zajmuję się skórą głowy i twarzy: zapraszam na Head Spa, konsultacje trychologiczne i zabiegi PCA Skin. W
+          salonie zadbasz też o dłonie, stopy, brwi i rzęsy. Ceny i wolne terminy są w Booksy, a tutaj przeczytasz, na
+          czym polega każdy zabieg.
+        </p>
+      </div>
+    </div>
+
+    <ol class="values" role="list">
+      {values.map((value, i) => (
+        <li class="values__item" data-reveal>
+          <span class="values__num" aria-hidden="true">
+            {['I', 'II', 'III'][i]}
+          </span>
+          <h3 class="h4">{value.title}</h3>
+          <p>{value.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .manifest__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 7rem);
+    align-items: end;
+  }
+
+  .manifest__text {
+    padding-bottom: 0.4rem;
+  }
+
+  .values {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+    margin-top: clamp(4rem, 8vw, 7rem);
+  }
+
+  .values__item {
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .values__num {
+    display: block;
+    margin-bottom: 1.25rem;
+    color: var(--gold-ink);
+    font-family: var(--f-display);
+    font-size: 1.15rem;
+    font-style: italic;
+  }
+
+  .values__item p {
+    margin-top: 0.6rem;
+    color: var(--soft);
+  }
+
+  @media (width < 60rem) {
+    .manifest__grid,
+    .values {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,185 @@
+---
+// Galeria zdjęć z salonu (src/data/galeria.ts). Miniatura prowadzi do dużego zdjęcia; skrypt otwiera je
+// w oknie z przewijaniem strzałkami i gestem. Sekcja nie renderuje się, dopóki nie ma zdjęć.
+import { Picture, getImage } from 'astro:assets';
+import { gallery } from '../../data/galeria';
+import Icon from '../ui/Icon.astro';
+
+const items = await Promise.all(
+  gallery.map(async (image) => ({ ...image, full: await getImage({ src: image.src, width: 1800, format: 'webp' }) })),
+);
+---
+
+{items.length > 0 && (
+  <section id="galeria" class="section section--ivory gallery" data-theme="light" aria-labelledby="gallery-title">
+    <div class="container">
+      <header class="gallery__head">
+        <p class="eyebrow" data-reveal>
+          Galeria
+        </p>
+        <h2 id="gallery-title" class="h2" data-split>
+          Zajrzyj <em>do salonu</em>
+        </h2>
+      </header>
+      <ul class="gallery__grid" role="list" data-lightbox-group>
+        {items.map((item, i) => (
+          <li data-reveal>
+            <a class="gallery__item" href={item.full.src} data-lightbox data-index={i}>
+              <Picture
+                src={item.src}
+                alt={item.alt}
+                width={720}
+                formats={['avif', 'webp']}
+                sizes="(min-width: 60rem) 30vw, (min-width: 36rem) 45vw, 100vw"
+              />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <dialog class="lightbox" aria-label="Zdjęcie z galerii" data-lightbox-dialog>
+      <figure class="lightbox__figure">
+        <figcaption class="lightbox__caption" />
+      </figure>
+      <p class="lightbox__count" aria-live="polite" />
+      <button type="button" class="lightbox__btn lightbox__close" data-close>
+        <Icon name="close" />
+        <span class="visually-hidden">Zamknij</span>
+      </button>
+      <button type="button" class="lightbox__btn lightbox__prev" data-prev>
+        <Icon name="arrow-left" />
+        <span class="visually-hidden">Poprzednie zdjęcie</span>
+      </button>
+      <button type="button" class="lightbox__btn lightbox__next" data-next>
+        <Icon name="arrow" />
+        <span class="visually-hidden">Następne zdjęcie</span>
+      </button>
+    </dialog>
+  </section>
+)}
+
+<script>
+  import { initLightbox } from '../../scripts/lightbox';
+
+  initLightbox();
+</script>
+
+<style>
+  .gallery__head {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .gallery__grid {
+    columns: 3 18rem;
+    column-gap: 1.25rem;
+  }
+
+  .gallery__grid li {
+    margin-bottom: 1.25rem;
+    break-inside: avoid;
+  }
+
+  .gallery__item {
+    display: block;
+    overflow: hidden;
+    background: var(--linen);
+    cursor: zoom-in;
+  }
+
+  .gallery__item :global(img) {
+    width: 100%;
+    transition: transform 0.9s var(--ease-out);
+  }
+
+  .gallery__item:hover :global(img) {
+    transform: scale(1.04);
+  }
+
+  .lightbox {
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(20 12 7 / 96%);
+    color: var(--on-dark);
+  }
+
+  .lightbox[open] {
+    display: grid;
+    place-items: center;
+  }
+
+  .lightbox::backdrop {
+    background: transparent;
+  }
+
+  .lightbox__figure {
+    display: grid;
+    gap: 1rem;
+    justify-items: center;
+    max-width: min(90vw, 75rem);
+  }
+
+  .lightbox :global(.lightbox__image) {
+    max-width: 100%;
+    max-height: 80dvh;
+    object-fit: contain;
+  }
+
+  .lightbox__caption,
+  .lightbox__count {
+    color: var(--mute-dark);
+    font-size: var(--fs-small);
+  }
+
+  .lightbox__count {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    font-family: var(--f-label);
+    letter-spacing: 0.2em;
+  }
+
+  .lightbox__btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid rgb(210 174 106 / 45%);
+    background: rgb(30 19 11 / 60%);
+    color: var(--gold-light);
+    cursor: pointer;
+    transition:
+      background-color var(--t-fast),
+      color var(--t-fast);
+  }
+
+  .lightbox__btn:hover {
+    background: var(--gold-light);
+    color: var(--night);
+  }
+
+  .lightbox__close {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .lightbox__prev,
+  .lightbox__next {
+    top: 50%;
+    translate: 0 -50%;
+  }
+
+  .lightbox__prev {
+    left: 1rem;
+  }
+
+  .lightbox__next {
+    right: 1rem;
+  }
+</style>

@@ -1,0 +1,72 @@
+/*
+ * Azyl Piękna · tokeny projektu
+ * Kolory, kroje, skala pisma, odstępy i ruch. Komponenty korzystają tylko z tych zmiennych.
+ * Autor: Paweł Hejna, https://github.com/m4hazar
+ */
+
+:root {
+  /* Kolory marki: noc i espresso z tła logo, kość słoniowa i piasek na jasne sekcje, oszczędne złoto. */
+  --night: #1e130b;
+  --night-2: #2a1a0f;
+  --night-3: #3a2516;
+  --espresso: #3d2616;
+  --ivory: #fbf8f2;
+  --sand: #f4ede2;
+  --linen: #ebe1d2;
+  --taupe: #a89684;
+  --gold: #b28a4d;
+  --gold-mid: #d2ae6a;
+  --gold-light: #ead5a8;
+  --gold-pale: #f5e5b8;
+
+  /* Tekst. Kontrast na kości słoniowej i piasku: --text 10:1, --mute i --gold-ink powyżej 5:1. */
+  --ink: #2a1a0f;
+  --text: #4a3a2d;
+  --mute: #6f5e4e;
+  --gold-ink: #7c5a28;
+  --on-dark: #e9dfd1;
+  --mute-dark: #b5a48f;
+  --line: rgb(124 90 40 / 20%);
+  --line-dark: rgb(210 174 106 / 22%);
+
+  /* Tło ciemnych sekcji. Ten sam gradient maluje obrysy piór w animowanym logo (#bgp w logo-anim.svg,
+     przeliczany w intro.js), więc przy zmianie trzeba poprawić oba miejsca. */
+  --backdrop: radial-gradient(120% 80% at 50% 28%, var(--night-3) 0%, var(--night-2) 38%, var(--night) 75%);
+  --gold-gradient: linear-gradient(
+    100deg,
+    var(--gold) 0%,
+    var(--gold-mid) 38%,
+    var(--gold-pale) 55%,
+    var(--gold-mid) 72%,
+    var(--gold) 100%
+  );
+
+  /* Kroje: szeryfowy do nagłówków, bezszeryfowy do tekstu, Tenor Sans do etykiet i przycisków. */
+  --f-display: 'Cormorant Garamond Variable', 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --f-body: 'Source Sans 3 Variable', 'Source Sans 3', 'Segoe UI', Roboto, Arial, sans-serif;
+  --f-label: 'Tenor Sans', 'Source Sans 3 Variable', 'Segoe UI', sans-serif;
+
+  /* Skala pisma (płynna między telefonem a dużym ekranem) */
+  --fs-label: 0.75rem;
+  --fs-small: 0.9375rem;
+  --fs-body: 1.0625rem;
+  --fs-lead: clamp(1.125rem, 1.03rem + 0.4vw, 1.3125rem);
+  --fs-h4: clamp(1.375rem, 1.2rem + 0.6vw, 1.625rem);
+  --fs-h3: clamp(1.75rem, 1.45rem + 1.1vw, 2.375rem);
+  --fs-h2: clamp(2.5rem, 1.75rem + 3vw, 4.375rem);
+  --fs-h1: clamp(2.75rem, 1.8rem + 3.8vw, 5rem);
+
+  /* Układ */
+  --container: 82.5rem;
+  --gutter: clamp(1.25rem, 5vw, 4rem);
+  --section: clamp(5.5rem, 4.5rem + 5vw, 11rem);
+  --header-h: 5.5rem;
+  --header-h-small: 4.25rem;
+  --radius-arch: 999px 999px 0 0;
+
+  /* Ruch: krótko i miękko */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --t-fast: 0.25s;
+  --t-base: 0.45s;
+}

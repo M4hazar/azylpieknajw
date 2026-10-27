@@ -1,0 +1,14 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-html/astro"],
+  "rules": {
+    "custom-property-empty-line-before": null,
+    "no-descending-specificity": null,
+    "selector-class-pattern": null,
+    "property-no-vendor-prefix": [
+      true,
+      { "ignoreProperties": ["mask", "mask-image", "backdrop-filter", "background-clip"] }
+    ],
+    "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["global"] }],
+    "value-keyword-case": ["lower", { "ignoreProperties": ["/^--f-/"] }]
+  }
+}

@@ -1,0 +1,97 @@
+---
+import { salon } from '../../data/salon';
+import Button from '../ui/Button.astro';
+
+const steps = [
+  { name: 'Otwórz Booksy', text: 'Profil salonu otworzy się w nowej karcie, bez zakładania konta na tej stronie.' },
+  { name: 'Wybierz zabieg i termin', text: 'Przy każdym zabiegu zobaczysz cenę, czas trwania i wolne terminy.' },
+  { name: 'Przyjdź do salonu', text: `Zapraszam na ${salon.address.street} w Lubinie.` },
+];
+---
+
+<section class="section section--sand how" data-theme="light" aria-labelledby="how-title">
+  <div class="container how__grid">
+    <div>
+      <p class="eyebrow" data-reveal>
+        Rezerwacja
+      </p>
+      <h2 id="how-title" class="h2" data-split>
+        Jak się <em>umówić</em>
+      </h2>
+      <p class="lead how__lead" data-reveal>
+        Wszystkie wizyty rezerwujesz online w Booksy. Jeśli wolisz porozmawiać przed rezerwacją, zadzwoń.
+      </p>
+      <div class="btn-row how__actions" data-reveal>
+        <Button href={salon.booksy} variant="ink" external arrow>
+          Umów wizytę
+        </Button>
+        <Button href={salon.phone.href} variant="ink-outline">
+          {salon.phone.label}
+        </Button>
+      </div>
+    </div>
+
+    <ol class="how__steps" role="list">
+      {steps.map((step, i) => (
+        <li data-reveal>
+          <span class="how__num" aria-hidden="true">
+            {i + 1}
+          </span>
+          <div>
+            <h3 class="h4">{step.name}</h3>
+            <p>{step.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .how__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2.5rem, 7vw, 8rem);
+    align-items: center;
+  }
+
+  .how__lead {
+    max-width: 30rem;
+    margin-top: 1.5rem;
+  }
+
+  .how__actions {
+    margin-top: 2.25rem;
+  }
+
+  .how__steps {
+    border-top: 1px solid var(--rule);
+  }
+
+  .how__steps li {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: 1rem;
+    padding-block: 1.6rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .how__num {
+    color: var(--gold-ink);
+    font-family: var(--f-display);
+    font-size: 2.6rem;
+    font-weight: 300;
+    line-height: 1;
+  }
+
+  .how__steps p {
+    margin-top: 0.35rem;
+    color: var(--soft);
+  }
+
+  @media (width < 60rem) {
+    .how__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

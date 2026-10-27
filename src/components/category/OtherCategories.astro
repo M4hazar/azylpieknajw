@@ -1,0 +1,147 @@
+---
+import { categories, type Category } from '../../data/oferta';
+import Icon from '../ui/Icon.astro';
+import Visual from '../Visual.astro';
+
+interface Props {
+  current: Category;
+}
+
+const others = categories.filter((category) => category.slug !== Astro.props.current.slug);
+---
+
+<section class="section section--ivory others" data-theme="light" aria-labelledby="others-title">
+  <div class="container">
+    <p class="eyebrow" data-reveal>
+      Zobacz też
+    </p>
+    <h2 id="others-title" class="h2" data-split>
+      Pozostałe <em>zabiegi</em>
+    </h2>
+
+    <ul class="others__list" role="list">
+      {others.map((category) => (
+        <li class="card" data-reveal>
+          <Visual
+            art={category.art}
+            photo={category.photo}
+            alt=""
+            shape="landscape"
+            width={420}
+            sizes="(min-width: 60rem) 28vw, 6rem"
+          />
+          <h3 class="card__title">
+            <a href={`/${category.slug}/`}>{category.name}</a>
+          </h3>
+          <p class="card__line">{category.menuLine}</p>
+          <Icon name="arrow" class="card__arrow" />
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .others__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.4rem 1rem;
+  }
+
+  .card :global(.frame) {
+    grid-column: 1 / -1;
+    margin-bottom: 1rem;
+  }
+
+  .card :global(img) {
+    transition: transform 0.9s var(--ease-out);
+  }
+
+  .card:hover :global(img) {
+    transform: scale(1.04);
+  }
+
+  .card__title {
+    color: var(--ink);
+    font-family: var(--f-display);
+    font-size: var(--fs-h4);
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .card__title a {
+    text-decoration: none;
+  }
+
+  .card__title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .card__line {
+    grid-column: 1;
+    color: var(--mute);
+    font-size: var(--fs-small);
+  }
+
+  .card :global(.card__arrow) {
+    grid-row: 2;
+    grid-column: 2;
+    align-self: center;
+    color: var(--gold-ink);
+    transition: transform var(--t-base) var(--ease-out);
+  }
+
+  .card:hover :global(.card__arrow),
+  .card:focus-within :global(.card__arrow) {
+    transform: translateX(5px);
+  }
+
+  /* telefon i tablet: lista z miniaturami zamiast trzech dużych kart */
+  @media (width < 60rem) {
+    .others__list {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--rule);
+    }
+
+    .card {
+      grid-template-columns: 5.5rem 1fr auto;
+      gap: 0.2rem 1.25rem;
+      padding-block: 1rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .card :global(.frame) {
+      --ratio: 1;
+
+      grid-row: 1 / span 2;
+      grid-column: 1;
+      margin-bottom: 0;
+    }
+
+    .card__title {
+      grid-column: 2;
+      align-self: end;
+    }
+
+    .card__line {
+      grid-column: 2;
+      align-self: start;
+    }
+
+    .card :global(.card__arrow) {
+      grid-row: 1 / span 2;
+      grid-column: 3;
+    }
+  }
+</style>

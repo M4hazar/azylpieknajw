@@ -1,0 +1,162 @@
+---
+import { salon } from '../../data/salon';
+import Button from '../ui/Button.astro';
+import Visual from '../Visual.astro';
+---
+
+<section id="julia" class="section section--ivory julia" data-theme="light" aria-labelledby="julia-title">
+  <div class="container julia__grid">
+    <figure class="julia__portrait" data-reveal>
+      <Visual
+        art="satyna-krem"
+        photo="julia"
+        alt="Julia Wróbel, właścicielka salonu Azyl Piękna, w białej marynarce"
+        shape="portrait"
+        position="top"
+        parallax
+        width={560}
+        sizes="(min-width: 60rem) 38vw, 100vw"
+      />
+      <figcaption class="julia__caption">
+        {salon.owner} · {salon.role.toLowerCase()}
+      </figcaption>
+    </figure>
+
+    <div class="julia__content">
+      <p class="eyebrow" data-reveal>
+        Poznaj Julię
+      </p>
+      <h2 id="julia-title" class="h2" data-split>
+        Dzień dobry, <em>jestem Julia</em>
+      </h2>
+
+      <div class="julia__text prose" data-reveal>
+        <p class="lead">
+          Jestem magistrem kosmetologii i trychologiem, a Azyl Piękna to mój salon w Lubinie. Stworzyłam go jako
+          miejsce, w którym można na chwilę odłożyć codzienność i zająć się sobą.
+        </p>
+        <p>
+          Najważniejsza jest dla mnie rozmowa. Zanim zaproponuję zabieg, pytam o Twoją codzienną pielęgnację, o to, co
+          Ci przeszkadza, i czego oczekujesz. Dzięki temu pielęgnacja jest dobrana do Ciebie, a nie do schematu.
+        </p>
+        <p>
+          Jako trycholog zajmuję się też skórą głowy: prowadzę konsultacje z trichoskopią i rytuały Head Spa, w których
+          dbanie o włosy łączy się z odpoczynkiem.
+        </p>
+      </div>
+
+      <dl class="julia__facts" data-reveal>
+        <div>
+          <dt>Wykształcenie</dt>
+          <dd>Magister kosmetologii</dd>
+        </div>
+        <div>
+          <dt>Specjalizacja</dt>
+          <dd>Trychologia</dd>
+        </div>
+        <div>
+          <dt>Salon</dt>
+          <dd>{salon.name}, Lubin</dd>
+        </div>
+      </dl>
+
+      <div class="julia__actions" data-reveal>
+        <Button href={salon.booksy} variant="ink" external arrow>
+          Umów wizytę
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .julia__grid {
+    display: grid;
+    grid-template-columns: 5fr 6fr;
+    gap: clamp(2.5rem, 7vw, 8rem);
+    align-items: center;
+  }
+
+  .julia__portrait {
+    position: relative;
+  }
+
+  /* złota ramka przesunięta względem portretu */
+  .julia__portrait::before {
+    content: '';
+    position: absolute;
+    inset: 1.25rem -1.25rem 3.75rem 1.25rem;
+    z-index: 0;
+    border: 1px solid rgb(178 138 77 / 45%);
+    pointer-events: none;
+  }
+
+  .julia__portrait :global(.frame) {
+    z-index: 1;
+  }
+
+  .julia__caption {
+    position: relative;
+    margin-top: 1.25rem;
+    color: var(--mute);
+    font-family: var(--f-label);
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .julia__text {
+    margin-top: 1.75rem;
+  }
+
+  .julia__facts {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 1.5rem;
+    justify-content: start;
+    margin-top: 2.5rem;
+    padding-block: 1.5rem;
+    border-block: 1px solid var(--rule);
+  }
+
+  .julia__facts dt {
+    color: var(--gold-ink);
+    font-family: var(--f-label);
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .julia__facts dd {
+    margin-top: 0.3rem;
+    color: var(--ink);
+    font-family: var(--f-display);
+    font-size: 1.3rem;
+    line-height: 1.2;
+  }
+
+  .julia__actions {
+    margin-top: 2.5rem;
+  }
+
+  @media (width < 60rem) {
+    .julia__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .julia__portrait {
+      max-width: 30rem;
+    }
+
+    .julia__portrait::before {
+      inset: 0.75rem -0.75rem 3.75rem 0.75rem;
+    }
+  }
+
+  @media (width < 36rem) {
+    .julia__facts {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+</style>

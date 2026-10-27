@@ -1,0 +1,193 @@
+---
+import type { Category } from '../../data/oferta';
+import { salon } from '../../data/salon';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import Visual from '../Visual.astro';
+
+interface Props {
+  category: Category;
+}
+
+const { category } = Astro.props;
+
+// najkrótszy i najdłuższy czas trwania w tej kategorii, np. „15–90 min”
+const minutes = category.groups.flatMap((group) =>
+  group.variants.flatMap((variant) => (variant.duration.match(/\d+/g) ?? []).map(Number)),
+);
+const range = `${Math.min(...minutes)}–${Math.max(...minutes)} min`;
+const count = category.groups.reduce((sum, group) => sum + group.variants.length, 0);
+---
+
+<section class="page-hero" data-theme="light" aria-labelledby="page-title">
+  <div class="container page-hero__grid">
+    <div class="page-hero__content">
+      <nav class="crumbs" aria-label="Ścieżka nawigacji">
+        <ol role="list">
+          <li>
+            <a href="/">Strona główna</a>
+          </li>
+          <li>
+            <a href="/#oferta">Oferta</a>
+          </li>
+          <li aria-current="page">{category.name}</li>
+        </ol>
+      </nav>
+      <p class="eyebrow" data-rise="1">
+        {category.eyebrow}
+      </p>
+      <h1 id="page-title" class="h1" data-rise="2">
+        {category.title[0]} <em>{category.title[1]}</em>
+      </h1>
+      <p class="lead page-hero__intro" data-rise="3">
+        {category.intro}
+      </p>
+      <div class="btn-row page-hero__actions" data-rise="4">
+        <Button href={salon.booksy} variant="ink" external arrow>
+          Umów wizytę
+        </Button>
+        <a class="link" href="#zabiegi">
+          Zabiegi i czas trwania <Icon name="arrow" class="btn__arrow" />
+        </a>
+      </div>
+      <dl class="page-hero__facts" data-rise="5">
+        <div>
+          <dt>Zabiegi</dt>
+          <dd>{count}</dd>
+        </div>
+        <div>
+          <dt>Czas trwania</dt>
+          <dd>{range}</dd>
+        </div>
+        <div>
+          <dt>Ceny i terminy</dt>
+          <dd>w Booksy</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="page-hero__media" data-rise="3">
+      <Visual
+        art={category.art}
+        photo={category.photo}
+        alt={`${category.name} w salonie Azyl Piękna`}
+        shape="tall"
+        arch
+        parallax
+        priority
+        width={520}
+        sizes="(min-width: 60rem) 36vw, 20rem"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    padding-block: calc(var(--header-h) + clamp(2rem, 5vw, 4.5rem)) clamp(4rem, 8vw, 7.5rem);
+    background: var(--ivory);
+  }
+
+  .page-hero__grid {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: clamp(2.5rem, 7vw, 8rem);
+    align-items: center;
+  }
+
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0;
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+    color: var(--mute);
+    font-size: 0.85rem;
+  }
+
+  .crumbs li + li::before {
+    content: '/';
+    margin-inline: 0.6rem;
+    color: var(--taupe);
+  }
+
+  .crumbs a {
+    color: var(--mute);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  .crumbs [aria-current] {
+    color: var(--ink);
+  }
+
+  .page-hero__intro {
+    max-width: 38rem;
+    margin-top: 1.75rem;
+  }
+
+  .page-hero__actions {
+    gap: 1.25rem 2rem;
+    margin-top: 2.25rem;
+  }
+
+  .page-hero__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem clamp(1.25rem, 4vw, 3rem);
+    margin-top: clamp(2.5rem, 5vw, 3.75rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .page-hero__facts dt {
+    color: var(--gold-ink);
+    font-family: var(--f-label);
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .page-hero__facts dd {
+    margin-top: 0.25rem;
+    color: var(--ink);
+    font-family: var(--f-display);
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .page-hero__media {
+    position: relative;
+  }
+
+  .page-hero__media::before {
+    content: '';
+    position: absolute;
+    inset: -1rem -1rem 1rem 1rem;
+    border: 1px solid rgb(178 138 77 / 45%);
+    border-radius: var(--radius-arch);
+    pointer-events: none;
+  }
+
+  @media (width < 60rem) {
+    .page-hero__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .page-hero__media {
+      width: min(100% - 1rem, 20rem);
+    }
+
+    .page-hero__media::before {
+      inset: -0.6rem -0.6rem 0.6rem 0.6rem;
+    }
+
+    .crumbs ol {
+      margin-bottom: 1.75rem;
+    }
+  }
+</style>

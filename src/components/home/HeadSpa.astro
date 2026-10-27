@@ -1,0 +1,209 @@
+---
+import { categoryBySlug, headSpaRitual } from '../../data/oferta';
+import { salon } from '../../data/salon';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import Visual from '../Visual.astro';
+
+const headSpa = categoryBySlug('head-spa-i-trychologia');
+const variants = [
+  { name: 'Head Spa Classic', duration: '90 min' },
+  { name: 'Head and Face Spa · Pełen relaks', duration: '120 min' },
+  { name: 'Head and Face Spa · Premium', duration: '150 min' },
+  { name: 'Head Spa Kids · 5–13 lat', duration: '60 min' },
+];
+---
+
+<section id="head-spa" class="section headspa" data-theme="dark" aria-labelledby="headspa-title">
+  <div class="container headspa__grid">
+    <div class="headspa__media" data-reveal>
+      <Visual
+        art={headSpa.art}
+        photo={headSpa.photo}
+        alt="Rytuał Head Spa w salonie Azyl Piękna"
+        shape="tall"
+        arch
+        parallax
+        width={600}
+        sizes="(min-width: 60rem) 42vw, 100vw"
+      />
+      <p class="headspa__caption">Rytuał zaczyna się i kończy badaniem skóry głowy kamerą trychologiczną.</p>
+    </div>
+
+    <div class="headspa__content">
+      <p class="eyebrow" data-reveal>
+        Rytuał dla skóry głowy
+      </p>
+      <h2 id="headspa-title" class="h2" data-split>
+        Head Spa, <em>czyli chwila tylko dla Ciebie</em>
+      </h2>
+      <p class="lead headspa__lead" data-reveal>
+        Pielęgnacja skóry głowy połączona z masażem, ciepłem sauny i zapachem ziół. Najpierw oglądam skórę głowy kamerą,
+        potem dbam o nią krok po kroku, a na koniec porównujemy obraz sprzed rytuału i po nim.
+      </p>
+
+      <ol class="ritual" role="list">
+        {headSpaRitual.map((step, i) => (
+          <li class="ritual__step" data-reveal>
+            <span class="ritual__num" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 class="ritual__name">{step.name}</h3>
+            <p class="ritual__text">{step.text}</p>
+          </li>
+        ))}
+      </ol>
+
+      <ul class="menu-list" role="list" data-reveal>
+        {variants.map((variant) => (
+          <li>
+            <span>{variant.name}</span>
+            <span class="menu-list__dots" aria-hidden="true" />
+            <span class="duration">{variant.duration}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div class="btn-row headspa__actions" data-reveal>
+        <Button href={salon.booksy} external arrow>
+          Umów Head Spa
+        </Button>
+        <a class="link" href={`/${headSpa.slug}/`}>
+          Head Spa i trychologia <Icon name="arrow" class="btn__arrow" />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .headspa {
+    overflow: clip;
+    background: radial-gradient(60% 50% at 20% 30%, rgb(210 174 106 / 7%), transparent 70%), var(--night-2);
+  }
+
+  .headspa__grid {
+    display: grid;
+    grid-template-columns: 5fr 6fr;
+    gap: clamp(2.5rem, 7vw, 8rem);
+    align-items: center;
+  }
+
+  .headspa__media {
+    position: relative;
+  }
+
+  /* cienka złota linia obrysowująca łuk, przesunięta względem obrazu */
+  .headspa__media::before {
+    content: '';
+    position: absolute;
+    inset: -1rem 1rem 3.5rem -1rem;
+    border: 1px solid var(--line-dark);
+    border-radius: var(--radius-arch);
+    pointer-events: none;
+  }
+
+  .headspa__caption {
+    max-width: 22rem;
+    margin-top: 1.25rem;
+    color: var(--mute-dark);
+    font-size: var(--fs-small);
+  }
+
+  .headspa__lead {
+    max-width: 36rem;
+    margin-top: 1.75rem;
+  }
+
+  .ritual {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.75rem 2.5rem;
+    margin-top: clamp(2.5rem, 4vw, 3.5rem);
+    counter-reset: step;
+  }
+
+  .ritual__step {
+    display: grid;
+    grid-template-columns: 2.25rem 1fr;
+    gap: 0.2rem 0.75rem;
+  }
+
+  .ritual__num {
+    grid-row: span 2;
+    padding-top: 0.15rem;
+    color: var(--gold-mid);
+    font-family: var(--f-display);
+    font-size: 1.05rem;
+    font-style: italic;
+  }
+
+  .ritual__name {
+    color: var(--ivory);
+    font-family: var(--f-display);
+    font-size: 1.4rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .ritual__text {
+    color: var(--mute-dark);
+    font-size: var(--fs-small);
+    line-height: 1.55;
+  }
+
+  /* warianty jak w karcie: nazwa, kropki, czas */
+  .menu-list {
+    margin-top: clamp(2.5rem, 4vw, 3.25rem);
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .menu-list li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    padding-block: 0.45rem;
+    color: var(--body);
+  }
+
+  .menu-list__dots {
+    flex: 1;
+    min-width: 1.5rem;
+    border-bottom: 1px dotted var(--rule);
+    translate: 0 -0.3em;
+  }
+
+  .headspa__actions {
+    gap: 1.25rem 2rem;
+    margin-top: 2.5rem;
+  }
+
+  .headspa .link {
+    color: var(--gold-light);
+  }
+
+  @media (width < 60rem) {
+    .headspa__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .headspa__media {
+      max-width: 30rem;
+    }
+
+    .headspa__media::before {
+      inset: -0.75rem 0.75rem 3.5rem -0.75rem;
+    }
+  }
+
+  @media (width < 36rem) {
+    .ritual {
+      grid-template-columns: 1fr;
+    }
+
+    .menu-list li {
+      font-size: var(--fs-small);
+    }
+  }
+</style>

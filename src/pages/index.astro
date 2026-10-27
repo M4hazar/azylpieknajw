@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/home/Hero.astro';
+import Manifest from '../components/home/Manifest.astro';
+import Offer from '../components/home/Offer.astro';
+import HeadSpa from '../components/home/HeadSpa.astro';
+import Julia from '../components/home/Julia.astro';
+import FirstVisit from '../components/home/FirstVisit.astro';
+import Gallery from '../components/home/Gallery.astro';
+import Reviews from '../components/home/Reviews.astro';
+import Contact from '../components/home/Contact.astro';
+import { categories } from '../data/oferta';
+import { salon } from '../data/salon';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BeautySalon',
+  '@id': `${salon.url}#salon`,
+  name: salon.name,
+  description:
+    'Salon kosmetologiczny i trychologiczny w Lubinie: Head Spa, konsultacje trychologiczne, zabiegi na twarz, manicure, pedicure, brwi i rzęsy.',
+  url: salon.url,
+  image: new URL('/og-image.jpg', salon.url).href,
+  logo: new URL('/img/sygnet-zloty.svg', salon.url).href,
+  telephone: salon.phone.href.replace('tel:', ''),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: salon.address.street,
+    postalCode: salon.address.postalCode,
+    addressLocality: salon.address.city,
+    addressCountry: 'PL',
+  },
+  founder: { '@type': 'Person', name: salon.owner, jobTitle: salon.role },
+  sameAs: [salon.instagram.href, salon.booksy],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Zabiegi',
+    itemListElement: categories.map((category) => ({
+      '@type': 'OfferCatalog',
+      name: category.name,
+      url: new URL(`/${category.slug}/`, salon.url).href,
+    })),
+  },
+};
+---
+
+<Base
+  title="Azyl Piękna · Salon kosmetologiczny w Lubinie · Head Spa i trycholog"
+  description="Salon kosmetologiczny Julii Wróbel w Lubinie: Head Spa, konsultacje trychologiczne z trichoskopią, zabiegi na twarz PCA Skin, manicure, pedicure, brwi i rzęsy. Rezerwacja w Booksy."
+  theme="dark"
+  home
+  schema={schema}
+>
+  <Hero />
+  <Manifest />
+  <Offer />
+  <HeadSpa />
+  <Julia />
+  <FirstVisit />
+  <Gallery />
+  <Reviews />
+  <Contact />
+</Base>

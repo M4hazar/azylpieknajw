@@ -1,0 +1,131 @@
+---
+import type { Category } from '../../data/oferta';
+
+interface Props {
+  category: Category;
+}
+
+const { category } = Astro.props;
+---
+
+<section class="section section--ivory for-whom" data-theme="light" aria-labelledby="for-whom-title">
+  <div class="container for-whom__grid">
+    <div>
+      <p class="eyebrow" data-reveal>
+        Dla kogo
+      </p>
+      <h2 id="for-whom-title" class="h2" data-split>
+        Kiedy <em>warto przyjść</em>
+      </h2>
+      <ul class="checks" role="list">
+        {category.forWhom.map((item) => (
+          <li data-reveal>
+            <span class="checks__mark" aria-hidden="true" />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <aside class="prep" data-theme="dark" aria-labelledby="prep-title" data-reveal>
+      <h2 id="prep-title" class="prep__title">
+        {category.preparation.title}
+      </h2>
+      <ol class="prep__list" role="list">
+        {category.preparation.items.map((item, i) => (
+          <li>
+            <span class="prep__num" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ol>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .for-whom__grid {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: clamp(2.5rem, 7vw, 8rem);
+    align-items: start;
+  }
+
+  .checks {
+    display: grid;
+    gap: 1.1rem;
+    max-width: 38rem;
+    margin-top: 2.5rem;
+  }
+
+  .checks li {
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+    gap: 0.9rem;
+    color: var(--text);
+    font-size: var(--fs-lead);
+    line-height: 1.55;
+  }
+
+  /* znacznik: krótka złota kreska z kropką */
+  .checks__mark {
+    position: relative;
+    height: 1px;
+    margin-top: 0.8em;
+    background: var(--gold);
+  }
+
+  .checks__mark::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  .prep {
+    padding: clamp(2rem, 4vw, 3rem);
+    background: var(--backdrop), var(--night-2);
+  }
+
+  .prep__title {
+    color: var(--ivory);
+    font-family: var(--f-display);
+    font-size: var(--fs-h4);
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .prep__list {
+    display: grid;
+    gap: 1.1rem;
+    margin-top: 1.75rem;
+  }
+
+  .prep__list li {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.5rem;
+    color: var(--on-dark);
+    font-size: var(--fs-small);
+    line-height: 1.6;
+  }
+
+  .prep__num {
+    color: var(--gold-mid);
+    font-family: var(--f-display);
+    font-size: 1rem;
+    font-style: italic;
+  }
+
+  @media (width < 60rem) {
+    .for-whom__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

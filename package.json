@@ -1,0 +1,58 @@
+{
+  "name": "azyl-piekna-strona",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Strona salonu Azyl Piękna (Julia Wróbel, Lubin)",
+  "author": "Paweł Hejna (https://github.com/m4hazar)",
+  "type": "module",
+  "engines": {
+    "node": ">=24.11"
+  },
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "lint": "eslint . && stylelint \"src/**/*.{css,astro}\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "validate": "html-validate \"dist/**/*.html\"",
+    "links": "linkinator dist --recurse --skip \"^https?://(?!localhost|127)\"",
+    "test": "playwright test",
+    "lhci": "lhci autorun",
+    "qa": "pnpm format:check && pnpm lint && pnpm check && pnpm build && pnpm validate && pnpm links && pnpm test && pnpm lhci"
+  },
+  "dependencies": {
+    "@fontsource-variable/cormorant-garamond": "5.3.0",
+    "@fontsource-variable/source-sans-3": "5.3.1",
+    "@fontsource/tenor-sans": "5.3.0",
+    "astro": "7.4.2",
+    "gsap": "3.15.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@astrojs/sitemap": "3.7.4",
+    "@axe-core/playwright": "4.14.0",
+    "@eslint/js": "10.0.1",
+    "@lhci/cli": "0.15.1",
+    "@playwright/test": "1.64.1",
+    "eslint": "10.13.0",
+    "eslint-plugin-astro": "3.2.1",
+    "eslint-plugin-jsx-a11y-x": "0.2.0",
+    "globals": "17.13.0",
+    "html-validate": "11.17.0",
+    "lightningcss": "1.33.0",
+    "linkinator": "8.1.0",
+    "postcss-html": "2.0.0",
+    "prettier": "3.9.10",
+    "prettier-plugin-astro": "1.1.2",
+    "sharp": "0.35.5",
+    "stylelint": "17.16.0",
+    "stylelint-config-html": "2.0.0",
+    "stylelint-config-standard": "40.0.0",
+    "svgo": "4.1.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.1"
+  }
+}
